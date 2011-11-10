@@ -99,7 +99,7 @@ echo $error_file;
 							$thn_lahirs = $e_thn_lahir; if(set_value('thn_lahir')!='') $thn_lahirs = set_value('thn_lahir');
 							
 							$list_thn['0'] = "Thn";
-							for($i=1920;$i<=2010;$i++)
+							for($i=1920;$i<=date("Y");$i++)
 							{
 								$list_thn[$i] = $i;
 							}
