@@ -186,6 +186,18 @@ echo $error_file;
 						<div class="error-inner"><?php echo form_error('hp'); ?></div>
 						<? }?>
 					</td>
+				</tr><tr>
+					<? form_error('kamar') == '' ? $class = 'inp-form2':$class = 'inp-form-error2'; ?>
+					<th valign="top">Pilihan Kamar (*)</th>
+					<td><? $kamar = $e_kamar; if(set_value('kamar')!='') $kamar = set_value('kamar');
+							echo form_dropdown('kamar', $kamar_options, $kamar,'id="kamar" class="styledselect_form_1"'); ?>
+                        </td>
+					<td>
+						<? if(form_error('kamar') != '') {?>
+						<div class="error-left"></div>
+						<div class="error-inner"><?php echo form_error('kamar'); ?></div>
+						<? }?>
+					</td>
 				</tr>
 				<tr>
 					<? form_error('baju') == '' ? $class = 'inp-form2':$class = 'inp-form-error2'; ?>

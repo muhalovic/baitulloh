@@ -135,60 +135,66 @@ class Payment extends CI_Controller {
 		$data['row_price'] = '';
 		$biaya_harga_kamar = 0;
 		
-		if($data_packet->result() != NULL)
+		if($data_total_jamaah->result() != NULL)
 		{
-			foreach($data_packet->result() as $row)
+			foreach($data_total_jamaah->result() as $brs)
 			{
-				$nama_group = $row->KODE_GROUP;
-				$nama_program = $row->NAMA_PROGRAM;
-				$cwb = $row->CHILD_WITH_BED;
-				$cnb = $row->CHILD_NO_BED;
-				$infant = $row->INFANT;
-				$id_packet = $row->ID_PACKET;
-				$id_program = $row->ID_PROGRAM;
-				$id_group = $row->ID_GROUP;
-			}
-			
-			$data_room_packet = $this->room_packet_model->get_room_packet_byIDpack($id_packet);
-			foreach($data_room_packet->result() as $rows)
-			{
-				$id_room_packet = $rows->ID_ROOM_PACKET;
-				$jumlah_kamar = $rows->JUMLAH;
-				$id_room_type = $rows->ID_ROOM_TYPE;
+				$nama_calon = $brs->NAMA_LENGKAP;
+				$id_room_packet_jamaah = $brs->ID_ROOM_PACKET;
+				
+				if($data_packet->result() != NULL)
+				{
+					foreach($data_packet->result() as $row)
+					{
+						$nama_group = $row->KODE_GROUP;
+						$nama_program = $row->NAMA_PROGRAM;
+						$cwb = $row->CHILD_WITH_BED;
+						$cnb = $row->CHILD_NO_BED;
+						$infant = $row->INFANT;
+						$id_packet = $row->ID_PACKET;
+						$id_program = $row->ID_PROGRAM;
+						$id_group = $row->ID_GROUP;
+					}
 					
-				// CARI TANGGAL JATUH TEMPO DP DAN PELUNASAN
-				$data_group = $this->group_departure_model->get_group($id_group);
-				foreach($data_group->result() as $brs)
-				{
-					$data['tgl_dp'] = date('d F Y', strtotime($brs->JATUH_TEMPO_UANG_MUKA));
-					$data['tgl_lunas'] = date('d F Y', strtotime($brs->JATUH_TEMPO_PELUNASAN));
+					// CARI NAMA KAMAR
+					$data_room_packet = $this->room_packet_model->get_room_packet_byIDroomPack($id_room_packet_jamaah);
+					foreach($data_room_packet->result() as $rows)
+					{
+						$id_room_packet = $rows->ID_ROOM_PACKET;
+						$jumlah_kamar = $rows->JUMLAH;
+						$id_room_type = $rows->ID_ROOM_TYPE;
+						$jenis_kamar = $rows->JENIS_KAMAR;
+					}
+					
+					// CARI TANGGAL JATUH TEMPO DP DAN PELUNASAN
+					$data_group = $this->group_departure_model->get_group($id_group);
+					foreach($data_group->result() as $brs)
+					{
+						$data['tgl_dp'] = date('d F Y', strtotime($brs->JATUH_TEMPO_UANG_MUKA));
+						$data['tgl_lunas'] = date('d F Y', strtotime($brs->JATUH_TEMPO_PELUNASAN));
+					}
+					
+					// CARI HARGA KAMAR
+					$data_kamar_siap = $this->room_availability_model->get_price_room($id_room_type, $id_program, $id_group);
+					if($data_kamar_siap->result() != NULL)
+					{
+						foreach($data_kamar_siap->result() as $rowss)
+						{
+							$total_harga_kamar = $rowss->HARGA_KAMAR;
+						}
+					}else{
+						$total_harga_kamar = NULL;
+					}
+					
+					$biaya_harga_kamar += $total_harga_kamar;
+					
+					$data['row_price'] .= '	<tr height="30">
+												<td align="center"><h4>'.$nama_group.' - '.$nama_program.' / '.$jenis_kamar.'</h4></td>
+												<td align="center"><h4>'.$nama_calon.'</h4></td>
+												<td align="center"><h4>'.$this->cek_ribuan($total_harga_kamar).' $</h4></td>
+												<td align="center"><h4>'.$this->cek_ribuan($total_harga_kamar).' $</h4></td>
+											</tr>';
 				}
-				
-				// CARI DATA ROOM TYPE
-				$data_room_type = $this->room_type_model->get_roomType($id_room_type);
-				foreach($data_room_type->result() as $rowss)
-				{
-					$tipe_kamar = $rowss->JENIS_KAMAR;
-				}
-				
-				
-				// CARI HARGA KAMAR
-				$data_kamar_siap = $this->room_availability_model->get_price_room($id_room_type, $id_program, $id_group);
-				foreach($data_kamar_siap->result() as $rowss)
-				{
-					$harga_kamar = $rowss->HARGA_KAMAR;
-				}
-				
-				$total_harga_kamar = $harga_kamar * $jumlah_kamar;
-				$biaya_harga_kamar += $total_harga_kamar;
-				
-				$data['row_price'] .= '	<tr height="30">
-											<td align="right" class="front_price_no_border">
-											<h4>'.$nama_group.' - '.$nama_program.' - '.$tipe_kamar.'</td>
-											<td align="center"><h4>'.$this->cek_ribuan($harga_kamar).' $</h4></td>
-											<td align="center">'.$jumlah_kamar.'</td>
-											<td align="center"><h4>'.$this->cek_ribuan($total_harga_kamar).' $</h4></td>
-										</tr>';
 			}
 		}
 		
@@ -337,12 +343,12 @@ class Payment extends CI_Controller {
 			if($valid_file)
 			{
 				//jika upload file scan berhasil
-				$this->session->set_userdata('sukses','true');
-				$this->log_model->log($id_user, $kode_reg, NULL, $log);
-				$this->payment_model->insert_payment($data);
+				//$this->session->set_userdata('sukses','true');
+//				$this->log_model->log($id_user, $kode_reg, NULL, $log);
+//				$this->payment_model->insert_payment($data);
 				$this->send_email($konfirmasi);
 				
-				redirect(site_url().'/payment/');
+		//		redirect(site_url().'/payment/');
 			
 			}else{
 				$this->front();
@@ -463,60 +469,66 @@ class Payment extends CI_Controller {
 		$data['row_price'] = '';
 		$biaya_harga_kamar = 0;
 		
-		if($data_packet->result() != NULL)
+		if($data_total_jamaah->result() != NULL)
 		{
-			foreach($data_packet->result() as $row)
+			foreach($data_total_jamaah->result() as $brs)
 			{
-				$nama_group = $row->KODE_GROUP;
-				$nama_program = $row->NAMA_PROGRAM;
-				$cwb = $row->CHILD_WITH_BED;
-				$cnb = $row->CHILD_NO_BED;
-				$infant = $row->INFANT;
-				$id_packet = $row->ID_PACKET;
-				$id_program = $row->ID_PROGRAM;
-				$id_group = $row->ID_GROUP;
-			}
-			
-			$data_room_packet = $this->room_packet_model->get_room_packet_byIDpack($id_packet);
-			foreach($data_room_packet->result() as $rows)
-			{
-				$id_room_packet = $rows->ID_ROOM_PACKET;
-				$jumlah_kamar = $rows->JUMLAH;
-				$id_room_type = $rows->ID_ROOM_TYPE;
+				$nama_calon = $brs->NAMA_LENGKAP;
+				$id_room_packet_jamaah = $brs->ID_ROOM_PACKET;
+				
+				if($data_packet->result() != NULL)
+				{
+					foreach($data_packet->result() as $row)
+					{
+						$nama_group = $row->KODE_GROUP;
+						$nama_program = $row->NAMA_PROGRAM;
+						$cwb = $row->CHILD_WITH_BED;
+						$cnb = $row->CHILD_NO_BED;
+						$infant = $row->INFANT;
+						$id_packet = $row->ID_PACKET;
+						$id_program = $row->ID_PROGRAM;
+						$id_group = $row->ID_GROUP;
+					}
 					
-				// CARI TANGGAL JATUH TEMPO DP DAN PELUNASAN
-				$data_group = $this->group_departure_model->get_group($id_group);
-				foreach($data_group->result() as $brs)
-				{
-					$data['tgl_dp'] = date('d F Y', strtotime($brs->JATUH_TEMPO_UANG_MUKA));
-					$data['tgl_lunas'] = date('d F Y', strtotime($brs->JATUH_TEMPO_PELUNASAN));
+					// CARI NAMA KAMAR
+					$data_room_packet = $this->room_packet_model->get_room_packet_byIDroomPack($id_room_packet_jamaah);
+					foreach($data_room_packet->result() as $rows)
+					{
+						$id_room_packet = $rows->ID_ROOM_PACKET;
+						$jumlah_kamar = $rows->JUMLAH;
+						$id_room_type = $rows->ID_ROOM_TYPE;
+						$jenis_kamar = $rows->JENIS_KAMAR;
+					}
+					
+					// CARI TANGGAL JATUH TEMPO DP DAN PELUNASAN
+					$data_group = $this->group_departure_model->get_group($id_group);
+					foreach($data_group->result() as $brs)
+					{
+						$data['tgl_dp'] = date('d F Y', strtotime($brs->JATUH_TEMPO_UANG_MUKA));
+						$data['tgl_lunas'] = date('d F Y', strtotime($brs->JATUH_TEMPO_PELUNASAN));
+					}
+					
+					// CARI HARGA KAMAR
+					$data_kamar_siap = $this->room_availability_model->get_price_room($id_room_type, $id_program, $id_group);
+					if($data_kamar_siap->result() != NULL)
+					{
+						foreach($data_kamar_siap->result() as $rowss)
+						{
+							$total_harga_kamar = $rowss->HARGA_KAMAR;
+						}
+					}else{
+						$total_harga_kamar = NULL;
+					}
+					
+					$biaya_harga_kamar += $total_harga_kamar;
+					
+					$data['row_price'] .= '	<tr height="30">
+												<td align="left">'.$nama_group.' - '.$nama_program.' / '.$jenis_kamar.'</td>
+												<td align="center">'.$nama_calon.'</td>
+												<td align="center">'.$this->cek_ribuan($total_harga_kamar).' $</td>
+												<td align="center">'.$this->cek_ribuan($total_harga_kamar).' $</td>
+											</tr>';
 				}
-				
-				// CARI DATA ROOM TYPE
-				$data_room_type = $this->room_type_model->get_roomType($id_room_type);
-				foreach($data_room_type->result() as $rowss)
-				{
-					$tipe_kamar = $rowss->JENIS_KAMAR;
-				}
-				
-				
-				// CARI HARGA KAMAR
-				$data_kamar_siap = $this->room_availability_model->get_price_room($id_room_type, $id_program, $id_group);
-				foreach($data_kamar_siap->result() as $rowss)
-				{
-					$harga_kamar = $rowss->HARGA_KAMAR;
-				}
-				
-				$total_harga_kamar = $harga_kamar * $jumlah_kamar;
-				$biaya_harga_kamar += $total_harga_kamar;
-				
-				$data['row_price'] .= '	<tr height="30">
-											<td align="right" class="front_price_no_border">
-											'.$nama_group.' - '.$nama_program.' - '.$tipe_kamar.'</td>
-											<td align="center">'.$this->cek_ribuan($harga_kamar).' $</td>
-											<td align="center">'.$jumlah_kamar.'</td>
-											<td align="center">'.$this->cek_ribuan($total_harga_kamar).' $</td>
-										</tr>';
 			}
 		}
 		
@@ -542,9 +554,9 @@ class Payment extends CI_Controller {
 		$this->email->subject('Konfirmasi Pembayaran');
 		$this->email->message($htmlMessage);
 
-		$this->email->send();
+		//$this->email->send();
 		//echo $data['EMAIL_SES'];	
-		//$content = $this->load->view('email_payment',$data);
+		$content = $this->load->view('email_payment',$data);
 	}
 	
 	

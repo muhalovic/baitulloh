@@ -450,9 +450,9 @@
 																
 <table width="100%" class="front_price" align="center">
 	<tr height="30">
-		<td width="300" class="bg_head"></td>
+		<td width="300" class="bg_head" align="center"><strong>PAKET / NAMA KAMAR</strong></td>
+		<td width="150" class="bg_head" align="center"><strong>CALON JAMAAH</strong></td>
 		<td width="150" class="bg_head" align="center"><strong>HARGA</strong></td>
-		<td width="150" class="bg_head" align="center"><strong>JML. KAMAR</strong></td>
 		<td width="150" class="bg_head" align="center"><strong>TOTAL</strong></td>
     </tr>	
 	<? 
@@ -462,15 +462,15 @@
 	}
 	?>	
 	<tr height="30">
-		<td align="right" class="front_price_no_border">Biaya Jasa Tambah Nama</td>
-		<td align="center">20.00 $</td>
-		<td align="center"><? if(isset($hitung_jasa_nama)) { echo $hitung_jasa_nama; } ?></td>
+		<td align="left" class="front_price_no_border">Jasa Tambah Nama</td>
+		<td align="center"></td>
+		<td align="center"><? if(isset($hitung_jasa_nama)) { echo $hitung_jasa_nama; } ?> X 20.00 $</td>
 		<td align="center"><? if(isset($hitung_total)) { echo $hitung_total; } ?> $</td>
     </tr>	
 	<tr height="30">
-		<td align="right" class="front_price_no_border">Biaya Jasa Pengurusan Buku Maningtis</td>
-		<td align="center">20.00 $</td>
-		<td align="center"><? if(isset($hitung_jasa_maningtis)) { echo $hitung_jasa_maningtis; } ?></td>
+		<td align="left" class="front_price_no_border">Jasa Pengurusan Buku Maningtis</td>
+		<td align="center"></td>
+		<td align="center"><? if(isset($hitung_jasa_maningtis)) { echo $hitung_jasa_maningtis; } ?> X 20.00 $</td>
 		<td align="center"><? if(isset($hitung_total_maningtis)) { echo $hitung_total_maningtis; } ?> $</td>
     </tr>	
 	<tr height="30" valign="bottom">

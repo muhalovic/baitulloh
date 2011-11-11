@@ -243,10 +243,21 @@ class Biodata extends CI_Controller {
 		$this->load->model('province_model');
 		$this->load->model('clothes_size_model');
 		$this->load->model('relation_model');
+		$this->load->model('room_packet_model');
+		$this->load->model('packet_model');
+		
+		$id_account = $this->session->userdata('id_account');
+		$kode_reg = $this->session->userdata('kode_registrasi');
 		
 		$province = $this->province_model->get_all_province();
 		$relation = $this->relation_model->get_all_relation();
 		$chlothes = $this->clothes_size_model->get_all_clothes();
+		$packet = $this->packet_model->get_packet_byAccAll($id_account, $kode_reg);
+		
+		foreach($packet->result() as $row)
+		{
+			$id_packet = $row->ID_PACKET;
+		}
 
 		$province_options['0'] = '-- Pilih Propinsi --';
 		foreach($province->result() as $row){
@@ -263,9 +274,21 @@ class Biodata extends CI_Controller {
 				$chlothes_options[$row->ID_SIZE] = $row->SIZE;
 		}
 		
+		
+		$kamar_options['0'] = '-- Pilih Kamar --';
+		$kamar = $this->room_packet_model->get_room_packet_byIDpack($id_packet);
+		if($kamar->result() != NULL)
+		{
+			foreach($kamar->result() as $row){
+				$kamar_options[$row->ID_ROOM_PACKET] = $row->JENIS_KAMAR;
+			}
+		}
+		
 		$data['province_options'] = $province_options;
 		$data['relasi_options'] = $relasi_options;
 		$data['chlothes_options'] = $chlothes_options;
+		$data['kamar_options'] = $kamar_options;
+		
 		$data['error_file'] = '';
 		if($this->session->userdata('upload_file') != '')
 		{
@@ -363,6 +386,14 @@ class Biodata extends CI_Controller {
 			}
 			
 			
+			if($this->input->post('gender') == 2 && $this->input->post('relasi') == '6')
+			{
+				$mahram_s = $this->input->post('mahram');
+			}else{
+				$mahram_s = 0;
+			}
+			
+			
 			// insert ke database
 			$data = array(
 				'ID_RELATION' => $this->input->post('relasi'),
@@ -391,9 +422,10 @@ class Biodata extends CI_Controller {
 				'FOTO' => $file_foto,
 				'JASA_TAMBAHAN' => $this->input->post('jasa_maningtis'),
 				'REQUESTED_NAMA' => $this->input->post('jasa_paspor_nama'),
-				'MAHRAM' => $this->input->post('mahram'),
+				'MAHRAM' => $mahram_s,
 				'TANGGAL_ENTRI' => date("Y-m-d H:i:s"),
 				'TANGGAL_UPDATE' => date("Y-m-d H:i:s"),
+				'ID_ROOM_PACKET' => $this->input->post('kamar'),
 				'STATUS_KANDIDAT' => 1);
 			
 			if($valid_file)
@@ -416,7 +448,7 @@ class Biodata extends CI_Controller {
 		$config = array(
 				array('field'=>'nama_lengkap','label'=>'Nama Lengkap', 'rules'=>'required'),
 				array('field'=>'gender','label'=>'Jenis Kelamin', 'rules'=>'callback_cek_dropdown'),
-				array('field'=>'ayah_kandung','label'=>'Ayah Kandung', 'rules'=>'required'),
+				array('field'=>'ayah_kandung','label'=>'Ayah', 'rules'=>'required'),
 				array('field'=>'warga_negara','label'=>'Warga Negara', 'rules'=>'required'),
 				array('field'=>'tempat_lahir','label'=>'Tempat Lahir', 'rules'=>'required'),
 				array('field'=>'tgl_lahir','label'=>'Tgl. Lahir', 'rules'=>'callback_cek_dropdown'),
@@ -428,8 +460,9 @@ class Biodata extends CI_Controller {
 				array('field'=>'email','label'=>'Email', 'rules'=>'valid_email'),
 				array('field'=>'telp','label'=>'Telephone', 'rules'=>'required|numeric'),
 				array('field'=>'hp','label'=>'Handphone', 'rules'=>'numeric'),
-				array('field'=>'relasi','label'=>'Relation', 'rules'=>'callback_cek_dropdown'),
+				array('field'=>'relasi','label'=>'Hubungan', 'rules'=>'callback_cek_dropdown'),
 				array('field'=>'baju','label'=>'Baju', 'rules'=>'callback_cek_dropdown'),
+				array('field'=>'kamar','label'=>'Kamar', 'rules'=>'callback_cek_dropdown'),
 			//	array('field'=>'foto','label'=>'Foto', 'rules'=>'required'),
 			);
 		
@@ -492,6 +525,7 @@ class Biodata extends CI_Controller {
 				$data['e_perihal_pribadi'] = $row->PERIHAL_PRIBADI;
 				$data['e_pas_foto'] = $row->FOTO;
 				$data['e_jasa_tambahan'] = $row->JASA_TAMBAHAN;
+				$data['e_kamar'] = $row->ID_ROOM_PACKET;
 				$data['e_request_nama'] = $req_nama;
 				
 				// PECAH TANGGAL LAHIR
@@ -519,10 +553,21 @@ class Biodata extends CI_Controller {
 				$this->load->model('province_model');
 				$this->load->model('clothes_size_model');
 				$this->load->model('relation_model');
+				$this->load->model('room_packet_model');
+				$this->load->model('packet_model');
+				
+				$id_account = $this->session->userdata('id_account');
+				$kode_reg = $this->session->userdata('kode_registrasi');
 				
 				$province = $this->province_model->get_all_province();
 				$relation = $this->relation_model->get_all_relation();
 				$chlothes = $this->clothes_size_model->get_all_clothes();
+				$packet = $this->packet_model->get_packet_byAccAll($id_account, $kode_reg);
+				
+				foreach($packet->result() as $row)
+				{
+					$id_packet = $row->ID_PACKET;
+				}
 		
 				$province_options['0'] = '-- Pilih Propinsi --';
 				foreach($province->result() as $row){
@@ -539,9 +584,19 @@ class Biodata extends CI_Controller {
 						$chlothes_options[$row->ID_SIZE] = $row->SIZE;
 				}
 				
+				$kamar_options['0'] = '-- Pilih Kamar --';
+				$kamar = $this->room_packet_model->get_room_packet_byIDpack($id_packet);
+				if($kamar->result() != NULL)
+				{
+					foreach($kamar->result() as $row){
+						$kamar_options[$row->ID_ROOM_PACKET] = $row->JENIS_KAMAR;
+					}
+				}
+				
 				$data['province_options'] = $province_options;
 				$data['relasi_options'] = $relasi_options;
 				$data['chlothes_options'] = $chlothes_options;
+				$data['kamar_options'] = $kamar_options;
 				
 				$data['notifikasi'] = null;
 				if($this->session->userdata('sukses') == 'true'){
@@ -597,7 +652,10 @@ class Biodata extends CI_Controller {
 		$kode_reg = $this->session->userdata("kode_registrasi");
 		
 		if ($this->cek_validasi() == FALSE){
-			$this->input();
+			// ID CANDIDATE 
+			$id_candidate = $this->input->post('id_candidate');
+			$id_account = $this->input->post('id_account');
+			$this->edit($id_candidate, $id_account);
 		}
 		else{
 			
@@ -686,6 +744,12 @@ class Biodata extends CI_Controller {
 				$valid_file = TRUE;
 			}
 			
+			if($this->input->post('gender') == 2 && $this->input->post('relasi') == '6')
+			{
+				$mahram_s = $this->input->post('mahram');
+			}else{
+				$mahram_s = 0;
+			}
 			
 			// update table
 			$data = array(
@@ -707,7 +771,8 @@ class Biodata extends CI_Controller {
 				'PERIHAL_PRIBADI' => $perihal_pribadi,
 				'JASA_TAMBAHAN' => $this->input->post('jasa_maningtis'),
 				'REQUESTED_NAMA' => $request_nama,
-				'MAHRAM' => $this->input->post('mahram'),
+				'MAHRAM' => $mahram_s,
+				'ID_ROOM_PACKET' => $this->input->post('kamar'),
 				'TANGGAL_UPDATE' => date("Y-m-d H:i:s")
 				);
 			

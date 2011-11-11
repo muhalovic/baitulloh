@@ -135,7 +135,7 @@ class Cancel extends CI_Controller {
 				  <strong>Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</strong> ".$row->NAMA_LENGKAP."
 				  <br />
 				  <strong>Tgl Lahir&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</strong>
-				  ".$row->TEMPAT_LAHIR.", ".$this->konversi_tanggal($row->TANGGAL_LAHIR))."
+				  ".$row->TEMPAT_LAHIR.", ".$this->konversi_tanggal($row->TANGGAL_LAHIR)."
 				  <br />
 				  <strong>Jenis Kelamin&nbsp;&nbsp;&nbsp;:</strong>
 				  ".$gender." 

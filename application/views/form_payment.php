@@ -7,10 +7,10 @@ echo $error_file;
 <center>
 <table width="100%" class="front_price" align="center">
 	<tr height="30">
-		<td width="300" class="front_price_no_border"></td>
-		<td width="150" align="center"><h3>HARGA</h3></td>
-		<td width="150" align="center"><h3>JML. KAMAR</h3></td>
-		<td width="150" align="center"><h3>TOTAL</h3></td>
+		<td width="150" align="center" class="bg_kolom"><h3>PAKET / TIPE KAMAR</h3></td>
+		<td width="150" align="center" class="bg_kolom"><h3>NAMA CALON JAMAAH</h3></td>
+		<td width="150" align="center" class="bg_kolom"><h3>HARGA</h3></td>
+		<td width="150" align="center" class="bg_kolom"><h3>TOTAL</h3></td>
     </tr>	
 	<? 
 	if(isset($row_price))
@@ -19,19 +19,19 @@ echo $error_file;
 	}
 	?>	
 	<tr height="30">
-		<td align="right" class="front_price_no_border"><h4>Biaya Jasa Tambah Nama</h4></td>
-		<td align="center"><h4>20.00 $</h4></td>
-		<td align="center"><? if(isset($hitung_jasa_nama)) { echo $hitung_jasa_nama; } ?></td>
-		<td align="center"><h4><? if(isset($hitung_total)) { echo $hitung_total; } ?> $</h4></td>
-    </tr>	
-	<tr height="30">
-		<td align="right" class="front_price_no_border"><h4>Biaya Jasa Pengurusan Buku Maningtis</h4></td>
-		<td align="center"><h4>20.00 $</h4></td>
-		<td align="center"><? if(isset($hitung_jasa_maningtis)) { echo $hitung_jasa_maningtis; } ?></td>
+		<td align="center"><h4>Jasa Pengurusan Buku Maningtis</h4></td>
+		<td align="center"></td>
+		<td align="center"><h4><? if(isset($hitung_jasa_maningtis)) { echo $hitung_jasa_maningtis; } ?> x 20.00 $</h4></td>
 		<td align="center"><h4><? if(isset($hitung_total_maningtis)) { echo $hitung_total_maningtis; } ?> $</h4></td>
-    </tr>	
+    </tr>		
+	<tr height="30">
+		<td align="center"><h4>Jasa Tambah Nama</h4></td>
+		<td align="center"</td>
+		<td align="center"><h4><? if(isset($hitung_jasa_nama)) { echo $hitung_jasa_nama; } ?> x 20.00 $</h4></td>
+		<td align="center"><h4><? if(isset($hitung_total)) { echo $hitung_total; } ?> $</h4></td>
+    </tr>
 	<tr height="30" valign="bottom">
-		<td class="front_price_no_border"></td>
+		<td class="bg_kolom"></td>
 		<td class="bg_kolom"></td>
 		<td class="bg_kolom"><strong>T O T A L &nbsp; B I A Y A</strong></td>
 		<td class="bg_kolom"><h4><? if(isset($total_biaya2)) { echo $total_biaya2; } ?> $</h4></td>

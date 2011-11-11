@@ -192,7 +192,7 @@ echo $error_file;?>
                 <tr height="40">
 					<td colspan="2">
                     <div id="" style="border:1px #e0e0e0 solid; background:#f5f5f5; color:#707070; padding:6px 17px 6px 17px;margin-bottom:2px;"><strong>INFORMASI PERSYARATAN UMUM CALON JAMAAH</strong></div>
-                     <div id="" style="border:1px #d8e1e9 solid; background:#e4edf5; color:#2e74b2; padding:6px 17px 6px 17px;margin-bottom:2px;">- Calon Jamaah harus memiliki Passport asli minimal 6 bulan masa berlaku dengan 3 suku kata.</div> 
+                     <div id="" style="border:1px #d8e1e9 solid; background:#e4edf5; color:#2e74b2; padding:6px 17px 6px 17px;margin-bottom:2px;">- Calon Jamaah harus memiliki Passport asli minimal 6 bulan<br />&nbsp;&nbsp;masa berlaku dengan 3 suku kata.</div> 
                      <div id="" style="border:1px #d8e1e9 solid; background:#f5f9fc; color:#2e74b2; padding:6px 17px 6px 17px;margin-bottom:2px;">- File Foto : Foto Formal setengah Badan</div> 
                      <div id="" style="border:1px #d8e1e9 solid; background:#e4edf5; color:#2e74b2; padding:6px 17px 6px 17px;margin-bottom:2px;">- File Foto : Ukuran Foto 4x6</div>
                      </td>
@@ -205,6 +205,19 @@ echo $error_file;?>
 		<td>
 			<!-- start id-form -->
 			<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
+				<tr>
+					<? form_error('kamar') == '' ? $class = 'inp-form2':$class = 'inp-form-error2'; ?>
+					<th valign="top">Pilihan Kamar (*)</th>
+					<td><? $kamar = 0; if(set_value('kamar')!='') $kamar = set_value('kamar');
+							echo form_dropdown('kamar', $kamar_options, $kamar,'id="kamar" class="styledselect_form_1"'); ?>
+                        </td>
+					<td>
+						<? if(form_error('kamar') != '') {?>
+						<div class="error-left"></div>
+						<div class="error-inner"><?php echo form_error('kamar'); ?></div>
+						<? }?>
+					</td>
+				</tr>
 				<tr>
 					<? form_error('baju') == '' ? $class = 'inp-form2':$class = 'inp-form-error2'; ?>
 					<th valign="top">Ukuran Baju (*)</th>
