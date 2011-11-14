@@ -344,11 +344,11 @@ class Payment extends CI_Controller {
 			{
 				//jika upload file scan berhasil
 				//$this->session->set_userdata('sukses','true');
-//				$this->log_model->log($id_user, $kode_reg, NULL, $log);
-//				$this->payment_model->insert_payment($data);
+				$this->log_model->log($id_user, $kode_reg, NULL, $log);
+				$this->payment_model->insert_payment($data);
 				$this->send_email($konfirmasi);
 				
-		//		redirect(site_url().'/payment/');
+				redirect(site_url().'/payment/');
 			
 			}else{
 				$this->front();
