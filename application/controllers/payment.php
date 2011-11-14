@@ -343,7 +343,7 @@ class Payment extends CI_Controller {
 			if($valid_file)
 			{
 				//jika upload file scan berhasil
-				//$this->session->set_userdata('sukses','true');
+				$this->session->set_userdata('sukses','true');
 				$this->log_model->log($id_user, $kode_reg, NULL, $log);
 				$this->payment_model->insert_payment($data);
 				$this->send_email($konfirmasi);
