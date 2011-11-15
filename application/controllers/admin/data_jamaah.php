@@ -24,7 +24,9 @@ class Data_jamaah extends CI_Controller {
 		
 		//call model here	
 		$this->load->model('jamaah_candidate_model');
+		$this->load->model('group_departure_model');
 		
+		$group 			= $this->group_departure_model->get_all_group();
 		$total_data 	= $this->jamaah_candidate_model->get_total_data_aktif();
 		$total_data		= ''.$total_data ;
 		
@@ -57,7 +59,13 @@ class Data_jamaah extends CI_Controller {
 		$data['js_grid'] = $grid_js;
 		
 		$data['added_js'] = "";
+		
+		$group_options['0'] = '-- Pilih Group --';
+		foreach($group->result() as $row){
+			$group_options[$row->ID_GROUP] = $row->KODE_GROUP;
+		}
 
+		$data['group_options'] = $group_options;
 		$data['content'] = $this->load->view('admin/data_jamaah',$data,true);
 		$this->load->view('admin/front',$data);		
 	}
