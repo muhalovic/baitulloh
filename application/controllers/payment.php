@@ -203,8 +203,11 @@ class Payment extends CI_Controller {
 		$data['hitung_total'] = $hitung_total;
 		$data['hitung_total_maningtis'] = $hitung_total_maningtis;
 		
+		$data['jumlah_calon_jamaah'] = $data_total_jamaah->num_rows();
+		$hitung_dp_calon_jamaah_1 = $data['jumlah_calon_jamaah'] * 1100;
+		$data['hitung_dp_calon_jamaah'] = $this->cek_ribuan($hitung_dp_calon_jamaah_1);
 		$data['total_biaya'] = $hitung_total + $hitung_total_maningtis + $biaya_harga_kamar;
-		$data['total_pelunasan'] = $this->cek_ribuan($data['total_biaya'] - 1100);
+		$data['total_pelunasan'] = $this->cek_ribuan($data['total_biaya'] - $hitung_dp_calon_jamaah_1);
 		$data['total_biaya2'] = $this->cek_ribuan($data['total_biaya']);
 		$data['total_pay'] = $data['jumlah_dp2'] + $data['jumlah_lunas2'];
 		$data['total_pay_cek'] = $this->cek_ribuan($data['total_pay']);

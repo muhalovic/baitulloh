@@ -53,8 +53,8 @@ echo $error_file;
 		<td width="150" class="bg_kolom"><h3>JATUH TEMPO</h3></td>
     </tr>	
 	<tr height="30">
-		<td class="bg_kolom_right front_payment_top"><h4>Uang Muka</h4></td>
-		<td align="center"><h4>1.100 $</h4></td>
+		<td class="bg_kolom_right front_payment_top"><h4>Uang Muka (<font color="#707070"><i><? if(isset($jumlah_calon_jamaah)) { echo $jumlah_calon_jamaah; } ?> x 1.100</i></font>)</h4></td>
+		<td align="center"><h4><? if(isset($hitung_dp_calon_jamaah)) { echo $hitung_dp_calon_jamaah; } ?> $</h4></td>
 		<td align="center"><h4><? if(isset($jumlah_dp)) { echo $jumlah_dp; } ?> $</h4></td>
 		<td align="center"><span class="box_status_<?=$css_dp?>"><? if(isset($status_dp)) { echo $status_dp; } ?></span></td>
 		<td align="center"><h4><? if(isset($tgl_dp)) { echo $tgl_dp; } ?></h4></td>

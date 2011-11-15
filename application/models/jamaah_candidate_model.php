@@ -83,10 +83,12 @@ class jamaah_candidate_model extends CI_Model {
 	}
 	
 	function get_total_data_sortir($id_account, $kode_reg){
+		$status = array(1,2,3);
 		$this->db->select('*');
 		$this->db->from('jamaah_candidate');
 		$this->db->where('ID_ACCOUNT', $id_account);
 		$this->db->where('KODE_REGISTRASI', $kode_reg);
+		$this->db->where_in('STATUS_KANDIDAT', $status);		
 		
 		return $this->db->count_all_results();
 	}

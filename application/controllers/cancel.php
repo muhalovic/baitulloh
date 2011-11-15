@@ -77,10 +77,12 @@ class Cancel extends CI_Controller {
 		$id_account = $this->session->userdata('id_account');
 		$kode_reg = $this->session->userdata('kode_registrasi');
 		$email_ses = $this->session->userdata('email');
+		$nama_user_ses = $this->session->userdata('nama');
 		
 		// LOAD DATABASE
 		$data_jamaah = $this->jamaah_candidate_model->get_total_jamaah($id_account, $kode_reg);
 		$data['list_calon'] = '';
+		$data['nama_user'] = ucwords($nama_user_ses);
 		
 		if($data_jamaah->result() != NULL)
 		{
@@ -122,7 +124,6 @@ class Cancel extends CI_Controller {
 				
 				// KIRIM EMAIL PEMBERITAHUAN
 				$data['subject'] = "Pembatalan Calon Jamaah";
-				$data['nama_user'] = $row->NAMA_LENGKAP;
 				
 				if($row->GENDER == 1)
 				{
@@ -146,20 +147,17 @@ class Cancel extends CI_Controller {
 			
 	
 			// KIRIM EMAIL PEMBERITAHUAN
+			$htmlMessage =  $this->parser->parse('email_cancel', $data, true);
+			
 			$config['protocol'] = 'mail';
 			$config['mailtype'] = 'html';
 	
 			$this->email->initialize($config);
-			
-			$htmlMessage =  $this->parser->parse('email_cancel', $data, true);
-			
 			$this->email->from('noreply@umrahkamilah.com', 'Kamilah Wisata Muslim');
 			$this->email->to($email_ses);
 			$this->email->subject('Pembatalan Calon Jamaah');
 			$this->email->message($htmlMessage);
-	
 			$this->email->send();
-			
 			
 			//buat session sukses
 			$this->session->set_userdata('sukses','true');
