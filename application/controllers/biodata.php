@@ -426,6 +426,7 @@ class Biodata extends CI_Controller {
 				'TANGGAL_ENTRI' => date("Y-m-d H:i:s"),
 				'TANGGAL_UPDATE' => date("Y-m-d H:i:s"),
 				'ID_ROOM_PACKET' => $this->input->post('kamar'),
+				'VIA' => 'Dashboard',
 				'STATUS_KANDIDAT' => 1);
 			
 			if($valid_file)
@@ -773,6 +774,7 @@ class Biodata extends CI_Controller {
 				'REQUESTED_NAMA' => $request_nama,
 				'MAHRAM' => $mahram_s,
 				'ID_ROOM_PACKET' => $this->input->post('kamar'),
+				'VIA' => 'Dashboard',
 				'TANGGAL_UPDATE' => date("Y-m-d H:i:s")
 				);
 			

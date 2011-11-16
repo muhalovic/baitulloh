@@ -68,7 +68,7 @@ class jamaah_candidate_model extends CI_Model {
 		$this->CI->flexigrid->build_query();
 		
 		$return['records'] = $this->db->get();
-		$this->db->select('count(ID_CANDIDATE) as record_count')->from('jamaah_candidate')->where('KODE_REGISTRASI', $kode_reg )->where('ID_ACCOUNT', $id_account);
+		$this->db->select('count(ID_CANDIDATE) as record_count')->from('jamaah_candidate')->where('KODE_REGISTRASI', $kode_reg )->where('ID_ACCOUNT', $id_account)->where_in('STATUS_KANDIDAT', $status);
 		$this->CI->flexigrid->build_query(FALSE);
 		$record_count = $this->db->get();
 		$row = $record_count->row();
@@ -83,10 +83,12 @@ class jamaah_candidate_model extends CI_Model {
 	}
 	
 	function get_total_data_sortir($id_account, $kode_reg){
+		$status = array(1,2,3);
 		$this->db->select('*');
 		$this->db->from('jamaah_candidate');
 		$this->db->where('ID_ACCOUNT', $id_account);
 		$this->db->where('KODE_REGISTRASI', $kode_reg);
+		$this->db->where_in('STATUS_KANDIDAT', $status);		
 		
 		return $this->db->count_all_results();
 	}

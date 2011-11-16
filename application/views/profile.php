@@ -77,7 +77,7 @@
 			<caption>Profile Calon Jamaah</caption>
 			<?php foreach ($jamaah_profile->result() as $row) {?>
 			<tr>
-				<td width="30%" rowspan="6"><img src="<?php echo base_url().'images/upload/'.$row->FOTO; ?>" width="145" height="180" /></td>
+				<td width="30%" rowspan="6"><img src="<?php echo base_url().'images/upload/foto/'.$row->FOTO; ?>" width="145" height="180" /></td>
 			</tr>
 			<tr>
 				<th width="25%" scope="row"><a href="#">Nama Lengkap</a></th>

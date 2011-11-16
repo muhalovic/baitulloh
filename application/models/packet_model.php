@@ -65,6 +65,7 @@ class Packet_model extends CI_Model {
             $this->db->from('packet');
             $this->db->where('KODE_REGISTRASI', $kode_reg);
             $this->db->where('ID_ACCOUNT', $id_account);
+            $this->db->where('STATUS_PESANAN !=', 0);
             $this->db->group_by("ID_ACCOUNT, KODE_REGISTRASI");
 
             return $this->db->get();

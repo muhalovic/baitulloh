@@ -20,13 +20,7 @@ class Waiting_list extends CI_Controller {
 		//call library or helper
 		$this->load->library('flexigrid');	
 		$this->load->helper('flexigrid');
-		$this->load->library('form_validation');		
-		
-		//call model here	
-		$this->load->model('payment_model');
-		
-		$total_data 	= $this->payment_model->get_total_data();
-		$total_data		= ''.$total_data ;
+		$this->load->library('form_validation');	
 		
 		$colModel['no'] 					= array('No',30,TRUE,'center',0);
                 $colModel['delete'] = array('Hapus',50,TRUE,'center',0);
@@ -48,7 +42,7 @@ class Waiting_list extends CI_Controller {
 		'width' => '1190',
 		'height' => 300,
 		'rp' => 10,
-		'rpOptions' => '[5,10,15,20,25,30,'.$total_data.']',
+		'rpOptions' => '[5,10,15,20,25,30]',
 		'pagestat' => 'Menampilkan: {from} sampai {to} dari {total} hasil.',
 		'blockOpacity' => 0.5,
 		'title' => 'Data Daftar Tunggu',
@@ -128,22 +122,33 @@ class Waiting_list extends CI_Controller {
         function delete_waiting_list($id_acc, $kode_reg, $id_pack){
             $this->load->model('waiting_list_model');
             $this->load->model('packet_model');
+            $this->load->model('room_packet_model');
+
             $waiting = $this->waiting_list_model->get_waiting_byDetail($id_acc, $kode_reg);
 
             if ($waiting->num_rows() > 0){
                 $packet = $this->packet_model->get_packet_byAcc_waiting($id_acc, $kode_reg);
 
                 if ($packet->num_rows() > 0){
+                    // send email
+                    $this->send_email($id_acc, $kode_reg, 1);
+                    
+                    // delete room packet
+                    $this->room_packet_model->delete_data_bypacket($id_pack);
 
+                    // delete packet
+                    $this->packet_model->delete_packet($id_pack);
+
+                    // delete waiting list
+                    $this->waiting_list_model->delete_waiting_list($id_acc, $kode_reg);
+                                        
+                    redirect("admin/waiting_list");
                 }else
                     show_404();
             }else
                 show_404();
-            // delete room packet
-            // delete packet
-            // delete waiting list
-            // send email
-            echo $id_acc." ".$kode_reg." $id_pack";
+            
+            //echo $id_acc." ".$kode_reg." $id_pack";
         }
 
         function send_email ($id_acc, $kode_reg, $jenis){

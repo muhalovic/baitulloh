@@ -441,6 +441,7 @@
 																		<td><ul><?php foreach($room as $row){ echo "<li>".$row->JENIS_KAMAR." - Jumlah = ".$row->JUMLAH."</li>"; }?></ul></td>
 																	</tr>
 																</table>
+                                                              </p>
                                                               <p>Kami informasikan bahwa untuk saat ini pesanan paket tersebut telah tersedia. <br />
 															  Oleh karena itu Anda disarankan untuk segera melengkapi pembayaran dan persyaratan keberangkatan. <br />
                                                               </p>
@@ -473,7 +474,7 @@
                                                                   <li>Silakan disegerakan untuk Memenuhi Kesepakatan Pendaftaran dan melakukan konfirmasi pembayaran, sehingga Data anda bisa segera di proses. Dan Status Pendaftaran akan kami Booked.</li>
                                                                   <li>Peserta belum terdaftar jika dana belum efektif masuk ke dalam rekening kamilah.</li>
                                                                 </ul>
-                                                                <p><br />
+                                                                <br />
                                                               <p>															  
                                                                   <strong>Wassalamualaikum Wr. Wb<br />
                                                                   Umrahkamilah.com
