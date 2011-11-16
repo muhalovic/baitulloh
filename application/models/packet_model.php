@@ -61,7 +61,7 @@ class Packet_model extends CI_Model {
 	}
 
         function get_packet_status($id_account, $kode_reg){
-            $this->db->select('STATUS_PESANAN');
+            $this->db->select('*');
             $this->db->from('packet');
             $this->db->where('KODE_REGISTRASI', $kode_reg);
             $this->db->where('ID_ACCOUNT', $id_account);
@@ -90,6 +90,20 @@ class Packet_model extends CI_Model {
             $this->db->where("ID_PACKET", $id);
             $this->db->delete("packet");
         }
+		
+	
+	function get_packet_aktif($id_group, $id_program){
+            $status = array(1,2,3);
+            $this->db->select("packet.*,g.ID_GROUP, g.KODE_GROUP, g.KETERANGAN, p.NAMA_PROGRAM");
+		$this->db->from("packet");
+                $this->db->join("group_departure g","g.ID_GROUP = packet.ID_GROUP");
+                $this->db->join("program_class p", "p.ID_PROGRAM = packet.ID_PROGRAM");
+		$this->db->where("packet.ID_GROUP", $id_group);
+		$this->db->where("packet.ID_PROGRAM", $id_program);
+		$this->db->where_in("STATUS_PESANAN", $status);
+		
+		return $this->db->get();
+	}
 }
 
 ?>

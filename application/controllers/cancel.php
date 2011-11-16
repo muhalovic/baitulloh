@@ -90,7 +90,7 @@ class Cancel extends CI_Controller {
 			foreach($data_jamaah->result() as $row)
 			{
 				// INSERT TABLE CANCELED
-				$keterangan_cancel = "Testing";
+				$keterangan_cancel = "Cancel";
 				$data_insert = array(
 						'ID_CANDIDATE' => $row->ID_CANDIDATE,
 						'ID_ACCOUNT' => $this->session->userdata('id_account'),
@@ -106,20 +106,6 @@ class Cancel extends CI_Controller {
 						'STATUS_KANDIDAT' => 0,
 						); 
 				$this->jamaah_candidate_model->update_jamaah($data_update, $row->ID_CANDIDATE);
-				
-				
-				// UPDATE TABLE JAMAAH CANDIDATE
-				$data_packet = $this->packet_model->get_packet_status($id_account, $kode_reg);
-				if($data_packet->result() > 0 )
-				{
-					foreach($data_packet->result() as $rows)
-					{
-						$data_update_packet = array(
-							'STATUS_PESANAN' => 0,
-							); 
-						$this->packet_model->update_packet($data_update_packet, $rows->ID_PACKET);
-					}
-				}
 				
 				
 				// KIRIM EMAIL PEMBERITAHUAN
@@ -145,6 +131,19 @@ class Cancel extends CI_Controller {
 			
 			}
 			
+			// UPDATE TABLE JAMAAH CANDIDATE
+			  $data_packet = $this->packet_model->get_packet_status($id_account, $kode_reg);
+			  if($data_packet->result() > 0 )
+			  {
+				  foreach($data_packet->result() as $rows)
+				  {
+					  $data_update_packet = array(
+						  'STATUS_PESANAN' => 0,
+						  ); 
+					  $this->packet_model->update_packet($data_update_packet, $rows->ID_PACKET);
+				  }
+			  }
+			
 	
 			// KIRIM EMAIL PEMBERITAHUAN
 			$htmlMessage =  $this->parser->parse('email_cancel', $data, true);
@@ -169,7 +168,7 @@ class Cancel extends CI_Controller {
 		
 		} else { 
 			
-			/*// UPDATE TABLE PAKCET
+			// UPDATE TABLE PAKCET
 			$this->load->model('packet_model');
 			$id_account = $this->session->userdata('id_account');
 		    $kode_reg = $this->session->userdata('kode_registrasi');
@@ -185,7 +184,7 @@ class Cancel extends CI_Controller {
 						); 
 					$this->packet_model->update_packet($data_update_packet, $row->ID_PACKET);
 				}
-			}*/
+			}
 				
 			redirect(site_url()."/cancel");
 		}

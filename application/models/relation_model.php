@@ -15,4 +15,13 @@ class Relation_model extends CI_Model {
 		return $this->db->get();
 	}
 
+	function get_relation($id)
+	{
+		$this->db->select("*");
+		$this->db->from("relation");
+		$this->db->where("ID_RELATION", $id);
+		
+		return $this->db->get();
+	}
+
 }
