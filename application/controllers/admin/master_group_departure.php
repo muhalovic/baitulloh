@@ -87,18 +87,18 @@ class master_group_departure extends CI_Controller{
 		$colModel['edit'] = array('Edit',50,FALSE,'center',0);
 		$colModel['delete'] = array('Delete',50,FALSE,'center',0);
 		
-		$colModel['KODE_GROUP'] = array('KODE GROUP',100,TRUE,'center',2);
-		$colModel['KETERANGAN'] = array('KETERANGAN',100,TRUE,'center',2);
-		$colModel['TANGGAL_KEBERANGKATAN_JD'] = array('TANGGAL_KEBERANGKATAN_JD',100,TRUE,'center',2);
-		$colModel['TANGGAL_KEBERANGKATAN_MK'] = array('TANGGAL_KEBERANGKATAN_MK',100,TRUE,'center',2);
-		$colModel['JATUH_TEMPO_PASPOR'] = array('JATUH_TEMPO_PASPOR',100,TRUE,'center',2);
-		$colModel['JATUH_TEMPO_UANG_MUKA'] = array('JATUH_TEMPO_UANG_MUKA',100,TRUE,'center',2);
-		$colModel['JATUH_TEMPO_PELUNASAN'] = array('JATUH_TEMPO_PELUNASAN',100,TRUE,'center',2);
-		$colModel['JATUH_TEMPO_BERKAS'] = array('JATUH_TEMPO_BERKAS',100,TRUE,'center',2);
-		$colModel['BATAS_WAITING_LIST'] = array('BATAS_WAITING_LIST',100,TRUE,'center',2);
-		$colModel['PAGU_SV'] = array('PAGU_SV',100,TRUE,'center',2);
-		$colModel['PAGU_GA'] = array('PAGU_GA',100,TRUE,'center',2);
-		$colModel['HARI'] = array('HARI',100,TRUE,'center',2);
+		$colModel['KODE_GROUP'] = array('Kode Group',100,TRUE,'center',2);
+		$colModel['KETERANGAN'] = array('Keterangan',100,TRUE,'center',2);
+		$colModel['TANGGAL_KEBERANGKATAN_JD'] = array('Tanggal Keberangkatan Jeddah',150,TRUE,'center',2);
+		$colModel['TANGGAL_KEBERANGKATAN_MK'] = array('Tanggal Keberangkatan Makkah',150,TRUE,'center',2);
+		$colModel['JATUH_TEMPO_PASPOR'] = array('Jatuh Tempo Paspor',150,TRUE,'center',2);
+		$colModel['JATUH_TEMPO_UANG_MUKA'] = array('Jatuh Tempo Uang Muka',150,TRUE,'center',2);
+		$colModel['JATUH_TEMPO_PELUNASAN'] = array('Jatuh Tempo Pelunasan',150,TRUE,'center',2);
+		$colModel['JATUH_TEMPO_BERKAS'] = array('Jatuh Tempo Berkas',150,TRUE,'center',2);
+		$colModel['BATAS_WAITING_LIST'] = array('Batas Waiting List',150,TRUE,'center',2);
+		$colModel['PAGU_SV'] = array('Pagu Saudi Arabia Airlines',150,TRUE,'center',2);
+		$colModel['PAGU_GA'] = array('Pagu Garuda Indonesia Airlines',150,TRUE,'center',2);
+		$colModel['HARI'] = array('Jumlah Hari',100,TRUE,'center',2);
         
 
 

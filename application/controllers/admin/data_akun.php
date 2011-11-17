@@ -216,11 +216,22 @@ class data_akun extends CI_Controller{
 		
 	
 		
-		$this->form_validation->set_rules('kode_group','Kode Grup','required|xss_clean|prep_for_form');
-		$this->form_validation->set_rules('keterangan','Keterangan','required|xss_clean|prep_for_form');
-		$this->form_validation->set_rules('pagu_sv','Pagu Saudi Arabia Airlines','required|xss_clean|prep_for_form');
-		$this->form_validation->set_rules('pagu_ga','Pagu Garuda Indonesia Airlines','required|xss_clean|prep_for_form');
-        $this->form_validation->set_rules('hari','Jumlah Hari','required|xss_clean|prep_for_form');
+		$this->form_validation->set_rules('nama','Nama','required|xss_clean|prep_for_form');
+		$this->form_validation->set_rules('email','Email','required|xss_clean|prep_for_form');
+		$this->form_validation->set_rules('telp','Telepon','required|xss_clean|prep_for_form');
+		$this->form_validation->set_rules('mobile','Handphone','required|xss_clean|prep_for_form');
+        $this->form_validation->set_rules('province','Provinsi','required|xss_clean|prep_for_form');
+        $this->form_validation->set_rules('kota','Kota','required|xss_clean|prep_for_form');
+        $this->form_validation->set_rules('alamat','Alamat','required|xss_clean|prep_for_form');
+        $this->form_validation->set_rules('id_card','No Identitas','required|xss_clean|prep_for_form');
+		
+		if($this->uri->segment(3)=== 'add_accounts'){
+		$this->form_validation->set_rules('group','Group','required|xss_clean|prep_for_form');
+        $this->form_validation->set_rules('program','Program','required|xss_clean|prep_for_form');
+        $this->form_validation->set_rules('jml_adult','Jumlah Dewasa','required|xss_clean|prep_for_form');
+        $this->form_validation->set_rules('kamar[]','Kamar','required|xss_clean|prep_for_form');
+        $this->form_validation->set_rules('jml_kamar[]','Jumlah Kamar','required|xss_clean|prep_for_form');
+		}
 		$this->form_validation->set_error_delimiters('<p class="error">', '</p>');
 
 		$this->form_validation->set_message('required', '<strong>%s</strong> wajib diisi!');
@@ -319,7 +330,7 @@ class data_akun extends CI_Controller{
 		
 		$province = $this->province_model->get_all_province();
 		
-		$province_options['0'] = '-- Pilih Propinsi --';
+		$province_options[''] = '-- Pilih Propinsi --';
 		foreach($province->result() as $row){
 				$province_options[$row->ID_PROPINSI] = $row->NAMA_PROPINSI;
 		}
@@ -328,12 +339,12 @@ class data_akun extends CI_Controller{
 		$program = $this->program_class_model->get_all_program();
 		$room = $this->room_type_model->get_all_roomType();
 
-		$group_options['0'] = '-- Pilih Group --';
+		$group_options[''] = '-- Pilih Group --';
 		foreach($group->result() as $row){
 				$group_options[$row->ID_GROUP] = $row->KODE_GROUP;
 		}
 		
-		$program_options['0'] = '-- Pilih Program --';
+		$program_options[''] = '-- Pilih Program --';
 		foreach($program->result() as $row){
 				$program_options[$row->ID_PROGRAM] = $row->NAMA_PROGRAM;
 		}
@@ -388,8 +399,8 @@ class data_akun extends CI_Controller{
 // ---------------- Database handler function ----------------------------------
     private function form_accountsDB($action,$currentaccounts_id=""){
         $this->load->model('accounts_model');
-        $accounts = $this->accounts_model->get_accounts($this->input->post('accounts_id')); 
-	
+        $accounts = $this->accounts_model->get_account($this->input->post('accounts_id')); 
+		
         if(is_null($accounts)){
         $accounts = new stdClass();
         }
@@ -408,14 +419,7 @@ class data_akun extends CI_Controller{
     }
 
 // ---------------- Private function -------------------------------------------
-	private function cek_session(){
-		if(!$this->session->accountsdata('accounts_id')){
-			redirect('login');
-		}
-		if($this->session->accountsdata('id_role')!=1){
-			redirect('menu_utama');
-		}
-	}
+	
 	
 	private function konversi_tanggal($tgl){
       $tanggal = substr($tgl,8,2);

@@ -166,7 +166,7 @@
 									<? $kamar = 0; if(set_value('kamar')!='') $kamar = set_value('kamar');
 										//echo form_dropdown('kamar', $room_options, $kamar,'id="kamar" class="styledselect_form_1"'); ?>
 										<select name="kamar[]" id="kamar" class="styledselect-kamar" onchange="selected()">
-											<option value="0">-- Pilih Jenis Kamar</option>
+											<option value="">-- Pilih Jenis Kamar</option>
 											<?php foreach ($room_options as $key=>$value){ ?>
 												<option value="<?=$key?>"><?=$value?></option>
 											<? } ?>

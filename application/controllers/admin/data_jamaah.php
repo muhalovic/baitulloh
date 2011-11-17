@@ -290,6 +290,8 @@ class Data_jamaah extends CI_Controller {
 		$data['telp_user'] = $account->TELP;
 		$data['mobile_user'] = $account->MOBILE;
 		$data['alamat_user'] = $account->ALAMAT;
+		$data['id_user'] = $id_user;
+		$data['kode_registrasi'] = $kode_registrasi;
 		
 		$data['error_file'] = '';
 		if($this->session->userdata('upload_file') != '')
@@ -402,7 +404,7 @@ class Data_jamaah extends CI_Controller {
 				'ID_RELATION' => $this->input->post('relasi'),
 				'ID_SIZE' => $this->input->post('baju'),
 				'ID_ACCOUNT' => $id_user,
-				'KODE_REGISTRASI' => $kode_reg,
+				'KODE_REGISTRASI' => $kode_registrasi,
 				'ID_PROPINSI' => $this->input->post('province'),
 				'NAMA_LENGKAP' => $this->input->post('nama_lengkap'),
 				'NAMA_PANGGILAN' => $this->input->post('panggilan'),
@@ -435,7 +437,7 @@ class Data_jamaah extends CI_Controller {
 			if($valid_file)
 			{
 				$this->jamaah_candidate_model->insert_jamaah($data);
-				$this->log_model->log($id_user, $kode_reg, NULL, $log);
+				$this->log_model->log(NULL, NULL, $this->session->userdata('id_user'), $log);
 			
 				redirect('/admin/data_jamaah/');
 			}
@@ -505,7 +507,8 @@ class Data_jamaah extends CI_Controller {
 		$data_jamaah = $this->jamaah_candidate_model->get_jamaah_berdasarkan_id_accaount_candidate($id_candidate, $id_account);
 		$account = $this->accounts_model->get_data_account($id_account)->row(); 
 		
-		
+		$data['id_user'] = $id_account;
+		$data['id_candidate'] = $id_candidate;
 				if($data_jamaah->result() != NULL)
 		{
 			foreach($data_jamaah->result() as $row)
