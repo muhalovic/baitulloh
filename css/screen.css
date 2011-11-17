@@ -672,6 +672,8 @@ a:hover.action-delete	{
 	width: 186px;
 	}
 
+
+
 .inp-form-text	{
 	color: #393939;
 	height: 25px;
@@ -689,6 +691,24 @@ a:hover.action-delete	{
 	padding: 6px 6px 0 6px;
 	width: 187px;
 	}
+
+.inp-form-small{
+	border-radius: 5px;
+	border-color:#B2B3B5;
+	color: #393939;
+	height: 25px;
+	padding: 6px 6px 0 6px;
+	width: 40px;
+}
+
+.inp-form-small-error{
+	border-radius: 5px;
+	border-color: red;
+	height: 25px;
+	padding: 6px 6px 0 6px;
+	width: 45px;
+}
+	
 .form-textarea	{
 	background: url(../images/forms/form_textarea.gif) no-repeat;
 	border: none;
