@@ -76,6 +76,7 @@ if(is_file($file_gambar))
 	$url_gambar2 = "#";
 }
 ?>
+<title><? if(isset($nama_jamaah)) { echo $nama_jamaah; } ?> bin <? if(isset($ayah_kandung)) { echo $ayah_kandung; } ?></title>
 <div class="info">Profil Jamaah</div>
 <table align="center">
 <tr><td><div class="thumb">
