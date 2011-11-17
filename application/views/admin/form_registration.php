@@ -43,6 +43,7 @@
 					<th valign="top">Propinsi (*)</th>
 					<td>	
 						<? $province = 0; if($ID_PROPINSI!='') $province = $ID_PROPINSI;
+						
 							echo form_dropdown('province', $province_options, $province,'id="province" class="styledselect_form_1"'); ?>
 					</td>
 					<td>
@@ -88,7 +89,7 @@
 				<tr>
 					<th valign="top">Group</th>
 					<td>	
-						<? $group = 0; if(set_value('group')!='') $group = set_value('group');
+						<? $group = 0; if($ID_GROUP!='') $group = $ID_GROUP;
 							echo form_dropdown('group', $group_options, $group,'id="group" class="styledselect-group" onChange="get_group();"'); ?>
 					</td>
 					<td>
@@ -101,7 +102,7 @@
 				<tr>
 					<th valign="top">Kelas Program</th>
 					<td>	
-						<? $program = 0; if(set_value('program')!='') $program = set_value('program');
+						<? $program = 0; if($ID_PROGRAM !='') $program = $ID_PROGRAM;
 							echo form_dropdown('program', $program_options, $program,'id="program" class="styledselect_form_1"'); ?>
 					</td>
 					<td>

@@ -69,7 +69,7 @@ class Data_jamaah extends CI_Controller {
 			{
 				if(com=='Tambah')
 				{
-					location.href='".site_url('/admin/master_group_departure/add_group_departure')."';
+					location.href='".site_url('/admin/data_akun/')."';
 				}
 
     			
@@ -306,7 +306,7 @@ class Data_jamaah extends CI_Controller {
 		}
 		$this->session->unset_userdata('upload_file');
 		$data['content'] = $this->load->view('admin/biodata_input', $data, true);
-		$this->load->view('front', $data);
+		$this->load->view('admin/front', $data);
 	}
 	
 	function do_daftar($id_user=null,$kode_registrasi=null){
@@ -644,7 +644,7 @@ class Data_jamaah extends CI_Controller {
 				
 				
 				$data['content'] = $this->load->view('admin/biodata_edit', $data, true);
-				$this->load->view('front', $data);
+				$this->load->view('admin/front', $data);
 			
 			}
 		

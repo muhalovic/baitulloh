@@ -77,6 +77,15 @@ class data_akun extends CI_Controller{
 		redirect('accounts/view_list_accounts');
        
     }
+	
+	public function view_package($id_account,$kode_registrasi){
+		if(is_null($id_account) || is_null($kode_registrasi)){
+		 		
+		}
+		else{
+		 $this->load_view_package($id_account,$kode_registrasi);	
+		}
+	}
     
 
     public function view_list_accounts(){
@@ -90,10 +99,10 @@ class data_akun extends CI_Controller{
 		$colModel['jamaah'] = array('Tambah Jamaah',100,FALSE,'center',0);
 		
 		$colModel['NAMA_USER'] = array('Nama User',100,TRUE,'center',2);
-		$colModel['EMAIL'] = array('Email',100,TRUE,'center',2);
+		$colModel['EMAIL'] = array('Email',150,TRUE,'center',2);
 		$colModel['TELP'] = array('Telepon',100,TRUE,'center',2);
 		$colModel['MOBILE'] = array('Mobile',100,TRUE,'center',2);
-		$colModel['ALAMAT'] = array('Alamat',100,TRUE,'center',2);
+		$colModel['ALAMAT'] = array('Alamat',300,TRUE,'center',2);
 		$colModel['KOTA'] = array('Kota',100,TRUE,'center',2);
 		
 
@@ -134,8 +143,8 @@ class data_akun extends CI_Controller{
 					location.href='".site_url()."/admin/data_jamaah/do_daftar/'+hash+'/'+hash1;
 			}
 			
-			function paket(hash){
-				window.open('".site_url()."/admin/data_jamaah/view_paket/'+hash,'Paket','width=600,height=210,left=400,top=100,screenX=400,screenY=100');
+			function paket(hash,hash1){
+				window.open('".site_url()."/admin/data_akun/view_package/'+hash+'/'+hash1,'Paket','width=550,height=250,left=400,top=100,screenX=400,screenY=100');
 			}
 
 			function hapus(hash){
@@ -171,8 +180,8 @@ class data_akun extends CI_Controller{
 			
 			$edit = '<img alt="Edit"  style="cursor:pointer" src="'.base_url().'images/flexigrid/edit.jpg" onclick="edit(\''.$row->ID_ACCOUNT.'\')">';
 			$delete = '<img alt="Delete"  style="cursor:pointer" src="'.base_url().'images/flexigrid/delete.jpg" onclick="hapus(\''.$row->ID_ACCOUNT.'\')">';
-			$add_jamaah = '<img alt="Tambah Jamaah"  style="cursor:pointer" src="'.base_url().'images/flexigrid/delete.jpg" onclick="add_jamaah(\''.$row->ID_ACCOUNT.'\',\''.$row->KODE_REGISTRASI.'\')">';
-			$paket = '<img alt="Paket"  style="cursor:pointer" src="'.base_url().'images/flexigrid/delete.jpg" onclick="paket(\''.$row->ID_ACCOUNT.'\')">';
+			$add_jamaah = '<img alt="Tambah Jamaah"  style="cursor:pointer" src="'.base_url().'images/flexigrid/add.png" onclick="add_jamaah(\''.$row->ID_ACCOUNT.'\',\''.$row->KODE_REGISTRASI.'\')">';
+			$paket = '<img alt="Paket"  style="cursor:pointer" src="'.base_url().'images/flexigrid/book.png" onclick="paket(\''.$row->ID_ACCOUNT.'\',\''.$row->KODE_REGISTRASI.'\')">';
                  
 			
 			$record_items[] = array(
@@ -254,7 +263,50 @@ class data_akun extends CI_Controller{
 	}
 	
 // ---------------- loader view function ---------------------------------------
+	
+	function load_view_package($id_account,$kode_registrasi){		
+                $this->load->model('packet_model');
+				$this->load->model('accounts_model');
+				
+                $id_user = $id_account;
+                $kode_reg = $kode_registrasi;
+				$account = (array)$this->accounts_model->get_data_account($id_user)->row();
+				
+                $packet = $this->packet_model->get_packet_byAcc($id_user, $kode_reg);
+                if ($packet->num_rows() < 1){
+                    $packet = $this->packet_model->get_packet_byAcc_waiting($id_user, $kode_reg);
+                    $data['waiting'] = TRUE;
+                }
 
+                if ($packet->num_rows() > 0){
+                    $this->load->model('room_packet_model');
+                    
+                    foreach ($packet->result() as $row){
+                        $id_group = $row->ID_GROUP;
+                        $data['group'] = $row->KODE_GROUP;
+                        $data['keterangan_group'] = $row->KETERANGAN;
+                        $data['program'] = $row->NAMA_PROGRAM;
+                        $data['adult'] = $row->JUMLAH_ADULT;
+                        $data['with_bed'] = $row->CHILD_WITH_BED;
+                        $data['no_bed'] = $row->CHILD_NO_BED;
+                        $data['infant'] = $row->INFANT;
+                        $data['tgl_pesan'] = $row->TANGGAL_PESAN;
+                        $id_packet = $row->ID_PACKET;
+                    }
+
+                    // get data room
+                    $room = $this->room_packet_model->get_room_packet_byIDpack($id_packet);
+                    $data['room'] = $room->result();
+                    $data['is_order'] = TRUE;
+					$data = array_merge($data,$account);
+
+                    $data['content'] = $this->load->view('admin/package_user',$data);
+                }
+		
+
+	}
+	
+	
     private function load_form_accounts($accounts_id=""){
         
         $this->load->model('accounts_model');
@@ -262,7 +314,7 @@ class data_akun extends CI_Controller{
 		$this->load->model('group_departure_model');
 		$this->load->model('program_class_model');
 		$this->load->model('room_type_model');
-        
+		  
         $account = (array)$this->accounts_model->get_data_account($accounts_id)->row();
 		
 		$province = $this->province_model->get_all_province();
@@ -314,16 +366,17 @@ class data_akun extends CI_Controller{
             $content['CHILD_NO_BED'] = $this->input->post('pagu_ga');
             $content['INFANT'] = $this->input->post('pagu_ga');
             $content['HARI'] = $this->input->post('hari');
-            
+			$contents['content'] = $this->load->view('admin/form_registration',$content,true);
        }
        else{
            
-		   $content = $account;
-                     
+		   $content = array_merge($account,$content);
+		   $contents['content'] = $this->load->view('admin/form_edit_akun',$content,true);
+			
        }
 
-      
-     $contents['content'] = $this->load->view('admin/form_registration',$content,true);
+     
+     
      
        $contents['added_js']="";
       $this->load->view('admin/front',$contents);
@@ -363,5 +416,52 @@ class data_akun extends CI_Controller{
 			redirect('menu_utama');
 		}
 	}
+	
+	private function konversi_tanggal($tgl){
+      $tanggal = substr($tgl,8,2);
+      $bln    = substr($tgl,5,2);
+	  $bulan = ""; $strHari = "";
+      $tahun    = substr($tgl,0,4);
+
+      switch ($bln){
+        case 1:
+          $bulan =  "Januari";
+          break;
+        case 2:
+          $bulan =  "Februari";
+          break;
+        case 3:
+          $bulan = "Maret";
+          break;
+        case 4:
+          $bulan =  "April";
+          break;
+        case 5:
+          $bulan =  "Mei";
+          break;
+        case 6:
+          $bulan =  "Juni";
+          break;
+        case 7:
+          $bulan =  "Juli";
+          break;
+        case 8:
+          $bulan =  "Agustus";
+          break;
+        case 9:
+          $bulan =  "September";
+          break;
+        case 10:
+          $bulan =  "Oktober";
+          break;
+        case 11:
+          $bulan =  "November";
+          break;
+        case 12:
+          $bulan =  "Desember";
+          break;
+	   }
+	   return $tanggal.' '.$bulan.' '.$tahun;
+    }
 }
 ?>
