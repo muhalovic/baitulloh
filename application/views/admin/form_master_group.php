@@ -1,4 +1,4 @@
-<?php echo form_open('admin/master_group_departure/add_group_departure'); ?>
+<form method="post" action="" >
 	
 <table border="0" width="100%" cellpadding="0" cellspacing="0">
 	<tr valign="top">

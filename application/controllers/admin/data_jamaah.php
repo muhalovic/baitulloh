@@ -55,10 +55,41 @@ class Data_jamaah extends CI_Controller {
 		'showTableToggleBtn' => false
 		);
 		
-		$grid_js = build_grid_js('flex1',site_url("/admin/data_jamaah/grid_calon_jamaah/"),$colModel,'no','asc',$gridParams,null);
+		$buttons[] = array('separator');
+		$buttons[] = array('Tambah','add','js');
+        $buttons[] = array('separator');
+				
+		$grid_js = build_grid_js('flex1',site_url("/admin/data_jamaah/grid_calon_jamaah/"),$colModel,'no','asc',$gridParams,$buttons);
 		$data['js_grid'] = $grid_js;
 		
-		$data['added_js'] = "";
+		$data['added_js'] = "<script type='text/javascript'>
+			function js(com,grid)
+			{
+				if(com=='Tambah')
+				{
+					location.href='".site_url('/admin/master_group_departure/add_group_departure')."';
+				}
+
+    			
+
+             
+			}
+
+
+			function edit(hash){
+				if(confirm('Anda yakin ingin merubah data ini?')){
+					location.href='".site_url()."/admin/master_group_departure/edit_group_departure/'+hash;
+				}
+			}
+
+			function hapus(hash){
+				if(confirm('Anda yakin ingin menghapus data ini?')){
+					location.href='".site_url()."/admin/master_group_departure/delete_group_departure/'+hash;
+				}
+			}
+             
+			</script>
+			";
 		
 		$group_options['0'] = '-- Pilih Group --';
 		foreach($group->result() as $row){
@@ -190,7 +221,7 @@ class Data_jamaah extends CI_Controller {
 	}
 	
 	
-	function input()
+	function input($id_user,$kode_registrasi)
 	{
 		$this->load->library('form_validation');
 		
@@ -199,14 +230,16 @@ class Data_jamaah extends CI_Controller {
 		$this->load->model('relation_model');
 		$this->load->model('room_packet_model');
 		$this->load->model('packet_model');
+		$this->load->model('accounts_model');
 		
-		$id_account = $this->session->userdata('id_account');
-		$kode_reg = $this->session->userdata('kode_registrasi');
+		$id_account = $id_user;
+		$kode_reg = $kode_registrasi;
 		
 		$province = $this->province_model->get_all_province();
 		$relation = $this->relation_model->get_all_relation();
 		$chlothes = $this->clothes_size_model->get_all_clothes();
 		$packet = $this->packet_model->get_packet_byAccAll($id_account, $kode_reg);
+		$account = $this->accounts_model->get_data_account($id_account)->row(); 
 		
 		foreach($packet->result() as $row)
 		{
@@ -242,6 +275,11 @@ class Data_jamaah extends CI_Controller {
 		$data['relasi_options'] = $relasi_options;
 		$data['chlothes_options'] = $chlothes_options;
 		$data['kamar_options'] = $kamar_options;
+		$data['nama_user'] = $account->NAMA_USER;
+		$data['email_user'] = $account->EMAIL;
+		$data['telp_user'] = $account->TELP;
+		$data['mobile_user'] = $account->MOBILE;
+		$data['alamat_user'] = $account->ALAMAT;
 		
 		$data['error_file'] = '';
 		if($this->session->userdata('upload_file') != '')
@@ -257,11 +295,11 @@ class Data_jamaah extends CI_Controller {
 			
 		}
 		$this->session->unset_userdata('upload_file');
-		$data['content'] = $this->load->view('biodata_input', $data, true);
+		$data['content'] = $this->load->view('admin/biodata_input', $data, true);
 		$this->load->view('front', $data);
 	}
 	
-	function do_daftar(){
+	function do_daftar($id_user=null,$kode_registrasi=null){
 		
 		$this->load->library('form_validation');
 		$this->load->model('jamaah_candidate_model');
@@ -269,11 +307,12 @@ class Data_jamaah extends CI_Controller {
 		
 		$log = "Mendaftarkan 1 Calon Jamaah";
 		
-		$id_user = $this->session->userdata("id_user");
-		$kode_reg = $this->session->userdata("kode_registrasi");
+		if(is_null($id_user) || is_null($kode_registrasi)){
+			redirect('/admin/data_jamaah/');
+		}
 		
 		if ($this->cek_validasi() == FALSE){
-			$this->input();
+			$this->input($id_user,$kode_registrasi);
 		}
 		else{
 			// tanggal lahir
@@ -388,7 +427,7 @@ class Data_jamaah extends CI_Controller {
 				$this->jamaah_candidate_model->insert_jamaah($data);
 				$this->log_model->log($id_user, $kode_reg, NULL, $log);
 			
-				redirect('/biodata/list_jamaah/');
+				redirect('/admin/data_jamaah/');
 			}
 			else{
 				$this->input();
@@ -447,9 +486,15 @@ class Data_jamaah extends CI_Controller {
 		
 		$this->load->library('form_validation');
 		$this->load->model('jamaah_candidate_model');
+		$this->load->model('accounts_model');
+		
+		if(is_null($candidate) || is_null($id_account)){
+			redirect('/admin/data_jamaah/');
+		}
 		
 		$data_jamaah = $this->jamaah_candidate_model->get_jamaah_berdasarkan_id_accaount_candidate($id_candidate, $id_account);
-			
+		$account = $this->accounts_model->get_data_account($id_account)->row(); 
+		
 		if($data_jamaah->result() != NULL)
 		{
 			foreach($data_jamaah->result() as $row)
@@ -480,6 +525,11 @@ class Data_jamaah extends CI_Controller {
 				$data['e_jasa_tambahan'] = $row->JASA_TAMBAHAN;
 				$data['e_kamar'] = $row->ID_ROOM_PACKET;
 				$data['e_request_nama'] = $req_nama;
+				$data['nama_user'] = $account->NAMA_USER;
+				$data['email_user'] = $account->EMAIL;
+				$data['telp_user'] = $account->TELP;
+				$data['mobile_user'] = $account->MOBILE;
+				$data['alamat_user'] = $account->ALAMAT;
 				
 				// PECAH TANGGAL LAHIR
 				$pecah_tgl = explode("-", $data['e_tgl_lahir']);
@@ -581,7 +631,7 @@ class Data_jamaah extends CI_Controller {
 				
 				
 				
-				$data['content'] = $this->load->view('biodata_edit', $data, true);
+				$data['content'] = $this->load->view('admin/biodata_edit', $data, true);
 				$this->load->view('front', $data);
 			
 			}

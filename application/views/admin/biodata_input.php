@@ -6,6 +6,50 @@ echo $error_file;?>
 			<!-- start id-form -->
 			<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
 				<tr>
+					<? form_error('nama_user') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
+					<th valign="top">Nama User</th>
+					<td><input type="text" name="nama_user" readonly value="<?php echo $nama_user;?>" class="<? echo $class;?>" /></td>
+					<td>
+						<? if(form_error('nama_user') != '') {?>
+						<div class="error-left"></div>
+						<div class="error-inner"><?php echo form_error('nama_user'); ?></div>
+						<? }?>
+					</td>
+				</tr>
+				<tr>
+					<? form_error('email_user') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
+					<th valign="top">E-mail User</th>
+					<td><input type="text" name="email_user" readonly class="<? echo $class;?>" value="<?php echo $email_user; ?>" /></td>
+					<td>
+						<? if(form_error('email_user') != '') {?>
+						<div class="error-left"></div>
+						<div class="error-inner"><?php echo form_error('email_user'); ?></div>
+						<? }?>
+					</td>
+				</tr>
+				<tr>
+					<? form_error('telp_user') == '' || form_error('mobile_user') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
+					<th valign="top">Telp / Mobile User</th>
+					<td><input type="text" name="telp_user" readonly value="<?php echo $telp_user;?>" class="<? echo $class;?>" /> &nbsp; / &nbsp;<input type="text" name="mobile_user" readonly value="<?php echo $mobile_user;?>" class="<? echo $class;?>" /></td>
+					<td>
+						<? if(form_error('telp_user') != '' || form_error('mobile_user') != '') {?>
+						<div class="error-left"></div>
+						<div class="error-inner"><?php echo form_error('telp_user').' '.form_error('mobile_user'); ?></div>
+						<? }?>
+					</td>
+				</tr>
+				<tr>
+					<? form_error('alamat_user') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
+					<th valign="top">Alamat User</th>
+					<td><input type="text" name="alamat_user" readonly value="<?php echo $alamat_user;?>" class="<? echo $class;?>" /></td>
+					<td>
+						<? if(form_error('alamat_user') != '') {?>
+						<div class="error-left"></div>
+						<div class="error-inner"><?php echo form_error('alamat_user'); ?></div>
+						<? }?>
+					</td>
+				</tr>
+				<tr>
 					<? form_error('nama_lengkap') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
 					<th valign="top">Nama Lengkap (*)</th>
 					<td><input type="text" name="nama_lengkap" value="<?php echo set_value('nama_lengkap');?>" class="<? echo $class;?>" /></td>
