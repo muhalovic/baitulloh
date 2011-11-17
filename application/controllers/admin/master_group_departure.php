@@ -149,7 +149,7 @@ class master_group_departure extends CI_Controller{
              
 			</script>
 			";
-                $contents['content'] = $this->load->view('admin/data_jamaah',$content,true);
+                $contents['content'] = $this->load->view('admin/grid',$content,true);
                 
                 $this->load->view('admin/front',$contents);
     }

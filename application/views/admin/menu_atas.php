@@ -17,6 +17,14 @@
 				<ul class="<?=($this->uri->segment(2)==='data_jamaah')?'current':'select'?>">
 					<li>
 						<a href="<?php echo site_url('admin/data_jamaah')?>"><b>Data Jama'ah</b><!--[if IE 7]><!--></a><!--<![endif]-->
+					
+							<div class="select_sub show">
+									<ul class="sub">
+										<li class="<?=($this->uri->segment(2)==='list_jamaah')?'sub_current':''?>"><a href="<? echo site_url() ?>/biodata/list_jamaah">Daftar Calon Jamaah</a></li>
+										<li class="<?=($this->uri->segment(2)==='input')?'sub_current':''?>"><a href="<? echo site_url() ?>/biodata/input">Form Tambah Calon Jamaah</a></li>
+									</ul>
+							</div>
+								
 					</li>
                 </ul>
 				<div class="nav-divider">&nbsp;</div>
