@@ -94,6 +94,7 @@ class Accounts_model extends CI_Model {
 		
 		$this->db->select("*");
 		$this->db->from("accounts");
+		$this->db->where("STATUS",1);
 		$this->CI->flexigrid->build_query();
 		
 		$return['records'] = $this->db->get(); 
@@ -107,6 +108,10 @@ class Accounts_model extends CI_Model {
 		
 	
 		
+	}
+	
+	function delete_account($id_account,$kode_registrasi){
+		$this->db->where('ID_ACCOUNT',$id_account)->where('KODE_REGISTRASI',$kode_registrasi)->delete('accounts');
 	}
 }
 

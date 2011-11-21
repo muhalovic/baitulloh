@@ -251,10 +251,24 @@ echo $error_file;?>
 			<!-- start id-form -->
 			<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
 				<tr>
+					<? form_error('paket') == '' ? $class = 'inp-form2':$class = 'inp-form-error2'; ?>
+					<th valign="top">Pilihan Paket (*)</th>
+					<td><? $paket = 0; if(set_value('paket')!='') $paket = set_value('paket');
+							echo form_dropdown('paket', $paket_options, $this->input->post('paket'),'onchange="get_kamar()" id="paket" class="styledselect-group"'); 
+							?>
+                        </td>
+					<td>
+						<? if(form_error('paket') != '') {?>
+						<div class="error-left"></div>
+						<div class="error-inner"><?php echo form_error('paket'); ?></div>
+						<? }?>
+					</td>
+				</tr>
+				<tr>
 					<? form_error('kamar') == '' ? $class = 'inp-form2':$class = 'inp-form-error2'; ?>
 					<th valign="top">Pilihan Kamar (*)</th>
 					<td><? $kamar = 0; if(set_value('kamar')!='') $kamar = set_value('kamar');
-							echo form_dropdown('kamar', $kamar_options, $kamar,'id="kamar" class="styledselect_form_1"'); ?>
+							echo form_dropdown('kamar', $kamar_options, $kamar,'id="kamar" class="styledselect-group"'); ?>
                         </td>
 					<td>
 						<? if(form_error('kamar') != '') {?>
@@ -420,6 +434,8 @@ echo $error_file;?>
 
 <script type="text/javascript">
 
+
+
 function jasaPaspor(input)
 {
 	if(input.checked)
@@ -450,5 +466,23 @@ function SetMahram(input)
 		document.getElementById('cek_rifqah').style.display="none"
 	}
 }
+
+function get_kamar() {
+		
+		var prp = $("#paket").val();
+                $.ajax({
+                        url: "<?=base_url();?>index.php/admin/data_jamaah/get_kamar",
+                        global: false,
+                        type: "POST",
+                        async: false,
+                        dataType: "html",
+                        data: "id_paket="+ prp, //the name of the $_POST variable and its value
+                        success: function (response) {
+						$('#kamar').html(response);
+                        }
+                });
+              return false;
+		
+	}
 
 </script>

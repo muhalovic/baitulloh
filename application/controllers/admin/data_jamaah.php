@@ -45,6 +45,7 @@ class Data_jamaah extends CI_Controller {
 		$colModel['TANGGAL_ENTRI']			= array('Tanggal Entri',75,TRUE,'center',0);
 		$colModel['STATUS_JAMAAH']			= array('Status',75,TRUE,'center',1);
 		$colModel['DATA_PASPOR']			= array('Paspor',40,FALSE,'center',0);
+		$colModel['UBAH_PASPOR']			= array('Ubah Paspor',75,FALSE,'center',0);
 		
 		$gridParams = array(
 		'width' => '1190',
@@ -83,6 +84,12 @@ class Data_jamaah extends CI_Controller {
 					location.href='".site_url()."/admin/master_group_departure/edit_group_departure/'+hash;
 				}
 			}
+			
+			function edit_paspor(hash,hash1,hash2){
+				if(confirm('Anda yakin ingin merubah data ini?')){
+					location.href='".site_url()."/admin/data_jamaah/paspor_edit/'+hash+'/'+hash1+'/'+hash2;
+				}
+			}
 
 			function hapus(hash){
 				if(confirm('Anda yakin ingin menghapus data ini?')){
@@ -93,12 +100,12 @@ class Data_jamaah extends CI_Controller {
 			</script>
 			";
 		
-		$group_options['0'] = '-- Pilih Group --';
+		$group_options[''] = '-- Pilih Group --';
 		foreach($group->result() as $row){
 			$group_options[$row->ID_GROUP] = $row->KODE_GROUP;
 		}
 
-		$program_options['0'] = '-- Pilih Program --';
+		$program_options[''] = '-- Pilih Program --';
 		foreach($program->result() as $row){
 						$program_options[$row->ID_PROGRAM] = $row->NAMA_PROGRAM;
 		}
@@ -154,7 +161,12 @@ class Data_jamaah extends CI_Controller {
 				$kode_group = "";
 			}		
 			
+			if($row->NO_PASPOR != NULL && $row->TANGGAL_DIKELUARKAN != NULL) { $gos = 1; } 
+			  else{ $gos = 0; }
+			
 			$url_paspor = '<a style="cursor:pointer" onClick="window.open(\''.site_url().'/admin/data_jamaah/paspor_view/'.$row->ID_CANDIDATE.'/'.$row->KODE_REGISTRASI.'\',\'paspor\',\'width=600,height=210,left=400,top=100,screenX=400,screenY=100\')"><img src="'.base_url().'/images/flexigrid/book.png"></a>';
+			
+			$url_edit_paspor = '<a style="cursor:pointer" onClick="edit_paspor(\''.$row->ID_CANDIDATE.'\',\''.$row->ID_ACCOUNT.'\',\''.$gos.'\')"><img src="'.base_url().'/images/flexigrid/book.png"></a>';
 			
 			$url_nama_calon = '<a style="cursor:pointer; text-decoration:underline; color:#000;" onClick="window.open(\''.site_url().'/admin/data_jamaah/profile_jamaah/'.$row->ID_CANDIDATE.'/'.$row->KODE_REGISTRASI.'\',\'profil\',\'width=500,height=500,left=400,top=100,screenX=400,screenY=100\')">'.$row->NAMA_LENGKAP.'</a>';
 			
@@ -172,7 +184,8 @@ class Data_jamaah extends CI_Controller {
 				$row->MOBILE,
 				date("d M Y", strtotime($row->TANGGAL_ENTRI)),
 				$row->STATUS_JAMAAH,
-				$url_paspor
+				$url_paspor,
+				$url_edit_paspor
 			);
 		}
 		
@@ -248,32 +261,29 @@ class Data_jamaah extends CI_Controller {
 		$province = $this->province_model->get_all_province();
 		$relation = $this->relation_model->get_all_relation();
 		$chlothes = $this->clothes_size_model->get_all_clothes();
-		$packet = $this->packet_model->get_packet_byAccAll($id_account, $kode_reg);
+		$paket = $this->packet_model->get_packet_byAccAll($id_account, $kode_reg);
 		$account = $this->accounts_model->get_data_account($id_account)->row(); 
 		
-		foreach($packet->result() as $row)
-		{
-			$id_packet = $row->ID_PACKET;
-		}
+		
 
-		$province_options['0'] = '-- Pilih Propinsi --';
+		$province_options[''] = '-- Pilih Propinsi --';
 		foreach($province->result() as $row){
 				$province_options[$row->ID_PROPINSI] = $row->NAMA_PROPINSI;
 		}
 		
-		$relasi_options['0'] = '-- Pilih Relasi --';
+		$relasi_options[''] = '-- Pilih Relasi --';
 		foreach($relation->result() as $row){
 				$relasi_options[$row->ID_RELATION] = $row->JENIS_RELASI;
 		}
 		
-		$chlothes_options['0'] = '-- Pilih Ukuran Baju --';
+		$chlothes_options[''] = '-- Pilih Ukuran Baju --';
 		foreach($chlothes->result() as $row){
 				$chlothes_options[$row->ID_SIZE] = $row->SIZE;
 		}
 		
 		
-		$kamar_options['0'] = '-- Pilih Kamar --';
-		$kamar = $this->room_packet_model->get_room_packet_byIDpack($id_packet);
+		$kamar_options[''] = '-- Pilih Kamar --';
+		$kamar = $this->room_packet_model->get_room_packet_byIDpack($this->input->post('paket'));
 		if($kamar->result() != NULL)
 		{
 			foreach($kamar->result() as $row){
@@ -281,10 +291,20 @@ class Data_jamaah extends CI_Controller {
 			}
 		}
 		
+		$paket_options[''] = '-- Pilih Paket --';
+		
+		if($paket->result() != NULL)
+		{
+			foreach($paket->result() as $row){
+				$paket_options[$row->ID_PACKET] = $row->KODE_GROUP.' - '.$row->NAMA_PROGRAM;
+			}
+		}
+		
 		$data['province_options'] = $province_options;
 		$data['relasi_options'] = $relasi_options;
 		$data['chlothes_options'] = $chlothes_options;
 		$data['kamar_options'] = $kamar_options;
+		$data['paket_options'] = $paket_options;
 		$data['nama_user'] = $account->NAMA_USER;
 		$data['email_user'] = $account->EMAIL;
 		$data['telp_user'] = $account->TELP;
@@ -500,7 +520,7 @@ class Data_jamaah extends CI_Controller {
 		$this->load->model('jamaah_candidate_model');
 		$this->load->model('accounts_model');
 		
-		if(is_null($candidate) || is_null($id_account)){
+		if(is_null($id_candidate) || is_null($id_account)){
 			redirect('/admin/data_jamaah/');
 		}
 		
@@ -587,22 +607,22 @@ class Data_jamaah extends CI_Controller {
 					$id_packet = $row->ID_PACKET;
 				}
 		
-				$province_options['0'] = '-- Pilih Propinsi --';
+				$province_options[''] = '-- Pilih Propinsi --';
 				foreach($province->result() as $row){
 						$province_options[$row->ID_PROPINSI] = $row->NAMA_PROPINSI;
 				}
 				
-				$relasi_options['0'] = '-- Pilih Relasi --';
+				$relasi_options[''] = '-- Pilih Relasi --';
 				foreach($relation->result() as $row){
 						$relasi_options[$row->ID_RELATION] = $row->JENIS_RELASI;
 				}
 				
-				$chlothes_options['0'] = '-- Pilih Ukuran Baju --';
+				$chlothes_options[''] = '-- Pilih Ukuran Baju --';
 				foreach($chlothes->result() as $row){
 						$chlothes_options[$row->ID_SIZE] = $row->SIZE;
 				}
 				
-				$kamar_options['0'] = '-- Pilih Kamar --';
+				$kamar_options[''] = '-- Pilih Kamar --';
 				$kamar = $this->room_packet_model->get_room_packet_byIDpack($id_packet);
 				if($kamar->result() != NULL)
 				{
@@ -957,6 +977,245 @@ class Data_jamaah extends CI_Controller {
 	   }
 	   return $tanggal.' '.$bulan.' '.$tahun;
     }
+	
+		function get_kamar(){
+		$this->load->model('room_packet_model');
+	
+		$kamar = $this->room_packet_model->get_room_packet_byIDpack($this->input->post('id_paket'));
+		
+		$options = '<option value="" class="dynamic4">-- Pilih Kamar --</option>';
+			
+		
+		
+			foreach($kamar->result() as $row){
+				$options .= '<option value="'.$row->ID_ROOM_TYPE.'" class="dynamic4">'.$row->JENIS_KAMAR.'</option>';
+			}
+		
+		
+			
+		echo $options;
+	}
+	
+	
+	// HALAMAN EDIT DOKUMEN CALON JAMAAH
+	function paspor_edit($id_candidate = NULL, $id_account = NULL, $tipe)
+	{
+		
+		$this->load->library('form_validation');
+		$this->load->model('jamaah_candidate_model');
+		
+		$data_jamaah = $this->jamaah_candidate_model->get_jamaah_berdasarkan_id_accaount_candidate($id_candidate, $id_account);
+			
+		if($data_jamaah->result() != NULL)
+		{
+			foreach($data_jamaah->result() as $row)
+			{
+				$data['e_id_candidate'] = $row->ID_CANDIDATE;
+				$data['e_id_account'] = $row->ID_ACCOUNT;
+				$data['e_nama_lengkap'] = $row->NAMA_LENGKAP;
+				$data['e_gender'] = $row->GENDER;
+				$data['e_warga_negara'] = $row->WARGA_NEGARA;
+				$data['e_tempat_lahir'] = $row->TEMPAT_LAHIR;
+				$data['e_tgl_lahir'] = $row->TANGGAL_LAHIR;
+				$data['e_kota'] = $row->KOTA;
+				$data['e_pas_foto'] = $row->FOTO;
+				$data['e_request_nama'] = $row->REQUESTED_NAMA;
+				
+				// DATA PASPOR
+				$data['e_no_paspor'] = $row->NO_PASPOR;
+				$data['e_tgl_keluar'] = $row->TANGGAL_DIKELUARKAN;
+				$data['e_tgl_habis'] = $row->TANGGAL_HABIS;
+				$data['e_kantor'] = $row->KANTOR_PEMBUATAN;
+				$data['e_scan_paspor'] = $row->SCAN_PASPOR;
+				
+				// FILTER JENIS KELAMIN
+				if($row->GENDER == 1) $data['e_gender'] = "Laki-Laki";
+				elseif($row->GENDER == 2) $data['e_gender'] = "Perempuan";
+				
+				// UBAH TANGGAL LAHIR
+				$data['tgl_lahir'] = $this->konversi_tanggal($data['e_tgl_lahir']);
+				
+				// PECAH TANGGAL PASPOR
+				if($data['e_tgl_keluar'] != NULL)
+				{
+					$k_pecah_tgl = explode("-", $data['e_tgl_keluar']);
+					$data['e_k_thn'] = $k_pecah_tgl[0];
+					$data['e_k_bln'] = $k_pecah_tgl[1];
+					$data['e_k_tgl'] = $k_pecah_tgl[2];
+				}
+				
+				if($data['e_tgl_habis'] != NULL)
+				{
+					$b_pecah_tgl = explode("-", $data['e_tgl_habis']);
+					$data['e_b_thn'] = $b_pecah_tgl[0];
+					$data['e_b_bln'] = $b_pecah_tgl[1];
+					$data['e_b_tgl'] = $b_pecah_tgl[2];
+				}
+						
+				$data['tipe'] = $tipe;
+				
+				$data['notifikasi'] = null;
+				if($this->session->userdata('sukses') == 'true'){
+					$data['notifikasi'] = '<div id="message-green">
+						<table border="0" width="100%" cellpadding="0" cellspacing="0">
+							<tr>
+								<td class="green-left">Dokumen Paspor Berhasil diubah.</td>
+								<td class="green-right"><a class="close-green"><img src="'.base_url().'images/table/icon_close_green.gif"   alt="" onclick="window.location = \''.base_url().'index.php/admin/data_jamaah/'.'\'" /></a></td>
+							</tr>
+						</table><br>
+					</div>';
+					$this->session->unset_userdata('sukses');
+				}
+				
+				$data['error_file'] = '';
+				if($this->session->userdata('upload_file') != '')
+				{
+					$data['error_file'] = '<div id="message-blue">
+								<table border="0" width="100%" cellpadding="0" cellspacing="0">
+									<tr>
+										<td class="blue-left">'.$this->session->userdata('upload_file').'</td>
+										<td class="blue-right"><a class="close-blue"><img src="'.base_url().'images/table/icon_close_blue.gif"   alt="" /></a></td>
+									</tr>
+								</table><br>
+							</div>';
+					$this->session->unset_userdata('upload_file');
+				}
+				
+				$data['content'] = $this->load->view('admin/paspor_edit', $data, true);
+				$this->load->view('admin/front', $data);
+			
+			}
+		
+		} else {
+			
+			redirect("admin/data_jamaah/");
+		}
+		
+	}
+	
+	function cek_validasi_paspor() {
+		$this->load->library('form_validation');
+		//setting rules
+		$config = array(
+				array('field'=>'no_paspor','label'=>'Nomor Paspor', 'rules'=>'required'),
+				array('field'=>'k_tgl_lahir','label'=>'Tgl. Dikeluarkan', 'rules'=>'callback_cek_dropdown'),
+				array('field'=>'k_bln_lahir','label'=>'Tgl. Dikeluarkan', 'rules'=>'callback_cek_dropdown'),
+				array('field'=>'k_thn_lahir','label'=>'Tgl. Dikeluarkan', 'rules'=>'callback_cek_dropdown'),
+				array('field'=>'b_tgl_lahir','label'=>'Tgl. Berakhir', 'rules'=>'callback_cek_dropdown'),
+				array('field'=>'b_bln_lahir','label'=>'Tgl. Berakhir', 'rules'=>'callback_cek_dropdown'),
+				array('field'=>'b_thn_lahir','label'=>'Tgl. Berakhir', 'rules'=>'callback_cek_dropdown'),
+				array('field'=>'kantor','label'=>'Kantor', 'rules'=>'required'),
+		//		array('field'=>'foto','label'=>'Scan Paspor', 'rules'=>'required'),
+			);
+		
+		
+		$this->form_validation->set_rules($config);
+		$this->form_validation->set_message('required', 'Kolom <strong>%s</strong> harus diisi !');
+		$this->form_validation->set_message('valid_email', 'Penulisan kolom <strong>%s</strong> tidak benar!');
+		$this->form_validation->set_message('numeric', '<strong>Kolom %s</strong> harus berupa angka !');
+		//$this->form_validation->set_error_delimiters('<li class="error">', '</li>');
+
+		return $this->form_validation->run();
+    }
+	
+	function paspor_edit_db(){
+		
+		$this->load->library('form_validation');
+		$this->load->model('jamaah_candidate_model');
+		$this->load->model('log_model');
+
+		$log = "Mengubah dokumen paspor Calon Jamaah";
+		
+		$id_user = $this->session->userdata("id_user");
+			
+		// ID CANDIDATE DAN ID ACCOUNT
+		$id_candidate = $this->input->post('id_candidate');
+		$id_account = $this->input->post('id_account');
+		$tipe = $this->input->post('id_tipe');
+		
+		if ($this->cek_validasi_paspor() == FALSE){
+			$this->paspor_edit($id_candidate, $id_account, $tipe);
+		}
+		else{
+
+			// tanggal dikerluarkan 
+			$k_tgl = $this->input->post('k_tgl_lahir');
+			$k_bln = $this->input->post('k_bln_lahir');
+			$k_thn = $this->input->post('k_thn_lahir');
+			$k_dates = $k_thn."-".$k_bln."-".$k_tgl;
+			
+			// tanggal berakhir
+			$b_tgl = $this->input->post('b_tgl_lahir');
+			$b_bln = $this->input->post('b_bln_lahir');
+			$b_thn = $this->input->post('b_thn_lahir');
+			$b_dates = $b_thn."-".$b_bln."-".$b_tgl;
+			
+			// cek foto
+			$cek_foto = $_FILES['foto']['name'];
+			if($cek_foto != "")
+			{
+				// Upload Foto
+				$config['upload_path'] = './images/upload/paspor/';
+				$config['allowed_types'] = 'gif|jpg|png|jpeg|bmp';
+				$config['max_size']	= '5000';
+				$config['encrypt_name']	= TRUE;
+				
+				$this->load->library('upload', $config);
+				
+				if(!$this->upload->do_upload('foto'))
+				{
+					$this->session->set_userdata('upload_file', $this->upload->display_errors("<p>Error Foto : ", "</p>"));
+					$data_file = NULL;
+					$valid_file = FALSE;
+				
+				}else{
+					
+					$data_file = $this->upload->data();
+					$valid_file = TRUE;
+				}
+				
+				$valid = TRUE;
+			
+			} else {
+				
+				$valid = FALSE;
+				$valid_file = TRUE;
+			}
+			
+			
+			// update table
+			$data = array(
+				'NO_PASPOR' => $this->input->post('no_paspor'),
+				'TANGGAL_DIKELUARKAN' => $k_dates,
+				'TANGGAL_HABIS' => $b_dates,
+				'KANTOR_PEMBUATAN' => $this->input->post('kantor'),
+				'TANGGAL_UPDATE' => date("Y-m-d H:i:s")
+				);
+			
+			if($valid_file)
+			{
+				if($valid)
+				{
+					$foto = array('SCAN_PASPOR' => $data_file['file_name']);
+					$this->jamaah_candidate_model->update_jamaah($foto, $id_candidate);
+					
+					$file_gambar = $data_file['file_path'].$this->input->post('paspor_edit');
+					if(is_file($file_gambar))
+					{
+						unlink($file_gambar);
+					}
+				}
+			
+				$tipe = 1;
+				$this->session->set_userdata('sukses','true');
+				$this->log_model->log(null, null, $id_user, $log);
+				$update = $this->jamaah_candidate_model->update_jamaah($data, $id_candidate);
+				redirect('admin/data_jamaah/paspor_edit/'.$id_candidate.'/'.$id_account.'/'.$tipe.'/');
+			}else{
+				$this->edit($id_candidate, $id_account, $tipe);
+			}
+		}
+	}
 
 }//end class
 

@@ -28,15 +28,15 @@ class data_akun extends CI_Controller{
 
 // ----------------- Public view -----------------------------------------------
 
-    public function edit_accounts($accounts_id=null){
+    public function edit_accounts($accounts_id=null,$kode_account=null){
        
-		if(is_null($accounts_id)){
-			redirect('accounts/view_list_accounts');
+		if(is_null($accounts_id) && is_null($kode_account)){
+			redirect('admin/data_akun/view_list_accounts');
 
 		}
           if($this->validate_form_accounts()==true){
-            $this->form_accountsDB("update",$accounts_id);
-			redirect('accounts/view_list_accounts');
+            $this->form_accountsDB("update",$accounts_id,$kode_account);
+			redirect('admin/data_akun/view_list_accounts');
             }
             else{
                 $this->load_form_accounts($accounts_id);
@@ -53,28 +53,28 @@ class data_akun extends CI_Controller{
       
         if($this->validate_form_accounts()==true){
                 $this->form_accountsDB("insert");
-				redirect('accounts/view_list_accounts');
+				redirect('admin/data_akun/view_list_accounts');
             }
             else{
                 $this->load_form_accounts();
             }
     }
 
-    public function delete_accounts($accounts_id){
+    public function delete_accounts($accounts_id,$kode_registrasi){
 		$this->load->model('accounts_model');
         
 		if(is_null($accounts_id)){
-			redirect('accounts/view_list_accounts');
+			redirect('admin/data_akun/view_list_accounts');
 
 		}
 		
-		$value = $this->accounts_model->get_group_berdasarkan_id($accounts_id)->result();
+		$value = $this->accounts_model->get_account($accounts_id,$kode_registrasi)->result();
         
 		if(!empty($value)){
             
-			 $this->accounts_model->delete_group($accounts_id);
+			 $this->form_accountsDB("delete",$accounts_id,$kode_registrasi);
         }       
-		redirect('accounts/view_list_accounts');
+		redirect('admin/data_akun/view_list_accounts');
        
     }
 	
@@ -96,6 +96,7 @@ class data_akun extends CI_Controller{
 		$colModel['edit'] = array('Edit',50,FALSE,'center',0);
 		$colModel['delete'] = array('Delete',50,FALSE,'center',0);
 		$colModel['paket'] = array('Paket',50,FALSE,'center',0);
+		$colModel['paket'] = array('Paket',50,FALSE,'center',0);
 		$colModel['jamaah'] = array('Tambah Jamaah',100,FALSE,'center',0);
 		
 		$colModel['NAMA_USER'] = array('Nama User',100,TRUE,'center',2);
@@ -110,7 +111,7 @@ class data_akun extends CI_Controller{
 
 
 		$gridParams = array(
-			'width' => 'auto',
+			'width' => '1190',
 			'height' => 285,
 			'rp' => 15,
 			'rpOptions' => '[5,10,15,20,25,40]',
@@ -133,9 +134,9 @@ class data_akun extends CI_Controller{
 			}
 
 
-			function edit(hash){
+			function edit(hash,hash1){
 				if(confirm('Anda yakin ingin merubah data ini?')){
-					location.href='".site_url()."/admin/data_akun/edit_accounts/'+hash;
+					location.href='".site_url()."/admin/data_akun/edit_accounts/'+hash+'/'+hash1;
 				}
 			}			
 			
@@ -147,9 +148,9 @@ class data_akun extends CI_Controller{
 				window.open('".site_url()."/admin/data_akun/view_package/'+hash+'/'+hash1,'Paket','width=550,height=250,left=400,top=100,screenX=400,screenY=100');
 			}
 
-			function hapus(hash){
+			function hapus(hash,hash1){
 				if(confirm('Anda yakin ingin menghapus data ini?')){
-					location.href='".site_url()."/admin/data_akun/delete_accounts/'+hash;
+					location.href='".site_url()."/admin/data_akun/delete_accounts/'+hash+'/'+hash1;
 				}
 			}
              
@@ -178,8 +179,8 @@ class data_akun extends CI_Controller{
 		{
                     
 			
-			$edit = '<img alt="Edit"  style="cursor:pointer" src="'.base_url().'images/flexigrid/edit.jpg" onclick="edit(\''.$row->ID_ACCOUNT.'\')">';
-			$delete = '<img alt="Delete"  style="cursor:pointer" src="'.base_url().'images/flexigrid/delete.jpg" onclick="hapus(\''.$row->ID_ACCOUNT.'\')">';
+			$edit = '<img alt="Edit"  style="cursor:pointer" src="'.base_url().'images/flexigrid/edit.jpg" onclick="edit(\''.$row->ID_ACCOUNT.'\',\''.$row->KODE_REGISTRASI.'\')">';
+			$delete = '<img alt="Delete"  style="cursor:pointer" src="'.base_url().'images/flexigrid/delete.jpg" onclick="hapus(\''.$row->ID_ACCOUNT.'\',\''.$row->KODE_REGISTRASI.'\')">';
 			$add_jamaah = '<img alt="Tambah Jamaah"  style="cursor:pointer" src="'.base_url().'images/flexigrid/add.png" onclick="add_jamaah(\''.$row->ID_ACCOUNT.'\',\''.$row->KODE_REGISTRASI.'\')">';
 			$paket = '<img alt="Paket"  style="cursor:pointer" src="'.base_url().'images/flexigrid/book.png" onclick="paket(\''.$row->ID_ACCOUNT.'\',\''.$row->KODE_REGISTRASI.'\')">';
                  
@@ -288,26 +289,21 @@ class data_akun extends CI_Controller{
                     $packet = $this->packet_model->get_packet_byAcc_waiting($id_user, $kode_reg);
                     $data['waiting'] = TRUE;
                 }
+				
 
                 if ($packet->num_rows() > 0){
                     $this->load->model('room_packet_model');
-                    
-                    foreach ($packet->result() as $row){
-                        $id_group = $row->ID_GROUP;
-                        $data['group'] = $row->KODE_GROUP;
-                        $data['keterangan_group'] = $row->KETERANGAN;
-                        $data['program'] = $row->NAMA_PROGRAM;
-                        $data['adult'] = $row->JUMLAH_ADULT;
-                        $data['with_bed'] = $row->CHILD_WITH_BED;
-                        $data['no_bed'] = $row->CHILD_NO_BED;
-                        $data['infant'] = $row->INFANT;
-                        $data['tgl_pesan'] = $row->TANGGAL_PESAN;
-                        $id_packet = $row->ID_PACKET;
-                    }
+                    $room = array();
+                    $data['paket'] = $packet->result(); 
+					
+					foreach ($data['paket'] as $row){
+                    $room[] = $this->room_packet_model->get_room_packet_byIDpack($row->ID_PACKET)->result();   
+				
+				   }
 
                     // get data room
-                    $room = $this->room_packet_model->get_room_packet_byIDpack($id_packet);
-                    $data['room'] = $room->result();
+                
+                    $data['room'] = $room;
                     $data['is_order'] = TRUE;
 					$data = array_merge($data,$account);
 
@@ -397,24 +393,85 @@ class data_akun extends CI_Controller{
 
 
 // ---------------- Database handler function ----------------------------------
-    private function form_accountsDB($action,$currentaccounts_id=""){
+    private function form_accountsDB($action,$currentaccounts_id="",$kode_account=""){
         $this->load->model('accounts_model');
-        $accounts = $this->accounts_model->get_account($this->input->post('accounts_id')); 
+        $this->load->model('log_model');
+        $this->load->model('packet_model');
+        $this->load->model('room_packet_model');
+		
+        $accounts = $this->accounts_model->get_account($currentaccounts_id,$kode_account); 
 		
         if(is_null($accounts)){
-        $accounts = new stdClass();
+        $accounts = array();
         }
-        $accounts->accounts_id = $this->input->post('accounts_id');
-        $accounts->PASSWORD = $this->input->post('password');
-        $accounts->ID_M_ROLE = $this->input->post('role');
-		$accounts->AKTIF = $this->input->post('aktif');
-       
+		$nama = $this->input->post('nama');
+		$email = $this->input->post('email');
+		$telp = $this->input->post('telp');
+		$mobile = $this->input->post('mobile');
+		$province = $this->input->post('province');
+		$kota = $this->input->post('kota');
+		$alamat = $this->input->post('alamat');
+		$id_card = $this->input->post('id_card');
+		$kode_reg = substr(md5('koderegistrasi-'.$nama.'-'.$email.'-'.date("Y m d H:i:s")), 0, 15);
+		$pwd = substr(md5('password-'.$nama.'-'.$email.'-'.date("Y m d")), 0, 5);
+
+        $accounts = array('KODE_REGISTRASI' => $kode_reg, 'ID_PROPINSI' => $province, 'NAMA_USER' => $nama, 
+								'EMAIL' => $email, 'PASSWORD' =>md5($pwd), 'NO_ID_CARD' => $id_card, 'TELP' => $telp, 
+								'MOBILE' => $mobile, 'KOTA' => $kota, 'ALAMAT' => $alamat, 'TANGGAL_REGISTRASI' =>date("Y-m-d h:i:s"), 'STATUS' => 1);
+								
+		
         if($action =="insert"){
-            $this->accounts_model->add_accounts($accounts);
+            $this->accounts_model->insert_new_account($accounts);
+			$this->log_model->log(null, null, $this->session->userdata('id_user'), 'REGISTER new account, EMAIL = '.$accounts['EMAIL'].', KODE_REGISTRASI = '.$accounts['KODE_REGISTRASI']);
+			 // data packet
+			  $account= $this->accounts_model->get_account_byKode($accounts['KODE_REGISTRASI'])->row();
+			  
+                                        $group = $this->input->post('group');
+                                        $kelas_program = $this->input->post('program');
+                                        $jml_adult = $this->input->post('jml_adult');
+                                        $with_bed = $this->input->post('with_bed')=='' ? 0:$this->input->post('with_bed');
+                                        $no_bed = $this->input->post('no_bed')=='' ? 0:$this->input->post('no_bed');
+                                        $infant = $this->input->post('infant')=='' ? 0:$this->input->post('infant');
+
+                                        $data = array(
+                                            'ID_GROUP'=>$group, 'ID_ACCOUNT'=>$account->ID_ACCOUNT, 'KODE_REGISTRASI' =>$accounts['KODE_REGISTRASI'], 'ID_PROGRAM'=>$kelas_program,
+                                            'JUMLAH_ADULT'=>$jml_adult, 'CHILD_WITH_BED'=>$with_bed, 'CHILD_NO_BED'=>$no_bed, 'INFANT'=>$infant,
+                                            'TANGGAL_PESAN'=>date("Y-m-d h:i:s"), 'STATUS_PESANAN'=>1
+                                        );
+
+                                        // insert into packet
+                                        $this->packet_model->insert_packet($data);
+                                        $this->log_model->log(null, null, $this->session->userdata('id_user'), 'INSERT data PACKET untuk akun dengan KODE_REGISTRASI = '.$accounts['KODE_REGISTRASI']);
+
+                                        // insert into room packet
+                                        $id_pack = $this->packet_model->get_packet_byAcc_waiting($account->ID_ACCOUNT, $accounts['KODE_REGISTRASI']);
+                                        if ($id_pack->num_rows() > 0){
+                                            $this->load->model('room_packet_model');
+                                            $kamar = $this->input->post('kamar');
+                                            $jml_kamar = $this->input->post('jml_kamar');
+
+                                            for($i=0; $i<count($kamar); $i++){
+                                                $this->room_packet_model->insert_room_packet(array('ID_ROOM_TYPE'=>$kamar[$i],
+                                                    'ID_PACKET'=>$id_pack->row()->ID_PACKET, 'JUMLAH'=>$jml_kamar[$i]));
+                                            }
+
+                                            $this->log_model->log(null, null, $this->session->userdata('id_user'), 'INSERT data ROOM_PACKET untuk packet dengan ID_PACKET = '.$id_pack->row()->ID_PACKET);
+                                        }
+
+			
         }
         elseif($action =="update"){
-			$accounts->accounts_id_CURRENT = $currentaccounts_id;
-            $this->accounts_model->edit_accounts($accounts);
+			  $accounts = array( 'ID_PROPINSI' => $province, 'NAMA_USER' => $nama, 
+								'EMAIL' => $email, 'PASSWORD' =>md5($pwd), 'NO_ID_CARD' => $id_card, 'TELP' => $telp, 
+								'MOBILE' => $mobile, 'KOTA' => $kota, 'ALAMAT' => $alamat, 'TANGGAL_UPDATE' =>date("Y-m-d h:i:s"), 'STATUS' => 1);
+			                                            $this->log_model->log(null, null, $this->session->userdata('id_user'), 'UPDATE data Account dengan ID_ACCOUNT = '.$currentaccounts_id);
+            $this->accounts_model->update_with_id_account($accounts,$currentaccounts_id);
+        }
+		
+		elseif($action =="delete"){
+			  $accounts = array(  'TANGGAL_UPDATE' =>date("Y-m-d h:i:s"), 'STATUS' => 0);
+			$this->log_model->log(null, null, $this->session->userdata('id_user'), 'DELETE/DEAKTIF data Account dengan ID_ACCOUNT = '.$currentaccounts_id);
+            $this->accounts_model->update_with_id_account($accounts,$currentaccounts_id);
         }
     }
 

@@ -80,45 +80,48 @@ div.thumb {
 					</td>
 					<td></td>
 				</tr>
+				<?php 
+				$counter = 1;
+				foreach($paket as $row){?>
 				<tr>
-					<th valign="top">Grup</th>
+					<th valign="top">Grup<?php if(count($paket)>1) {echo '-'.$counter;}?></th>
 					<td>	
-						<? if (isset($group)) echo $group ?>
+						<?  echo $row->KODE_GROUP; ?>
 					</td>
 					<td></td>
 				</tr>
 				<tr>
-					<th valign="top">Kelas Program</th>
+					<th valign="top">Kelas Program<?php if(count($paket)>1) {echo '-'.$counter;}?></th>
 					<td>	
-						<? if (isset($program)) echo $program ?>
+						<?  echo $row->NAMA_PROGRAM; ?>
 					</td>
 					<td></td>
 				</tr>
 				<tr>					
 					<th valign="top">Jumlah Dewasa (*)</th>
 					<td>	
-						<? if (isset($adult)) echo $adult ?>
+						<?  echo $row->JUMLAH_ADULT ?>
 					</td>
 					<td></td>
 				</tr>
 				<tr>
 					<th valign="top">Anak Dengan Ranjang</th>
 					<td>	
-						<? if (isset($with_bed)) echo $with_bed ?>
+						<?  echo $row->CHILD_WITH_BED ?>
 					</td>
 					<td></td>
 				</tr> 
 				<tr>
 					<th valign="top">Anak Tanpa Ranjang</th>
 					<td>	
-						<? if (isset($no_bed)) echo $no_bed ?>
+						<?  echo $row->CHILD_NO_BED ?>
 					</td>
 					<td></td>
 				</tr>
 				<tr>
 					<th valign="top">Bayi</th>
 					<td>	
-						<? if (isset($infant)) echo $infant ?>
+						<?  echo $row->INFANT ?>
 					</td>
 					<td></td>
 				</tr>
@@ -127,10 +130,10 @@ div.thumb {
 					<td class="noheight">
 						<div id="dvFile">
 							<table border="0" cellpadding="0" cellspacing="0">
-								<?php foreach ($room as $row) {?>
+								<?php foreach ($room[$counter-1] as $room_row) {?>
 								<tr valign="middle">
-									<td><? echo $row->JENIS_KAMAR." - "; ?></td>
-									<td>Jumlah : <? echo $row->JUMLAH; ?></td>
+									<td><? echo $room_row->JENIS_KAMAR." - "; ?></td>
+									<td>Jumlah : <? echo $room_row->JUMLAH; ?></td>
 								</tr>
 								<? }?>
 							</table>
@@ -138,6 +141,9 @@ div.thumb {
 					</td>
 					<td></td>
 				</tr>
+				<?php 
+				$counter++;
+				} ?>
 				<? if (isset($waiting) && $waiting){?>
 				<tr height="50">
 					<th valign="top">Keterangan</th>
