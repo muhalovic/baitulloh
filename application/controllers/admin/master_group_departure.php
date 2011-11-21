@@ -105,7 +105,7 @@ class master_group_departure extends CI_Controller{
 
 
 		$gridParams = array(
-			'width' => 'auto',
+			'width' => '1190',
 			'height' => 285,
 			'rp' => 15,
 			'rpOptions' => '[5,10,15,20,25,40]',
