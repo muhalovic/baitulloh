@@ -99,7 +99,7 @@ class Packet_model extends CI_Model {
                 $this->db->join("group_departure g","g.ID_GROUP = packet.ID_GROUP");
                 $this->db->join("program_class p", "p.ID_PROGRAM = packet.ID_PROGRAM");
 		$this->db->where("packet.ID_GROUP", $id_group);
-		$this->db->where("packet.ID_PROGRAM", $id_program);
+		$this->db->where_in("packet.ID_PROGRAM", $id_program);
 		$this->db->where_in("STATUS_PESANAN", $status);
 		
 		return $this->db->get();

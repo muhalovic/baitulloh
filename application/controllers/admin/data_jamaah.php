@@ -102,6 +102,7 @@ class Data_jamaah extends CI_Controller {
 		foreach($program->result() as $row){
 						$program_options[$row->ID_PROGRAM] = $row->NAMA_PROGRAM;
 		}
+		$program_options['100'] = 'SEMUA PROGRAM';
 
 		$data['group_options'] = $group_options;
 		$data['program_options'] = $program_options;
