@@ -46,6 +46,7 @@ class Data_jamaah extends CI_Controller {
 		$colModel['STATUS_JAMAAH']			= array('Status',75,TRUE,'center',1);
 		$colModel['DATA_PASPOR']			= array('Paspor',40,FALSE,'center',0);
 		$colModel['UBAH_PASPOR']			= array('Ubah Paspor',75,FALSE,'center',0);
+		$colModel['UBAH_JAMAAH']			= array('Ubah Jamaah',75,FALSE,'center',0);
 		
 		$gridParams = array(
 		'width' => '1190',
@@ -88,6 +89,12 @@ class Data_jamaah extends CI_Controller {
 			function edit_paspor(hash,hash1,hash2){
 				if(confirm('Anda yakin ingin merubah data ini?')){
 					location.href='".site_url()."/admin/data_jamaah/paspor_edit/'+hash+'/'+hash1+'/'+hash2;
+				}
+			}
+			
+			function edit_jamaah(hash,hash1){
+				if(confirm('Anda yakin ingin merubah data ini?')){
+					location.href='".site_url()."/admin/data_jamaah/edit/'+hash+'/'+hash1;
 				}
 			}
 
@@ -167,6 +174,7 @@ class Data_jamaah extends CI_Controller {
 			$url_paspor = '<a style="cursor:pointer" onClick="window.open(\''.site_url().'/admin/data_jamaah/paspor_view/'.$row->ID_CANDIDATE.'/'.$row->KODE_REGISTRASI.'\',\'paspor\',\'width=600,height=210,left=400,top=100,screenX=400,screenY=100\')"><img src="'.base_url().'/images/flexigrid/book.png"></a>';
 			
 			$url_edit_paspor = '<a style="cursor:pointer" onClick="edit_paspor(\''.$row->ID_CANDIDATE.'\',\''.$row->ID_ACCOUNT.'\',\''.$gos.'\')"><img src="'.base_url().'/images/flexigrid/book.png"></a>';
+			$url_edit_jamaah = '<a style="cursor:pointer" onClick="edit_jamaah(\''.$row->ID_CANDIDATE.'\',\''.$row->ID_ACCOUNT.'\')"><img src="'.base_url().'/images/flexigrid/book.png"></a>';
 			
 			$url_nama_calon = '<a style="cursor:pointer; text-decoration:underline; color:#000;" onClick="window.open(\''.site_url().'/admin/data_jamaah/profile_jamaah/'.$row->ID_CANDIDATE.'/'.$row->KODE_REGISTRASI.'\',\'profil\',\'width=500,height=500,left=400,top=100,screenX=400,screenY=100\')">'.$row->NAMA_LENGKAP.'</a>';
 			
@@ -185,7 +193,8 @@ class Data_jamaah extends CI_Controller {
 				date("d M Y", strtotime($row->TANGGAL_ENTRI)),
 				$row->STATUS_JAMAAH,
 				$url_paspor,
-				$url_edit_paspor
+				$url_edit_paspor,
+				$url_edit_jamaah
 			);
 		}
 		
@@ -594,13 +603,11 @@ class Data_jamaah extends CI_Controller {
 				$this->load->model('room_packet_model');
 				$this->load->model('packet_model');
 				
-				$id_account = $this->session->userdata('id_account');
-				$kode_reg = $this->session->userdata('kode_registrasi');
 				
 				$province = $this->province_model->get_all_province();
 				$relation = $this->relation_model->get_all_relation();
 				$chlothes = $this->clothes_size_model->get_all_clothes();
-				$packet = $this->packet_model->get_packet_byAccAll($id_account, $kode_reg);
+				$packet = $this->packet_model->get_packet_byAccAll($id_account, $account->KODE_REGISTRASI);
 				
 				foreach($packet->result() as $row)
 				{
@@ -642,7 +649,7 @@ class Data_jamaah extends CI_Controller {
 						<table border="0" width="100%" cellpadding="0" cellspacing="0">
 							<tr>
 								<td class="green-left">Data Profil Calon Jamaah Berhasil diubah.</td>
-								<td class="green-right"><a class="close-green"><img src="'.base_url().'images/table/icon_close_green.gif"   alt="" /></a></td>
+								<td class="green-right"><a class="close-green"><img src="'.base_url().'images/table/icon_close_green.gif"   alt="" onclick = "window.location  = \''.base_url().'index.php/admin/data_jamaah'.'\'" /></a></td>
 							</tr>
 						</table><br>
 					</div>';
@@ -831,9 +838,9 @@ class Data_jamaah extends CI_Controller {
 				
 				//buat session sukses
 				$this->session->set_userdata('sukses','true');
-				$this->log_model->log($id_user, $kode_reg, NULL, $log);
+				$this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
 				$update = $this->jamaah_candidate_model->update_jamaah($data, $id_candidate);
-				redirect('/biodata/edit/'.$id_candidate.'/'.$id_account);
+				redirect('/admin/data_jamaah/edit/'.$id_candidate.'/'.$id_account);
 			}else{
 				$this->edit($id_candidate, $id_account);
 			}

@@ -36,7 +36,7 @@ class data_akun extends CI_Controller{
 		}
           if($this->validate_form_accounts()==true){
             $this->form_accountsDB("update",$accounts_id,$kode_account);
-			redirect('admin/data_akun/view_list_accounts');
+			redirect('admin/data_akun/edit_accounts/'.$accounts_id.'/'.$kode_account);
             }
             else{
                 $this->load_form_accounts($accounts_id);
@@ -53,7 +53,7 @@ class data_akun extends CI_Controller{
       
         if($this->validate_form_accounts()==true){
                 $this->form_accountsDB("insert");
-				redirect('admin/data_akun/view_list_accounts');
+				redirect('admin/data_akun/add_accounts');
             }
             else{
                 $this->load_form_accounts();
@@ -156,6 +156,21 @@ class data_akun extends CI_Controller{
              
 			</script>
 			";
+
+			
+			$content['notifikasi'] = null;
+				if($this->session->userdata('sukses') == 'true'){
+					$content['notifikasi'] = '<div id="message-green">
+						<table border="0" width="100%" cellpadding="0" cellspacing="0">
+							<tr>
+								<td class="green-left">Data Akun Calon Jamaah '.$this->session->userdata('delete_akun').' Berhasil dihapus.</td>
+								<td class="green-right"><a class="close-green"><img src="'.base_url().'images/table/icon_close_green.gif"   alt=""  /></a></td>
+							</tr>
+						</table><br>
+					</div>';
+					$this->session->unset_userdata('sukses');
+					$this->session->unset_userdata('delete_akun');
+				}
                 $contents['content'] = $this->load->view('admin/grid',$content,true);
                 
                 $this->load->view('admin/front',$contents);
@@ -373,10 +388,40 @@ class data_akun extends CI_Controller{
             $content['CHILD_NO_BED'] = $this->input->post('pagu_ga');
             $content['INFANT'] = $this->input->post('pagu_ga');
             $content['HARI'] = $this->input->post('hari');
+			$content['notifikasi'] = null;
+				if($this->session->userdata('sukses') == 'true'){
+					$content['notifikasi'] = '<div id="message-green">
+						<table border="0" width="100%" cellpadding="0" cellspacing="0">
+							<tr>
+								<td class="green-left">Data Akun Calon Jamaah Berhasil ditambah.</td>
+								<td class="green-right"><a class="close-green"><img src="'.base_url().'images/table/icon_close_green.gif"   alt="" onclick = "window.location  = \''.base_url().'index.php/admin/data_akun'.'\'" /></a></td>
+							</tr>
+						</table><br>
+					</div>';
+					$this->session->unset_userdata('sukses');
+				}
+			
 			$contents['content'] = $this->load->view('admin/form_registration',$content,true);
+			
+				
+				
+			
        }
        else{
-           
+           $content['notifikasi'] = null;
+				if($this->session->userdata('sukses') == 'true'){
+					$content['notifikasi'] = '<div id="message-green">
+						<table border="0" width="100%" cellpadding="0" cellspacing="0">
+							<tr>
+								<td class="green-left">Data Akun Calon Jamaah Berhasil diubah.</td>
+								<td class="green-right"><a class="close-green"><img src="'.base_url().'images/table/icon_close_green.gif"   alt="" onclick = "window.location  = \''.base_url().'index.php/admin/data_akun'.'\'" /></a></td>
+							</tr>
+						</table><br>
+					</div>';
+					$this->session->unset_userdata('sukses');
+				}
+				
+				
 		   $content = array_merge($account,$content);
 		   $contents['content'] = $this->load->view('admin/form_edit_akun',$content,true);
 			
@@ -457,7 +502,7 @@ class data_akun extends CI_Controller{
 
                                             $this->log_model->log(null, null, $this->session->userdata('id_user'), 'INSERT data ROOM_PACKET untuk packet dengan ID_PACKET = '.$id_pack->row()->ID_PACKET);
                                         }
-
+				$this->session->set_userdata('sukses','true');
 			
         }
         elseif($action =="update"){
@@ -466,13 +511,19 @@ class data_akun extends CI_Controller{
 								'MOBILE' => $mobile, 'KOTA' => $kota, 'ALAMAT' => $alamat, 'TANGGAL_UPDATE' =>date("Y-m-d h:i:s"), 'STATUS' => 1);
 			                                            $this->log_model->log(null, null, $this->session->userdata('id_user'), 'UPDATE data Account dengan ID_ACCOUNT = '.$currentaccounts_id);
             $this->accounts_model->update_with_id_account($accounts,$currentaccounts_id);
-        }
+				$this->session->set_userdata('sukses','true');
+	   }
 		
 		elseif($action =="delete"){
-			  $accounts = array(  'TANGGAL_UPDATE' =>date("Y-m-d h:i:s"), 'STATUS' => 0);
+			$account = $this->accounts_model->get_data_account($currentaccounts_id)->row();
+			$accounts = array(  'TANGGAL_UPDATE' =>date("Y-m-d h:i:s"), 'STATUS' => 0);
 			$this->log_model->log(null, null, $this->session->userdata('id_user'), 'DELETE/DEAKTIF data Account dengan ID_ACCOUNT = '.$currentaccounts_id);
             $this->accounts_model->update_with_id_account($accounts,$currentaccounts_id);
-        }
+        	$this->session->set_userdata('sukses','true');
+        	$this->session->set_userdata('delete_akun',$account->NAMA_USER);
+			
+
+		}
     }
 
 // ---------------- Private function -------------------------------------------

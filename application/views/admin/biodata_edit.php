@@ -1,5 +1,5 @@
 <? 
-echo form_open_multipart('/admin/data_jamaah/do_edit'.$id_candidate.'/'.$id_user);
+echo form_open_multipart('/admin/data_jamaah/do_edit/'.$id_candidate.'/'.$id_user);
 echo $notifikasi;
 echo $error_file;
 ?>

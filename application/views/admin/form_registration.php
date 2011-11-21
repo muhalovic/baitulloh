@@ -1,3 +1,6 @@
+<?php 
+echo $notifikasi;
+?>
 <form method="post" action="" >
 <table border="0" width="100%" cellpadding="0" cellspacing="0" onload="showRecaptcha('recaptcha_div');">
 	<tr valign="top">
