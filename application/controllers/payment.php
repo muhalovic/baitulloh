@@ -557,9 +557,9 @@ class Payment extends CI_Controller {
 		$this->email->subject('Konfirmasi Pembayaran');
 		$this->email->message($htmlMessage);
 
-		//$this->email->send();
+		$this->email->send();
 		//echo $data['EMAIL_SES'];	
-		$content = $this->load->view('email_payment',$data);
+		//$content = $this->load->view('email_payment',$data);
 	}
 	
 	
