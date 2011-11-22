@@ -74,20 +74,19 @@ echo $error_file;
                     <td colspan="3"><img src="<?=base_url()?>images/shared/blank.gif" width="480" height="1" alt="blank" /></td>
                 </tr>
                 <tr height="40">
-					<td colspan="2">
-                    <div id="" style="border:1px #e0e0e0 solid; background:#f5f5f5; color:#707070; padding:6px 17px 6px 17px;margin-bottom:2px;"><strong>INFORMASI PENGUMPULAN BERKAS FISIK / DOKUMEN ASLI KE KANTOR KAMILAH</strong></div>
-                     <div id="" style="border:1px #d8e1e9 solid; background:#e4edf5; color:#2e74b2; padding:6px 17px 6px 17px;margin-bottom:2px;">- Dokumen Asli harus diserahkan 3 minggu sebelum keberangkatan</div> 
-                     <div id="" style="border:1px #d8e1e9 solid; background:#f5f9fc; color:#2e74b2; padding:6px 17px 6px 17px;margin-bottom:2px;">- Pasport asli minimal 6 bulan masa berlaku dengan 3 suku kata. (contoh: Toni Budi bin Ahmad)</div> 
-                     <div id="" style="border:1px #d8e1e9 solid; background:#e4edf5; color:#2e74b2; padding:6px 17px 6px 17px;margin-bottom:2px;">- Buku Nikah asli bagi Suami / Istri</div> 
-                     <div id="" style="border:1px #d8e1e9 solid; background:#f5f9fc; color:#2e74b2; padding:6px 17px 6px 17px;margin-bottom:2px;">- Kartu Keluarga asli bagi Keluarga dengan Istri dan Anak-Anaknya</div> 
-                     <div id="" style="border:1px #d8e1e9 solid; background:#e4edf5; color:#2e74b2; padding:6px 17px 6px 17px;margin-bottom:2px;">- Akte Lahir asli bagi yang membawa Anak-Anak</div> 
-                     <div id="" style="border:1px #d8e1e9 solid; background:#f5f9fc; color:#2e74b2; padding:6px 17px 6px 17px;margin-bottom:2px;">- KTP/KK/Buku Nikah asli bagi yang sudah berusia 45th ke atas</div> 
-                     <div id="" style="border:1px #d8e1e9 solid; background:#e4edf5; color:#2e74b2; padding:6px 17px 6px 17px;margin-bottom:2px;">- copy KTP, copy Akte Lahir, copy Kartu Keluarga</div> 
-                     <div id="" style="border:1px #d8e1e9 solid; background:#f5f9fc; color:#2e74b2; padding:6px 17px 6px 17px;margin-bottom:2px;">- Akte Lahir Asli, copy KTP, copy KK bagi Wanita yang berangkat tanpa Muhrimnya</div> 
-                     <div id="" style="border:1px #d8e1e9 solid; background:#e4edf5; color:#2e74b2; padding:6px 17px 6px 17px;margin-bottom:2px;">- Buku Kuning / Buku Maningtis</div> 
-                     <div id="" style="border:1px #d8e1e9 solid; background:#f5f9fc; color:#2e74b2; padding:6px 17px 6px 17px;margin-bottom:2px;">- Foto Ukuran 3x4 (10 lembar) , 4x6 (5 lembar)</div> 
+					<td colspan="3">
+                    <div class="div_info_1"><strong>INFORMASI PENGUMPULAN BERKAS FISIK / DOKUMEN ASLI KE KANTOR KAMILAH</strong></div>
+                     <div class="div_info_2">- Dokumen Asli harus diserahkan 3 minggu sebelum keberangkatan</div> 
+                     <div class="div_info_1">- Pasport asli minimal 6 bulan masa berlaku dengan 3 suku kata. (contoh: Toni Budi bin Ahmad)</div> 
+                     <div class="div_info_2">- Buku Nikah asli bagi Suami / Istri</div> 
+                     <div class="div_info_1">- Kartu Keluarga asli bagi Keluarga dengan Istri dan Anak-Anaknya</div> 
+                     <div class="div_info_2">- Akte Lahir asli bagi yang membawa Anak-Anak</div> 
+                     <div class="div_info_1">- KTP/KK/Buku Nikah asli bagi yang sudah berusia 45th ke atas</div> 
+                     <div class="div_info_2">- copy KTP, copy Akte Lahir, copy Kartu Keluarga</div> 
+                     <div class="div_info_1">- Akte Lahir Asli, copy KTP, copy KK bagi Wanita yang berangkat tanpa Muhrimnya</div> 
+                     <div class="div_info_2">- Buku Kuning / Buku Maningtis</div> 
+                     <div class="div_info_1">- Foto Ukuran 3x4 (10 lembar) , 4x6 (5 lembar)</div> 
                      </td>
-                     <td><td>
 				</tr>
 			</table>
 			<!-- end id-form  -->

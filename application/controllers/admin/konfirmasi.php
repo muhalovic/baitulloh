@@ -138,6 +138,10 @@ class Konfirmasi extends CI_Controller {
 		$this->load->model('program_class_model');
 		$this->load->model('group_departure_model');
 		$this->load->model('jamaah_candidate_model');
+		$this->load->model('accounts_model');
+		
+		$this->load->library('email');
+		$this->load->library('parser');
 		
 		$data_payment = $this->payment_model->get_all_payment_ByID($id_payment, $jenis_pembayaran);
 		
@@ -203,12 +207,52 @@ class Konfirmasi extends CI_Controller {
 				// UPDATE PAGU GROUP
 				if($valid)
 				{
-					if($pagu_ga != 0 || $pagu_sv != 0)
+					if($pagu_ga != '0' || $pagu_sv != '0')
 					{
 						$data_pagu = array($field_group => ($pagu_awal - $total_candidate));
 						$this->group_departure_model->update_group($id_group, $data_pagu);
 					}
 				}
+				
+				// GET DATA AKUN
+				$akun = $this->accounts_model->get_account($id_user_a, $kode_reg_a)->row();
+				
+				if($row->JENIS_PEMBAYARAN == '1')
+				{
+					$jenis = "Uang Muka";
+					$harga = $this->cek_ribuan($row->JUMLAH_KAMAR)."$";
+				}
+				elseif($row->JENIS_PEMBAYARAN == '2')
+				{
+					$jenis = "Pelunasan";
+					$harga = $this->cek_ribuan($row->JUMLAH_KAMAR)."$";
+				}
+				elseif($row->JENIS_PEMBAYARAN == '3')
+				{
+					$jenis = "Airport Tax dan Manasik";
+					$harga = "Rp. ".$this->cek_ribuan($row->JUMLAH_KAMAR).", ";
+				}
+				
+				// KIRIM EMAIL PEMBERITAHUAN
+				$data['subject'] = "Konfirmasi Pembayaran";
+				$data['nama_user'] = $akun->NAMA_USER;
+				$data['tanggal'] = date("d F Y", strtotime($row->TANGGAL_ENTRI));
+				$data['harga'] = $harga;
+				$data['tipe_pembayaran'] = $jenis;
+				
+				$htmlMessage =  $this->parser->parse('admin/email_konfirmasi_payment', $data, true);
+				
+				$config['protocol'] = 'mail';
+				$config['mailtype'] = 'html';
+		
+				$this->email->initialize($config);
+				$this->email->from('noreply@umrahkamilah.com', 'Kamilah Wisata Muslim');
+				$this->email->to($akun->EMAIL);
+				$this->email->subject('Konfirmasi Pembayaran');
+				$this->email->message($htmlMessage);
+				$this->email->send();
+				
+			//	$content = $this->load->view('admin/email_konfirmasi_payment',$data);
 				
 			}
 			

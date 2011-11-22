@@ -177,27 +177,30 @@ class Biodata extends CI_Controller {
 	{
 		$this->load->model('jamaah_candidate_model');
 		$this->load->model('log_model');
-		
+
 		$id_user = $this->session->userdata("id_account");
 		$kode_reg = $this->session->userdata("kode_registrasi");
-		
+
 		$pecah_id = explode(',' , $this->input->post('items'));
-		$log = "menghapus 1 Calon Jamaah";
-		
+		$hitung_id = (count($pecah_id)) - 1;
+		$log = "menghapus ".$hitung_id." Calon Jamaah";
+		$hapus_foto = '';
+		$hapus_paspor = '';
+		$hapus_jamaah = '';
+
 		foreach($pecah_id as $index => $id_candidate)
 		{
-			if (is_numeric($id_candidate) && $id_candidate > 1)
+			if (is_numeric($id_candidate))
 			{
-				$this->hapus_gambar($id_candidate, "foto");
-				$this->hapus_gambar($id_candidate, "paspor");
-				$this->jamaah_candidate_model->hapus_data_calon_jamaah($id_candidate);
-				$this->log_model->log($id_user, $kode_reg, NULL, $log);
+				$hapus_foto .= $this->hapus_gambar($id_candidate, "foto");
+				$hapus_paspor .= $this->hapus_gambar($id_candidate, "paspor");
+				$hapus_jamaah .= $this->jamaah_candidate_model->hapus_data_calon_jamaah($id_candidate);
 			}
-			
-			
 		}
+
 		$error = "Data Calon Jamaah ( ID : ".$this->input->post('items').") berhasil dihapus";
 
+		$this->log_model->log($id_user, $kode_reg, NULL, $log);
 		$this->output->set_header($this->config->item('ajax_header'));
 		$this->output->set_output($error);
 	}
@@ -215,7 +218,7 @@ class Biodata extends CI_Controller {
 			{
 				if($tipe_gambar == "foto")
 				{
-					$file_gambar = './images/upload/'.$row->FOTO;
+					$file_gambar = './images/upload/foto/'.$row->FOTO;
 				}elseif($tipe_gambar == "paspor")
 				{
 					$file_gambar = './images/upload/paspor/'.$row->SCAN_PASPOR;

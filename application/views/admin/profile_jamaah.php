@@ -66,6 +66,9 @@ if(!isset($perihal_mendengkur)) { $perihal_mendengkur = 0; }
 if(!isset($id_candidate)) { $id_candidate = NULL; }
 if(!isset($kode_reg)) { $kode_reg = NULL; }
 
+$ceklist = "<img src='".base_url()."images/shared/icon_checklist_16px.gif' align='left'>";
+$unceklist = "<img src='".base_url()."images/shared/icon_unchecklist_16px.gif' align='left'>";
+
 $file_gambar = './images/upload/foto/'.$foto;
 if(is_file($file_gambar))
 { 
@@ -118,26 +121,26 @@ if(is_file($file_gambar))
   </tr>
   <tr>
     <td class="collage">Pelayanan Khusus</td>
-    <td><table width="90%" border="0" cellpadding="0" cellspacing="0" class="base no_magrin">
+    <td><table width="100%" border="0" cellpadding="0" cellspacing="0" class="base no_magrin">
       <tr>
-        <td width="31%" class="no_border">- <span class="<? echo ($khusus_kursi!=0) ? 'blok' : 'none' ?>">Kursi Roda</span></td>
-        <td class="no_border">- <span class="<? echo ($khusus_asisten!=0) ? 'blok' : 'none' ?>">Asisten Anak Khusus</span></td>
+        <td width="31%" class="no_border"><? echo ($khusus_kursi!=0) ? $ceklist : $unceklist ?>Kursi Roda</span></td>
+        <td class="no_border"><? echo ($khusus_asisten!=0) ? $ceklist : $unceklist ?>Asisten Anak Khusus</span></td>
         </tr>
       </table>
     </td>
   </tr>
   <tr>
     <td class="collage">Perihal Pribadi</td>
-    <td><table width="90%" border="0" cellpadding="0" cellspacing="0" class="base no_magrin">
+    <td><table width="100%" border="0" cellpadding="0" cellspacing="0" class="base no_magrin">
       <tr>
-        <td class="no_border">- <span class="<? echo ($perihal_darah!=0) ? 'blok' : 'none' ?>">Darah Tinggi</span></td>
-        <td class="no_border">- <span class="<? echo ($perihal_tinggi!=0) ? 'blok' : 'none' ?>">Takut Ketinggian</span></td>
-        <td class="no_border">- <span class="<? echo ($perihal_smooking!=0) ? 'blok' : 'none' ?>">Perokok</span></td>
+        <td class="no_border"><? echo ($perihal_darah!=0) ? $ceklist : $unceklist ?>Darah Tinggi</td>
+        <td class="no_border"><? echo ($perihal_tinggi!=0) ? $ceklist : $unceklist ?>Takut Ketinggian</td>
+        <td class="no_border"><? echo ($perihal_smooking!=0) ? $ceklist : $unceklist ?>Perokok</td>
         </tr>
       <tr>
-        <td class="no_border">- <span class="<? echo ($perihal_jantung!=0) ? 'blok' : 'none' ?>">Jantung</span></td>
-        <td class="no_border">- <span class="<? echo ($perihal_asma!=0) ? 'blok' : 'none' ?>">Asma</span></td>
-        <td class="no_border">- <span class="<? echo ($perihal_mendengkur!=0) ? 'blok' : 'none' ?>">Mendengkur</span></td>
+        <td class="no_border"><? echo ($perihal_jantung!=0) ? $ceklist : $unceklist ?>Jantung</td>
+        <td class="no_border"><? echo ($perihal_asma!=0) ? $ceklist : $unceklist ?>Asma</td>
+        <td class="no_border"><? echo ($perihal_mendengkur!=0) ? $ceklist : $unceklist ?>Mendengkur</td>
         </tr>
     </table></td>
   </tr>

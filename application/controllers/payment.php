@@ -35,11 +35,15 @@ class Payment extends CI_Controller {
 		
 		// PROSES QUERY
 		$data_packet = $this->packet_model->get_packet_byAcc($id_user, $kode_reg);
+		foreach($data_packet->result() as $row)
+		{
+			$id_packets = $row->ID_PACKET;
+		}
 		$data_jamaah = $this->jamaah_candidate_model->query_jamaah("select * from jamaah_candidate where ID_ACCOUNT = '".$id_user."' AND KODE_REGISTRASI = '".$kode_reg."' AND REQUESTED_NAMA != '0' AND REQUESTED_NAMA != '' AND STATUS_KANDIDAT != '0'");
 		$data_jamaah_maningtis = $this->jamaah_candidate_model->query_jamaah("select * from jamaah_candidate where ID_ACCOUNT = '".$id_user."' AND KODE_REGISTRASI = '".$kode_reg."' AND JASA_TAMBAHAN != '0' AND STATUS_KANDIDAT != '0'");
-		$data_pay_uangmuka = $this->payment_model->query_payment("select * from payment_view where ID_ACCOUNT = '".$id_user."' AND KODE_REGISTRASI = '".$kode_reg."' AND JENIS_PEMBAYARAN = '1'");
-		$data_pay_lunas = $this->payment_model->query_payment("select * from payment_view where ID_ACCOUNT = '".$id_user."' AND KODE_REGISTRASI = '".$kode_reg."' AND JENIS_PEMBAYARAN = '2'");
-		$data_pay_tax = $this->payment_model->query_payment("select * from payment_view where ID_ACCOUNT = '".$id_user."' AND KODE_REGISTRASI = '".$kode_reg."' AND JENIS_PEMBAYARAN = '3'");
+		$data_pay_uangmuka = $this->payment_model->query_payment("select * from payment_view where ID_ACCOUNT = '".$id_user."' AND KODE_REGISTRASI = '".$kode_reg."' AND ID_PACKET = '".$id_packets."' AND JENIS_PEMBAYARAN = '1'");
+		$data_pay_lunas = $this->payment_model->query_payment("select * from payment_view where ID_ACCOUNT = '".$id_user."' AND KODE_REGISTRASI = '".$kode_reg."' AND ID_PACKET = '".$id_packets."' AND JENIS_PEMBAYARAN = '2'");
+		$data_pay_tax = $this->payment_model->query_payment("select * from payment_view where ID_ACCOUNT = '".$id_user."' AND KODE_REGISTRASI = '".$kode_reg."' AND ID_PACKET = '".$id_packets."' AND JENIS_PEMBAYARAN = '3'");
 		$data_total_jamaah = $this->jamaah_candidate_model->get_total_jamaah($id_user, $kode_reg);
 		
 		
@@ -257,6 +261,7 @@ class Payment extends CI_Controller {
 	{
 		$this->load->library('form_validation');
 		$this->load->model('payment_model');
+		$this->load->model('packet_model');
 		$this->load->model('log_model');
 		
 		$log = "Melakukan Konfirmasi pembayaran";
@@ -317,9 +322,20 @@ class Payment extends CI_Controller {
 			$pecah_tanggal = explode("/", $tgl_transfer);
 			$tgl_transfer_fix = $pecah_tanggal[2]."-".$pecah_tanggal[1]."-".$pecah_tanggal[0];
 			
+			// get id packet
+			$data_packet = $this->packet_model->get_packet_status($id_user, kode_reg);
+			if($data_packet->result() != NULL)
+			{
+				foreach($data_packet->result() as $row)
+				{
+					$id_packet = $row->ID_PACKET;
+				}
+			}
+			
 			$data = array(
 				'ID_ACCOUNT' => $id_user,
 				'KODE_REGISTRASI' => $kode_reg,
+				'ID_PACKET' => $id_packet,
 				'JENIS_PEMBAYARAN' => $metode,
 				'ATAS_NAMA' => $nama_rekening,
 				'BANK_PENGIRIM' => $bank_pengirim,

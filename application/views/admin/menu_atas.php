@@ -61,6 +61,7 @@
 							<div class="select_sub show">
 									<ul class="sub">
 										<li class="<?=($this->uri->segment(2)==='master_group_departure')?'sub_current':''?>"><a href="<? echo site_url() ?>/admin/master_group_departure/">Group Departure</a></li>
+                                        <li class="<?=($this->uri->segment(2)==='master_room')?'sub_current':''?>"><a href="<? echo site_url() ?>/admin/master_room/">Kamar</a></li>
 										
 									</ul>
 							</div>
