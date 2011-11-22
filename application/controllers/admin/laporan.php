@@ -128,64 +128,18 @@ class Laporan extends CI_Controller {
 					}
 					
 				}else{
-					
-					for($i=1;$i<=$max_row;$i++)
-					{
-						$data['list_jamaah'] .= '
-						  <tr>
-							<td align="center">'.$i.'</td>
-							<td></td>
-							<td align="center"></td>
-							<td align="center"></td>
-							<td align="center"></td>
-							<td align="center"></td>
-							<td align="center"></td>
-							<td align="center"></td>
-							<td></td>
-							<td></td>
-						  </tr>';
-					}
+						// loping
 				}
 			}
 			
 			$nomor = $no+1;
 			if($nomor < $max_row)
 			{
-				for($i=$nomor;$i<=$max_row;$i++)
-				{
-					$data['list_jamaah'] .= '
-					  <tr>
-						<td align="center">'.$i.'</td>
-						<td></td>
-						<td align="center"></td>
-						<td align="center"></td>
-						<td align="center"></td>
-						<td align="center"></td>
-						<td align="center"></td>
-						<td align="center"></td>
-						<td></td>
-						<td></td>
-					  </tr>';
-				}
+				// loping
 			}
 		}else{
 			
-			for($i=1;$i<=$max_row;$i++)
-			{
-				$data['list_jamaah'] .= '
-				  <tr>
-					<td align="center">'.$i.'</td>
-					<td></td>
-					<td align="center"></td>
-					<td align="center"></td>
-					<td align="center"></td>
-					<td align="center"></td>
-					<td align="center"></td>
-					<td align="center"></td>
-					<td></td>
-					<td></td>
-				  </tr>';
-			}
+			// loping
 		}
 		
 		$pecah_pulang = explode("-",$tgl_berangkat);
