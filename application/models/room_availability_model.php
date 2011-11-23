@@ -51,13 +51,16 @@ class Room_availability_model extends CI_Model {
 		$this->db->join('group_departure g','ra.ID_GROUP = g.ID_GROUP');	
 		
 		$this->CI->flexigrid->build_query();
-		
 		$return['records'] = $this->db->get();
-		$this->db->select('count(ID_AVAILABILITY) as record_count')->from('room_availability');
+		
+		$this->db->select('ra.*, rt.JENIS_KAMAR, g.KODE_GROUP, p.NAMA_PROGRAM');
+		$this->db->from('room_availability ra');
+		$this->db->join('room_type rt','ra.ID_ROOM_TYPE = rt.ID_ROOM_TYPE');	
+		$this->db->join('program_class p','ra.ID_PROGRAM = p.ID_PROGRAM');	
+		$this->db->join('group_departure g','ra.ID_GROUP = g.ID_GROUP');
+		
 		$this->CI->flexigrid->build_query(FALSE);
-		$record_count = $this->db->get();
-		$row = $record_count->row();
-		$return['record_count'] = $row->record_count;
+		$return['record_count'] = $this->db->count_all_results();
 	
 		return $return;
 	}

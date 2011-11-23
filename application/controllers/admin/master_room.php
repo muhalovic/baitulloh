@@ -36,7 +36,7 @@ class Master_room extends CI_Controller {
 		$colModel['JENIS_KAMAR'] 		= array('Tipe Kamar',150,TRUE,'center',1);
 		$colModel['KODE_GROUP'] 		= array('Nama Group',150,TRUE,'center',1);
 		$colModel['NAMA_PROGRAM'] 		= array('Program',150,TRUE,'center',1);
-		$colModel['HARGA'] 				= array('Harga ($)',150,TRUE,'center',1);
+		$colModel['HARGA_KAMAR']		= array('Harga ($)',150,TRUE,'center',1);
 		$colModel['JUMLAH_KAMAR'] 		= array('Jumlah Kamar',100,FALSE,'center',1);
 		$colModel['EDIT']		 		= array('Edit',80,FALSE,'center',0);
 		
@@ -113,7 +113,7 @@ class Master_room extends CI_Controller {
 		$this->load->model('group_departure_model');
 		$this->load->model('room_availability_model');
 		
-		$valid_fields = array('JENIS_KAMAR','KODE_GROUP','NAMA_PROGRAM','HARGA','JUMLAH_KAMAR', 'EDIT');
+		$valid_fields = array('JENIS_KAMAR','KODE_GROUP','NAMA_PROGRAM','HARGA_KAMAR','JUMLAH_KAMAR', 'EDIT');
 		$this->flexigrid->validate_post('ID_AVAILABILITY','desc',$valid_fields);
 		
 		$records = $this->room_availability_model->get_grid_allover_room();

@@ -323,7 +323,7 @@ class Payment extends CI_Controller {
 			$tgl_transfer_fix = $pecah_tanggal[2]."-".$pecah_tanggal[1]."-".$pecah_tanggal[0];
 			
 			// get id packet
-			$data_packet = $this->packet_model->get_packet_status($id_user, kode_reg);
+			$data_packet = $this->packet_model->get_packet_status($id_user, $kode_reg);
 			if($data_packet->result() != NULL)
 			{
 				foreach($data_packet->result() as $row)
@@ -368,7 +368,7 @@ class Payment extends CI_Controller {
 				$this->send_email($konfirmasi);
 				
 				redirect(site_url().'/payment/');
-			
+				
 			}else{
 				$this->front();
 			}
