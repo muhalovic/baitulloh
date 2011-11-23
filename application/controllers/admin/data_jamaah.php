@@ -270,7 +270,7 @@ class Data_jamaah extends CI_Controller {
 		$province = $this->province_model->get_all_province();
 		$relation = $this->relation_model->get_all_relation();
 		$chlothes = $this->clothes_size_model->get_all_clothes();
-		$paket = $this->packet_model->get_packet_byAccAll($id_account, $kode_reg);
+		$paket = $this->packet_model->get_packet_byAcc($id_account, $kode_reg);
 		$account = $this->accounts_model->get_data_account($id_account)->row(); 
 		
 		
@@ -607,7 +607,7 @@ class Data_jamaah extends CI_Controller {
 				$province = $this->province_model->get_all_province();
 				$relation = $this->relation_model->get_all_relation();
 				$chlothes = $this->clothes_size_model->get_all_clothes();
-				$packet = $this->packet_model->get_packet_byAccAll($id_account, $account->KODE_REGISTRASI);
+				$packet = $this->packet_model->get_packet_byAcc($id_account, $account->KODE_REGISTRASI);
 				
 				foreach($packet->result() as $row)
 				{
