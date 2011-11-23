@@ -182,22 +182,25 @@ class Biodata extends CI_Controller {
 		$kode_reg = $this->session->userdata("kode_registrasi");
 		
 		$pecah_id = explode(',' , $this->input->post('items'));
-		$log = "menghapus 1 Calon Jamaah";
+		$hitung_id = (count($pecah_id)) - 1;
+		$log = "menghapus ".$hitung_id." Calon Jamaah";
+		$hapus_foto = '';
+		$hapus_paspor = '';
+		$hapus_jamaah = '';
 		
 		foreach($pecah_id as $index => $id_candidate)
 		{
-			if (is_numeric($id_candidate) && $id_candidate > 1)
+			if (is_numeric($id_candidate))
 			{
-				$this->hapus_gambar($id_candidate, "foto");
-				$this->hapus_gambar($id_candidate, "paspor");
-				$this->jamaah_candidate_model->hapus_data_calon_jamaah($id_candidate);
-				$this->log_model->log($id_user, $kode_reg, NULL, $log);
+				$hapus_foto .= $this->hapus_gambar($id_candidate, "foto");
+				$hapus_paspor .= $this->hapus_gambar($id_candidate, "paspor");
+				$hapus_jamaah .= $this->jamaah_candidate_model->hapus_data_calon_jamaah($id_candidate);
 			}
-			
-			
 		}
+		
 		$error = "Data Calon Jamaah ( ID : ".$this->input->post('items').") berhasil dihapus";
-
+		
+		$this->log_model->log($id_user, $kode_reg, NULL, $log);
 		$this->output->set_header($this->config->item('ajax_header'));
 		$this->output->set_output($error);
 	}
@@ -245,6 +248,7 @@ class Biodata extends CI_Controller {
 		$this->load->model('relation_model');
 		$this->load->model('room_packet_model');
 		$this->load->model('packet_model');
+		$this->load->model('jamaah_candidate_model');
 		
 		$id_account = $this->session->userdata('id_account');
 		$kode_reg = $this->session->userdata('kode_registrasi');
@@ -280,7 +284,17 @@ class Biodata extends CI_Controller {
 		if($kamar->result() != NULL)
 		{
 			foreach($kamar->result() as $row){
-				$kamar_options[$row->ID_ROOM_PACKET] = $row->JENIS_KAMAR;
+				
+				$total_kamar = $row->CAPACITY * $row->JUMLAH;
+				
+				$data_jamaah = $this->jamaah_candidate_model->get_jamaah_byRoomPacket($id_account, $kode_reg, $row->ID_ROOM_PACKET);
+				if($data_jamaah->num_rows() < $total_kamar)
+				{
+					$sisa_bed = $total_kamar - $data_jamaah->num_rows();
+					$kamar_options[$row->ID_ROOM_PACKET] = $row->JENIS_KAMAR." - sisa ".$sisa_bed." bed";
+				}else{
+					
+				}
 			}
 		}
 		
@@ -556,6 +570,7 @@ class Biodata extends CI_Controller {
 				$this->load->model('relation_model');
 				$this->load->model('room_packet_model');
 				$this->load->model('packet_model');
+				$this->load->model('jamaah_candidate_model');
 				
 				$id_account = $this->session->userdata('id_account');
 				$kode_reg = $this->session->userdata('kode_registrasi');
@@ -589,8 +604,21 @@ class Biodata extends CI_Controller {
 				$kamar = $this->room_packet_model->get_room_packet_byIDpack($id_packet);
 				if($kamar->result() != NULL)
 				{
-					foreach($kamar->result() as $row){
-						$kamar_options[$row->ID_ROOM_PACKET] = $row->JENIS_KAMAR;
+					foreach($kamar->result() as $row)
+					{
+						$total_kamar = $row->CAPACITY * $row->JUMLAH;
+				
+						$data_jamaah = $this->jamaah_candidate_model->get_jamaah_byRoomPacket($id_account, $kode_reg, $row->ID_ROOM_PACKET);
+						if($data_jamaah->num_rows() < $total_kamar)
+						{
+							$sisa_bed = $total_kamar - $data_jamaah->num_rows();
+							$kamar_options[$row->ID_ROOM_PACKET] = $row->JENIS_KAMAR." - sisa ".$sisa_bed." bed";
+						}else{
+							if($data['e_kamar'] == $row->ID_ROOM_PACKET)
+							{
+								$kamar_options[$row->ID_ROOM_PACKET] = $row->JENIS_KAMAR." - sisa 0 bed";
+							}
+						}
 					}
 				}
 				
