@@ -61,6 +61,8 @@ class Data_jamaah extends CI_Controller {
 		
 		$buttons[] = array('separator');
 		$buttons[] = array('Tambah','add','js');
+		$buttons[] = array('separator');
+		$buttons[] = array('Hapus','delete','js');
         $buttons[] = array('separator');
 				
 		$grid_js = build_grid_js('flex1',site_url("/admin/data_jamaah/grid_calon_jamaah/"),$colModel,'no','asc',$gridParams,$buttons);
@@ -74,7 +76,28 @@ class Data_jamaah extends CI_Controller {
 					location.href='".site_url('/admin/data_akun/')."';
 				}
 
-    			
+    			if (com=='Hapus'){
+				   if($('.trSelected',grid).length>0){
+					   if(confirm('Anda yakin ingin menghapus ' + $('.trSelected',grid).length + ' buah data?')){
+							var items = $('.trSelected',grid);
+							var itemlist ='';
+							for(i=0;i<items.length;i++){
+								itemlist+= items[i].id.substr(3)+',';
+							}
+							$.ajax({
+							   type: 'POST',
+							   url: '".site_url('/admin/data_jamaah/hapus_data_calon_jamaah/')."',
+							   data: 'items='+itemlist,
+							   success: function(data){
+								$('#flex1').flexReload();
+								alert(data);
+							   }
+							});
+						}
+					} else {
+						return false;
+					} 
+				}
 
              
 			}
@@ -116,6 +139,7 @@ class Data_jamaah extends CI_Controller {
 		foreach($program->result() as $row){
 						$program_options[$row->ID_PROGRAM] = $row->NAMA_PROGRAM;
 		}
+		$program_options['100'] = 'SEMUA PROGRAM';
 
 		$data['group_options'] = $group_options;
 		$data['program_options'] = $program_options;
@@ -202,6 +226,66 @@ class Data_jamaah extends CI_Controller {
 			$this->output->set_output($this->flexigrid->json_build($records['record_count'],$record_items));
 		else
 			$this->output->set_output('{"page":"1","total":"0","rows":[]}');			
+	}
+	
+	function hapus_data_calon_jamaah()
+	{
+		$this->load->model('jamaah_candidate_model');
+		$this->load->model('log_model');
+
+		$pecah_id = explode(',' , $this->input->post('items'));
+		$hitung_id = (count($pecah_id)) - 1;
+		$log = "menghapus ".$hitung_id." Calon Jamaah";
+		$hapus_foto = '';
+		$hapus_paspor = '';
+		$hapus_jamaah = '';
+
+		foreach($pecah_id as $index => $id_candidate)
+		{
+			if (is_numeric($id_candidate))
+			{
+				$hapus_foto .= $this->hapus_gambar($id_candidate, "foto");
+				$hapus_paspor .= $this->hapus_gambar($id_candidate, "paspor");
+				$hapus_jamaah .= $this->jamaah_candidate_model->hapus_data_calon_jamaah($id_candidate);
+			}
+		}
+
+		$error = "Data Calon Jamaah ( ID : ".$this->input->post('items').") berhasil dihapus";
+
+		$this->log_model->log(NULL, NULL, $this->session->userdata('id_user'), $log);
+		$this->output->set_header($this->config->item('ajax_header'));
+		$this->output->set_output($error);
+	}
+	
+	function hapus_gambar($id_candidate, $tipe_gambar)
+	{
+		$this->load->model('jamaah_candidate_model');
+		
+		$hapus_foto = $this->jamaah_candidate_model->get_data_berdasarkan_id_candidate($id_candidate);
+		
+		if($hapus_foto->result() != NULL)
+		{
+			foreach($hapus_foto->result() as $row)
+			{
+				if($tipe_gambar == "foto")
+				{
+					$file_gambar = './images/upload/foto/'.$row->FOTO;
+				}elseif($tipe_gambar == "paspor")
+				{
+					$file_gambar = './images/upload/paspor/'.$row->SCAN_PASPOR;
+				}else{
+					$file_gambar = NULL;
+				}
+				
+				if(is_file($file_gambar))
+				{
+					unlink($file_gambar);
+					return true;
+				}else{
+					return false;
+				}
+			}
+		}
 	}
 	
 	function paspor_view($id_candidate, $kode_reg)

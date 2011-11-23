@@ -9,7 +9,8 @@
 			labelsx: ' Available ',
 			labeldx: ' Selected ',
 			autoSort: false,
-			autoSortAvailable: false
+			autoSortAvailable: false,
+                        maxSelected: 0
 			});
 	});
 	
@@ -19,24 +20,11 @@
 		else
 			document.form_rooming.submit_button.disabled = true;
 	}
-	
-	function getJamaah(room){
+
+        function getMaxJamaah(room){
 		if (room.value != 0 && room.selectedIndex != 0){
-			var prp = room[room.selectedIndex].text;			
-			document.getElementById("div_room").innerHTML = prp;
 			
-				$.ajax({
-						url: "<?=base_url();?>index.php/rooming/getJamaah/",
-						global: false,
-						type: "POST",
-						async: false,
-						dataType: "html",
-						data: "id_room="+ room.value, //the name of the $_POST variable and its value
-						success: function (response) {
-							 document.getElementById("div_prev").innerHTML = response;
-						}
-				});
-							
+
 				$.ajax({
 						url: "<?=base_url();?>index.php/rooming/getMax_room/",
 						global: false,
@@ -45,8 +33,7 @@
 						dataType: "html",
 						data: "id_room="+ room.value, //the name of the $_POST variable and its value
 						success: function (response) {
-							var sisa = "Kuota Maksimum Kamar "+prp+" =  ";
-							document.getElementById("div_max").innerHTML = sisa+response+" Orang";
+
 							$('#fourth').multiselect2side('destroy');
 							$('#fourth').multiselect2side({
 								selectedPosition: 'right',
@@ -54,11 +41,17 @@
 								labelsx: ' Available ',
 								labeldx: ' Selected ',
 								autoSort: false,
-								autoSortAvailable: false,
+								autoSortAvailable: true,
 								maxSelected: response
 							});
+
+                                                        var prp = room[room.selectedIndex].text;
+			document.getElementById("div_room").innerHTML = prp;
+                                                        var sisa = "Kuota Maksimum Kamar "+prp+" =  ";
+							document.getElementById("div_max").innerHTML = sisa+response+" Orang";
 						}
 				});
+                                getJamaah(room.value);
 		}else {
 			document.getElementById("div_room").innerHTML = "";
 			document.getElementById("div_max").innerHTML = "";
@@ -66,6 +59,33 @@
 		}
 		// return false;
 	}
+	
+	function getJamaah(room){
+//		if (room.value != 0 && room.selectedIndex != 0){
+//			var prp = room[room.selectedIndex].text;
+//			document.getElementById("div_room").innerHTML = prp;
+			
+				$.ajax({
+						url: "<?=base_url();?>index.php/rooming/getJamaah/",
+						global: false,
+						type: "POST",
+						async: false,
+						dataType: "html",
+						data: "id_room="+ room, //the name of the $_POST variable and its value
+						success: function (response) {
+							 document.getElementById("div_prev").innerHTML = response;
+						}
+                                                
+				});
+                                
+//		}else {
+//			document.getElementById("div_room").innerHTML = "";
+//			document.getElementById("div_max").innerHTML = "";
+//			document.getElementById("div_prev").innerHTML = "";
+//		}
+		// return false;
+	}
+            
 </script>
 
 <?php echo form_open('rooming/book_room', array('name' => 'form_rooming')); ?>
@@ -97,7 +117,7 @@
 					<th valign="top">Kamar</th>
 					<td>
 						<? $room = 0; if(set_value('room')!='') $room = set_value('room');
-							echo form_dropdown('room', $room_options, $room,'id="room" class="styledselect-kamar2" onchange="getJamaah(this);"'); ?>
+							echo form_dropdown('room', $room_options, $room,'id="room" class="styledselect-kamar2" onchange="getMaxJamaah(this);"'); ?>
 					</td>
 					<td>
 						<? if(form_error('room') != '') {?>
@@ -111,10 +131,18 @@
 					<td>
 						<? if (isset($list_candidate)) {$candidate = 0; if(set_value('candidate[]')!='') $candidate = set_value('candidate[]');
 							echo form_dropdown('candidate[]', $list_candidate, $candidate,'id="fourth" multiple="multiple"'); }?>
-						<br /><br />
+						<br />                                                
+                                                <br />
 						<div id="div_max"></div>
+                                                <br>
+                                                <? if(form_error('candidate') != '') {?>
+						<div class="error-left"></div>
+						<div class="error-inner"><?php echo form_error('candidate'); ?></div>
+						<? }?>
 					</td>
-					<td></td>
+					<td>
+                                            
+                                        </td>
 				</tr>
 				<tr>
 					<th valign="top">Konfirmasi</th>

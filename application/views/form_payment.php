@@ -147,10 +147,10 @@ echo $error_file;
                 </tr>
                 <tr height="40">
 					<td colspan="3">
-                    <div id="" style="border:1px #e0e0e0 solid; background:#f5f5f5; color:#707070; padding:6px 17px 6px 17px;margin-bottom:2px;"><strong>INFORMASI PEMBAYARAN PAKET UMRAH</strong></div>
-                     <div id="" style="border:1px #d8e1e9 solid; background:#e4edf5; color:#2e74b2; padding:6px 17px 6px 17px;margin-bottom:2px;">- Jenis Pembayaran Uang Muka dan Pelunasan menggunakan US Dollar ($)</div> 
-                     <div id="" style="border:1px #d8e1e9 solid; background:#f5f9fc; color:#2e74b2; padding:6px 17px 6px 17px;margin-bottom:2px;">- Jenis Pembayaran Airport Tax & Manasik menggunakan Rupiah (Rp.)</div> 
-                     <div id="" style="border:1px #d8e1e9 solid; background:#e4edf5; color:#2e74b2; padding:6px 5px 6px 17px;margin-bottom:2px;">- Format Penulisan Nominal : 1.100 USD ditulis 1100 atau Rp.700.000 ditulis 700000</div> 
+                    <div class="div_info_1"><strong>INFORMASI PEMBAYARAN PAKET UMRAH</strong></div>
+                     <div class="div_info_2">- Jenis Pembayaran Uang Muka dan Pelunasan menggunakan US Dollar ($)</div> 
+                     <div class="div_info_1">- Jenis Pembayaran Airport Tax & Manasik menggunakan Rupiah (Rp.)</div> 
+                     <div class="div_info_2">- Format Penulisan Nominal : 1.100 USD ditulis 1100 atau Rp.700.000 ditulis 700000</div> 
                      </td>
 				</tr>
 			</table>

@@ -23,6 +23,15 @@ class Room_model extends CI_Model {
 		return $this->db->get();
 	}
 
+        function get_room_capacity($id){
+            $this->db->select("*");
+		$this->db->from("room");
+                $this->db->join("room_type", "room_type.ID_ROOM_TYPE=room.ID_ROOM_TYPE");
+		$this->db->where("ID_ROOM", $id);
+
+		return $this->db->get();
+        }
+
         function update_room($id, $data){
 		$this->db->trans_begin();
                 $this->db->where("ID_ROOM", $id);
