@@ -1,5 +1,14 @@
 <form method="post" action="" >
-	
+<?php if(isset($notification)) {?>
+<div id="message-green">
+						<table border="0" width="100%" cellpadding="0" cellspacing="0">
+							<tr>
+								<td class="green-left">Grup Keberangkatan Berhasil <?php echo $type ?>.</td>
+								<td class="green-right"><a class="close-green"><img src="<?php echo base_url().'images/table/icon_close_green.gif' ?>"   alt="" onclick="window.location = '<?php echo base_url().'index.php/admin/master_group_departure/' ?>'" /></a></td>
+							</tr>
+						</table><br>
+					</div>
+<?php }?>	
 <table border="0" width="100%" cellpadding="0" cellspacing="0">
 	<tr valign="top">
 		<td>		

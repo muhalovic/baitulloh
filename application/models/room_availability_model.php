@@ -92,6 +92,22 @@ class Room_availability_model extends CI_Model {
 		
 		return TRUE;
 	}
+	
+	function get_room_availability_related_with_program($id_program){
+            $this->db->select("*");
+			$this->db->from("room_availability");
+			$this->db->where("ID_PROGRAM", $id_program);
+		
+		return $this->db->get();
+	}
+	
+	function get_room_availability_related_with_group($id_group){
+            $this->db->select("*");
+			$this->db->from("room_availability");
+			$this->db->where("ID_GROUP", $id_group);
+		
+		return $this->db->get();
+	}
 
 }
 

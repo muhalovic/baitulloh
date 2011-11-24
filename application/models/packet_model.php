@@ -104,6 +104,22 @@ class Packet_model extends CI_Model {
 		
 		return $this->db->get();
 	}
+
+	function get_packet_related_with_program($id_program){
+            $this->db->select("*");
+			$this->db->from("packet");
+			$this->db->where("ID_PROGRAM", $id_program);
+		
+		return $this->db->get();
+	}
+	
+	function get_packet_related_with_group($id_group){
+            $this->db->select("*");
+			$this->db->from("packet");
+			$this->db->where("ID_GROUP", $id_group);
+		
+		return $this->db->get();
+	}
 }
 
 ?>
