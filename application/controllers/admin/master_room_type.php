@@ -6,11 +6,11 @@
 
  if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 /**
- * Description of master_program_class
+ * Description of master_room_type
  *
  * @author wiwit
  */
-class master_program_class extends CI_Controller{
+class master_room_type extends CI_Controller{
 
     public function  __construct() {
         parent::__construct();
@@ -23,123 +23,119 @@ class master_program_class extends CI_Controller{
 
     public function index(){
         
-		$this->view_list_program_class();
+		$this->view_list_room_type();
     }
 
 // ----------------- Public view -----------------------------------------------
 
-    public function edit_program_class($program_class_id=null){
+    public function edit_room_type($room_type_id=null){
        
-		if(is_null($program_class_id)){
-			redirect('master_program_class/view_list_program_class');
+		if(is_null($room_type_id)){
+			redirect('master_room_type/view_list_room_type');
 
 		}
-          if($this->validate_form_program_class()==true){
-            $this->form_program_classDB("update",$program_class_id);
-			redirect('admin/master_program_class/edit_program_class/'.$program_class_id);
+          if($this->validate_form_room_type()==true){
+            $this->form_room_typeDB("update",$room_type_id);
+			redirect('admin/master_room_type/edit_room_type/'.$room_type_id);
             }
             else{
-                $this->load_form_program_class($program_class_id);
+                $this->load_form_room_type($room_type_id);
             }
     }
 
-    // public function view_program_class(){
+    // public function view_room_type(){
        // Auth::cekSession('');
          
     // }
 
-    public function add_program_class(){
+    public function add_room_type(){
       
       
-        if($this->validate_form_program_class()==true){
-                $this->form_program_classDB("insert");
+        if($this->validate_form_room_type()==true){
+                $this->form_room_typeDB("insert");
 				
-				redirect('admin/master_program_class/add_program_class');
+				redirect('admin/master_room_type/add_room_type');
             }
             else{
 
-                $this->load_form_program_class();
+                $this->load_form_room_type();
             }
     }
 
-    public function delete_program_class(){
-		$this->load->model('program_class_model');
-		$this->load->model('packet_model');
+    public function delete_room_type(){
+		$this->load->model('room_type_model');
+		$this->load->model('room_packet_model');
 		$this->load->model('room_model');
 		$this->load->model('room_availability_model');
 		$this->load->model('log_model');
         
 		if(!isset($_POST['items'])){
-			redirect('admin/master_program_class/view_list_program_class');
-
+			redirect('admin/master_room_type/view_list_room_type');
 		}
 		
 		$error = '';
 		$success = '';
-		$program_class_ids = explode(',',$this->input->post('items'));
+		$room_type_ids = explode(',',$this->input->post('items'));
 		
-		foreach($program_class_ids as $program_class_id){
-
-		$value = $this->program_class_model->get_program($program_class_id)->result();
+		foreach($room_type_ids as $room_type_id){
+		$value = $this->room_type_model->get_roomType($room_type_id)->result();
         
+		
 		if(!empty($value)){
-		$paket = $this->packet_model->get_packet_related_with_program($program_class_id)->result();
-		$room = $this->room_model->get_room_related_with_program($program_class_id)->result();
-		$room_availability = $this->room_availability_model->get_room_availability_related_with_program($program_class_id)->result();
+		$room_paket = $this->room_packet_model->get_room_packet_related_with_room_type($room_type_id)->result();
+		$room = $this->room_model->get_room_related_with_room_type($room_type_id)->result();
+		$room_availability = $this->room_availability_model->get_room_availability_related_with_room_type($room_type_id)->result();
 
 		
-			if(!empty($paket)  || !empty($room)  ||  !empty($room_availability)){
-				if($error != ''){
+			if(!empty($room_paket)  || !empty($room)  ||  !empty($room_availability)){
+			
+			if($error != ''){
 				$error .= ', ';
-				}
-				$error .= $value[0]->NAMA_PROGRAM;	
-		
+			}
+				$error .= $value[0]->JENIS_KAMAR;	
 			}
 			else{
-			 $log = "Menghapus program dengan id ".$program_class_id;
-			 $this->program_class_model->delete_program($program_class_id);
+			 $log = "Menghapus tipe kamar dengan id ".$room_type_id;
+			 $this->room_type_model->delete_room_type($room_type_id);
 			 if($success != ''){
 				$success .= ', ';
 			 }
-			 $success .= $value[0]->NAMA_PROGRAM;
-			 
+			 $success .= $value[0]->JENIS_KAMAR;
 			 $this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
 			}
-        }       
+        }
+		
 		}
+		
+		
 		$messege = '';
 		
 		if($success != ''){
-			$messege .= 'data program : '.$success.' berhasil dihapus';
+			$messege .= 'data tipe kamar : '.$success.' berhasil dihapus';
 		}
 		if($success != '' && $error != ''){
 			$messege .= ' sedangkan ';
 		}
 		if($error != ''){
-			$messege .= 'data program : '.$error.' tidak dapat dihapus karena masih digunakan data yang lain';
+			$messege .= 'data tipe kamar : '.$error.' tidak dapat dihapus karena masih digunakan data yang lain';
 		}
 		
 		$this->output->set_header($this->config->item('ajax_header'));
 		$this->output->set_output($messege);
        
-       
     }
     
 
-    public function view_list_program_class(){
+    public function view_list_room_type(){
          $this->load->helper('flexigrid');
 
 		
 		$colModel['no'] = array('No',30,TRUE,'center',0);
 		$colModel['edit'] = array('Edit',50,FALSE,'center',0);
-		// $colModel['delete'] = array('Delete',50,FALSE,'center',0);
 		
-		$colModel['NAMA_PROGRAM'] = array('Nama Program',100,TRUE,'center',2);
-		$colModel['KETERANGAN'] = array('Keterangan',100,TRUE,'center',2);
-		$colModel['HOTEL_MAKKAH'] = array('Hotel Makkah',175,TRUE,'center',2);
-		$colModel['HOTEL_MADINAH'] = array('Hotel Madinah',175,TRUE,'center',2);
-		$colModel['MASKAPAI'] = array('Maskapai',150,TRUE,'center',2);
-		$colModel['TRANSPORTASI'] = array('Transportasi',150,TRUE,'center',2);
+		
+		$colModel['JENIS_KAMAR'] = array('Jenis Kamar',100,TRUE,'center',2);
+		$colModel['CAPACITY'] = array('Kapasitas',100,TRUE,'center',2);
 		
 
 
@@ -151,27 +147,26 @@ class master_program_class extends CI_Controller{
 			'rpOptions' => '[5,10,15,20,25,40]',
 			'pagestat' => 'Menampilkan: {from} hingga {to} dari {total} hasil.',
 			'blockOpacity' => 0.5,
-			'title' => 'Daftar Kelas Program',
+			'title' => 'Daftar Tipe Kamar',
 			'showTableToggleBtn' => false
 		);
 
 		$buttons[] = array('separator');
 		$buttons[] = array('Tambah','add','js');
-
-        $buttons[] = array('separator');		
+        $buttons[] = array('separator');
 		$buttons[] = array('Hapus','delete','js');
 
-		$content['js_grid'] = build_grid_js('flex1',base_url()."index.php/admin/master_program_class/json_list_program_class",$colModel,'no','asc',$gridParams,$buttons);
+		$content['js_grid'] = build_grid_js('flex1',base_url()."index.php/admin/master_room_type/json_list_room_type",$colModel,'no','asc',$gridParams,$buttons);
 		$content['added_js'] =
 			"<script type='text/javascript'>
 			function js(com,grid)
 			{
 				if(com=='Tambah')
 				{
-					location.href='".site_url('/admin/master_program_class/add_program_class')."';
+					location.href='".site_url('/admin/master_room_type/add_room_type')."';
 				}
-
-    			if (com=='Hapus'){
+				
+				if (com=='Hapus'){
 				   if($('.trSelected',grid).length>0){
 					   if(confirm('Anda yakin ingin menghapus ' + $('.trSelected',grid).length + ' buah data?')){
 							var items = $('.trSelected',grid);
@@ -181,7 +176,7 @@ class master_program_class extends CI_Controller{
 							}
 							$.ajax({
 							   type: 'POST',
-							   url: '".site_url('/admin/master_program_class/delete_program_class')."',
+							   url: '".site_url('/admin/master_room_type/delete_room_type')."',
 							   data: 'items='+itemlist,
 							   success: function(data){
 								$('#flex1').flexReload();
@@ -192,6 +187,7 @@ class master_program_class extends CI_Controller{
 					}
 				}
 				
+    			
 
              
 			}
@@ -199,13 +195,13 @@ class master_program_class extends CI_Controller{
 
 			function edit(hash){
 				if(confirm('Anda yakin ingin merubah data ini?')){
-					location.href='".site_url()."/admin/master_program_class/edit_program_class/'+hash;
+					location.href='".site_url()."/admin/master_room_type/edit_room_type/'+hash;
 				}
 			}
 
 			function hapus(hash){
 				if(confirm('Anda yakin ingin menghapus data ini?')){
-					location.href='".site_url()."/admin/master_program_class/delete_program_class/'+hash;
+					location.href='".site_url()."/admin/master_room_type/delete_room_type/'+hash;
 				}
 			}
              
@@ -245,17 +241,17 @@ class master_program_class extends CI_Controller{
                 $this->load->view('admin/front',$contents);
     }
 
-    public function json_list_program_class(){
+    public function json_list_room_type(){
                 
 		$this->load->library('flexigrid');
-        $this->load->model('program_class_model');
+        $this->load->model('room_type_model');
 
 
-		$valid_fields = array('ID_PROGRAM');
-		$this->flexigrid->validate_post('ID_PROGRAM','asc',$valid_fields);
+		$valid_fields = array('ID_ROOM_TYPE');
+		$this->flexigrid->validate_post('ID_ROOM_TYPE','asc',$valid_fields);
 		
 	
-		$records = $this->program_class_model->get_grid_program();
+		$records = $this->room_type_model->get_grid_room_type();
 		$this->output->set_header($this->config->item('json_header'));
 		
 		$no = 0;
@@ -263,21 +259,17 @@ class master_program_class extends CI_Controller{
 		{
                     
 			
-			$edit = '<img alt="Edit"  style="cursor:pointer" src="'.base_url().'images/flexigrid/edit.jpg" onclick="edit(\''.$row->ID_PROGRAM.'\')">';
-			$delete = '<img alt="Delete"  style="cursor:pointer" src="'.base_url().'images/flexigrid/delete.jpg" onclick="hapus(\''.$row->ID_PROGRAM.'\')">';
+			$edit = '<img alt="Edit"  style="cursor:pointer" src="'.base_url().'images/flexigrid/edit.jpg" onclick="edit(\''.$row->ID_ROOM_TYPE.'\')">';
+			// $delete = '<img alt="Delete"  style="cursor:pointer" src="'.base_url().'images/flexigrid/delete.jpg" onclick="hapus(\''.$row->ID_PROGRAM.'\')">';
                  
 			
 			$record_items[] = array(
-									$row->ID_PROGRAM,
+									$row->ID_ROOM_TYPE,
 									$no = $no+1,
 									$edit,
 									//$delete,
-									$row->NAMA_PROGRAM,
-									$row->KETERANGAN,
-									$row->HOTEL_MAKKAH,
-									$row->HOTEL_MADINAH,
-									$row->MASKAPAI,
-									$row->TRANSPORTASI
+									$row->JENIS_KAMAR,
+									$row->CAPACITY
 			);
 		}
 
@@ -291,17 +283,13 @@ class master_program_class extends CI_Controller{
     
 // ---------------- Validation function ----------------------------------------
 
-    private function validate_form_program_class(){
+    private function validate_form_room_type(){
         $this->load->library('form_validation');
 		
 	
 		
-		$this->form_validation->set_rules('nama_program','Nama Program','required|xss_clean|prep_for_form');
-		$this->form_validation->set_rules('keterangan','Keterangan','xss_clean|prep_for_form');
-		$this->form_validation->set_rules('hotel_makkah','Hotel Makkah','required|xss_clean|prep_for_form');
-		$this->form_validation->set_rules('hotel_madinah','Hotel Madinah','required|xss_clean|prep_for_form');
-        $this->form_validation->set_rules('maskapai','Maskapai','required|xss_clean|prep_for_form');
-        $this->form_validation->set_rules('transportasi','Transportasi','required|xss_clean|prep_for_form');
+		$this->form_validation->set_rules('jenis_kamar','Jenis Kamar','required|xss_clean|prep_for_form');
+		$this->form_validation->set_rules('capacity','Kapasitas','required|numeric|xss_clean|prep_for_form');
         
 		
 		$this->form_validation->set_error_delimiters('<p class="error">', '</p>');
@@ -310,7 +298,6 @@ class master_program_class extends CI_Controller{
 		$this->form_validation->set_message('numeric', '%s hanya boleh angka');
 		$this->form_validation->set_message('xss_clean', 'No javascript allowed');
 		$this->form_validation->set_message('prep_for_form', '%s tidak sesuai format');
-		$this->form_validation->set_message('matches', '%s tidak sama dengan verifikasi');
 
          return $this->form_validation->run();
     }
@@ -324,21 +311,17 @@ class master_program_class extends CI_Controller{
 	
 // ---------------- loader view function ---------------------------------------
 
-    private function load_form_program_class($program_class_id=""){
+    private function load_form_room_type($room_type_id=""){
         
-        $this->load->model('program_class_model');
+        $this->load->model('room_type_model');
 
         
-        $values = (array)$this->program_class_model->get_program($program_class_id)->row();
+        $values = (array)$this->room_type_model->get_roomType($room_type_id)->row();
 			
         if(empty($values)){
             
-            $content['NAMA_PROGRAM'] = $this->input->post('nama_program');
-            $content['KETERANGAN'] = $this->input->post('keterangan');
-            $content['HOTEL_MAKKAH'] = $this->input->post('hotel_makkah');
-            $content['HOTEL_MADINAH'] = $this->input->post('hotel_madinah');
-            $content['MASKAPAI'] = $this->input->post('maskapai');
-            $content['TRANSPORTASI'] = $this->input->post('transportasi');
+            $content['JENIS_KAMAR'] = $this->input->post('jenis_kamar');
+            $content['CAPACITY'] = $this->input->post('capacity');
             $content['type'] = "Ditambahkan";
 
             
@@ -355,7 +338,7 @@ class master_program_class extends CI_Controller{
 	   }
 
       
-     $contents['content'] = $this->load->view('admin/form_master_program_class',$content,true);
+     $contents['content'] = $this->load->view('admin/form_master_room_type',$content,true);
      
        $contents['added_js']="";
       $this->load->view('admin/front',$contents);
@@ -365,32 +348,28 @@ class master_program_class extends CI_Controller{
 
 
 // ---------------- Database handler function ----------------------------------
-    private function form_program_classDB($action,$currentprogram_class_id=""){
-        $this->load->model('program_class_model');
+    private function form_room_typeDB($action,$currentroom_type_id=""){
+        $this->load->model('room_type_model');
         $this->load->model('log_model');
-        $program_class = $this->program_class_model->get_program($this->input->post('program_class_id'))->row(); 
+        $room_type = $this->room_type_model->get_roomType($this->input->post('room_type_id'))->row(); 
 	
-        if(is_null($program_class)){
-        $program_class = array();
+        if(is_null($room_type)){
+        $room_type = array();
         }
-            $program_class['NAMA_PROGRAM'] = $this->input->post('nama_program');
-            $program_class['KETERANGAN'] = $this->input->post('keterangan');
-            $program_class['HOTEL_MAKKAH'] = $this->input->post('hotel_makkah');
-            $program_class['HOTEL_MADINAH'] = $this->input->post('hotel_madinah');
-            $program_class['MASKAPAI'] = $this->input->post('maskapai');
-            $program_class['TRANSPORTASI'] = $this->input->post('transportasi');
+            $room_type['JENIS_KAMAR'] = $this->input->post('jenis_kamar');
+            $room_type['CAPACITY'] = $this->input->post('capacity');
        
         if($action =="insert"){
-            $this->program_class_model->add_program($program_class);
+            $this->room_type_model->add_room_type($room_type);
 			$this->session->set_userdata('notification',true);
 			
-			$log = "Menambah program baru";
+			$log = "Menambah tipe kamar baru";
 			$this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
         }
         elseif($action =="update"){
-            $this->program_class_model->update_program($currentprogram_class_id,$program_class);
+            $this->room_type_model->update_room_type($currentroom_type_id,$room_type);
 			$this->session->set_userdata('notification',true);
-			$log = "Mengubah program dengan id ".$currentprogram_class_id;
+			$log = "Mengubah tipe kamar dengan id ".$currentroom_type_id;
 			$this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
 			
         }

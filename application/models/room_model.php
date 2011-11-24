@@ -98,6 +98,14 @@ class Room_model extends CI_Model {
 		
 		return $this->db->get();
 	}
+	
+	function get_room_related_with_room_type($id_room_type){
+            $this->db->select("*");
+			$this->db->from("room");
+			$this->db->where("ID_ROOM_TYPE", $id_room_type);
+		
+		return $this->db->get();
+	}
 }
 
 ?>

@@ -233,7 +233,7 @@ class data_akun extends CI_Controller{
 	
 		
 		$this->form_validation->set_rules('nama','Nama','required|xss_clean|prep_for_form');
-		$this->form_validation->set_rules('email','Email','required|xss_clean|prep_for_form');
+		$this->form_validation->set_rules('email','Email','required|xss_clean|prep_for_form|callback_email_is_exist');
 		$this->form_validation->set_rules('telp','Telepon','required|xss_clean|prep_for_form');
 		$this->form_validation->set_rules('mobile','Handphone','required|xss_clean|prep_for_form');
         $this->form_validation->set_rules('province','Provinsi','required|xss_clean|prep_for_form');
@@ -255,6 +255,7 @@ class data_akun extends CI_Controller{
 		$this->form_validation->set_message('xss_clean', 'No javascript allowed');
 		$this->form_validation->set_message('prep_for_form', '%s tidak sesuai format');
 		$this->form_validation->set_message('matches', '%s tidak sama dengan verifikasi');
+		$this->form_validation->set_message('email_is_exist', '%s sudah digunakan!');
 
         return $this->form_validation->run();
     }
@@ -262,32 +263,21 @@ class data_akun extends CI_Controller{
 
 // ---------------- Validation callback function -------------------------------
 
-	public function is_exist(){
-		$this->load->model('accounts');       
-        if(is_null($this->accounts->get_accounts($this->input->post('accounts_id'))) ){
-			
-			
+	function email_is_exist($value){
+		$this->load->model('accounts_model');
+		if($this->uri->segment(3)=== 'edit_accounts'){
+		$account = $this->accounts_model->get_data_account($this->uri->segment(4))->row();
+		if($account->EMAIL == $value){
 			return true;
 		}
 		else{
-			if(strpos(current_url(),'edit') == true){
-			$url = explode('/',current_url());
-			if(strcmp($url[count($url)-1],$this->input->post('accounts_id'))==0){
-			return true;
-			}
-			else{
-			$this->form_validation->set_message('is_exist', 'accounts_id sudah ada');
-			return false;
-			}
-			
-			}
-			else{
-			$this->form_validation->set_message('is_exist', 'accounts_id sudah ada');
-			return false;
-			}
-			
+			return $this->accounts_model->is_email_enable($value);
 		}
-	}
+		}
+		else{
+		return $this->accounts_model->is_email_enable($value);
+		}
+    }
 	
 // ---------------- loader view function ---------------------------------------
 	
