@@ -626,6 +626,32 @@ a:hover.action-delete	{
 	text-indent: -3000px;
 	width: 80px;
 	}
+
+.form-submit-pdf	{
+	background: url(../images/forms/submit_pdf.png) no-repeat;
+	border: none;
+	cursor: pointer;
+	display: block;
+	float: left;
+	height: 30px;
+	margin: 0 4px 0 0;
+	padding: 0;
+	text-indent: -3000px;
+	width: 80px;
+	}
+
+.form-submit-excel	{
+	background: url(../images/forms/submit_excel.png) no-repeat;
+	border: none;
+	cursor: pointer;
+	display: block;
+	float: left;
+	height: 30px;
+	margin: 0 4px 0 10px;
+	padding: 0;
+	text-indent: -3000px;
+	width: 80px;
+	}
 	
 .form-submit-front	{
 	background: url(../images/forms/form_submit.gif) no-repeat;

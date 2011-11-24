@@ -10,4 +10,15 @@ function pdf_manifest($html, $head, $filename)
 	$mpdf->WriteHTML($html);	
 	$mpdf->Output($filename,'D');
 }
+
+function cetak_pdf($html, $footer, $filename)
+{
+    require_once('mpdf/mpdf.php');
+   
+    $mpdf = new mPDF('c','A4','','',10,10,5,10,5,5);
+	
+	$mpdf->SetHTMLFooter($footer);
+	$mpdf->WriteHTML($html);	
+	$mpdf->Output($filename,'D');
+}
 ?>

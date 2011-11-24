@@ -59,6 +59,15 @@ class Payment_model extends CI_Model {
 		return $this->db->get();
 	}
 	
+	function get_payment_view_ByID($id_payment)
+	{
+		$this->db->select("*");
+		$this->db->from("payment_view");
+		$this->db->where("ID_PAYMENT", $id_payment);
+		
+		return $this->db->get();
+	}
+	
 	
 	function update_payment($data, $id_payment){
 		$this->db->trans_begin();

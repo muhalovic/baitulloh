@@ -114,7 +114,7 @@ class Master_room extends CI_Controller {
 		$this->load->model('room_availability_model');
 		
 		$valid_fields = array('JENIS_KAMAR','KODE_GROUP','NAMA_PROGRAM','HARGA_KAMAR','JUMLAH_KAMAR', 'EDIT');
-		$this->flexigrid->validate_post('ID_AVAILABILITY','desc',$valid_fields);
+		$this->flexigrid->validate_post('ID_AVAILABILITY','asc',$valid_fields);
 		
 		$records = $this->room_availability_model->get_grid_allover_room();
 		$this->output->set_header($this->config->item('json_header'));

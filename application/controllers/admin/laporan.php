@@ -20,7 +20,7 @@ class Laporan extends CI_Controller {
 		redirect(site_url()."/admin/data_jamaah");
 	}
 	
-	function cetak($id_group, $id_program)
+	function cetak($id_group, $id_program, $tipe)
 	{
 		// call helper
 		$this->load->helper('create_pdf');
@@ -145,14 +145,28 @@ class Laporan extends CI_Controller {
 		$pecah_pulang = explode("-",$tgl_berangkat);
 		$data['tgl_berangkat'] = date("d F Y", strtotime($tgl_berangkat));
 		$data['tgl_pulang'] = date("d F Y", mktime(0,0,0,$pecah_pulang[1],$pecah_pulang[2]+$lama_hari,$pecah_pulang[0]));
-		
-		// set pdf
 		$nama_group = str_replace(" ", "", $data['nama_group']);
-		$html = $this->load->view('admin/cetak_manifest', $data, TRUE);
-		$head = $this->load->view('admin/cetak_manifest_head', $data, TRUE);
-		$filename = 'Pramanifest_'.$nama_group.'_'.date("d-m-Y").'.pdf';
 		
-		pdf_manifest($html, $head, $filename);
+		if($tipe == '1')
+		{
+			// set pdf
+			$html = $this->load->view('admin/cetak_manifest', $data, TRUE);
+			$head = $this->load->view('admin/cetak_manifest_head', $data, TRUE);
+			$filename = 'Pramanifest_'.$nama_group.'_'.date("d-m-Y").'.pdf';
+			
+			pdf_manifest($html, $head, $filename);
+		
+		}elseif($tipe == '2'){
+			
+			// set excel
+			header("Content-type: application/octet-stream");
+			header("Content-Disposition: attachment; filename=Pramanifest_".$nama_group."_".date("d-m-Y").".xls");
+			header("Pragma: no-cache");
+			header("Expires: 0");
+			
+			$this->load->view('admin/cetak_manifest_excel', $data);
+		}
+			
 	}
 	
 	function konversi_tanggal($tgl){

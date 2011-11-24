@@ -17,7 +17,11 @@
 			echo form_dropdown('program', $program_options, $program,'id="program" class="styledselect-biodata"'); 
 		?>
     </td>
-    <td><input type="button" name="btn" class="form-submit" onclick="jumptolink(document.cetak.group, document.cetak.program)" /></td>
+    <td>
+    	<input type="button" name="btn" class="form-submit-pdf" onclick="jumptolink(document.cetak.group, document.cetak.program)" />
+        &nbsp;&nbsp;&nbsp;
+    	<input type="button" name="btn" class="form-submit-excel" onclick="jumptolink2(document.cetak.group, document.cetak.program)" />
+    </td>
   </tr>
 </table>
 <? echo form_close() ?>
@@ -30,7 +34,16 @@ function jumptolink(group, program)
 	var selectedopt2=program.options[program.selectedIndex];
 	
 	if (+selectedopt.value != 0 && +selectedopt2.value != 0)
-	window.location="<? echo site_url().'/admin/laporan/cetak/' ?>"+selectedopt.value+"/"+selectedopt2.value;
+	window.location="<? echo site_url().'/admin/laporan/cetak/' ?>"+selectedopt.value+"/"+selectedopt2.value+"/1";
+}
+
+function jumptolink2(group, program)
+{
+	var selectedopt=group.options[group.selectedIndex];
+	var selectedopt2=program.options[program.selectedIndex];
+	
+	if (+selectedopt.value != 0 && +selectedopt2.value != 0)
+	window.location="<? echo site_url().'/admin/laporan/cetak/' ?>"+selectedopt.value+"/"+selectedopt2.value+"/2";
 }
 
 </script>
