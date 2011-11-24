@@ -33,6 +33,7 @@ class Booked_room_model extends CI_Model {
 		$this->db->where("j.ID_ACCOUNT", $id_acc);
 		$this->db->where("j.KODE_REGISTRASI", $kode_reg);
 		$this->db->where("p.STATUS_PESANAN", 3);
+                $this->db->where("j.STATUS_KANDIDAT", 1);
 
 		return $this->db->get();
 	}
@@ -58,6 +59,7 @@ class Booked_room_model extends CI_Model {
                 $this->db->join("packet p", "p.ID_ACCOUNT = j.ID_ACCOUNT AND p.KODE_REGISTRASI = j.KODE_REGISTRASI");
 		$this->db->where("j.ID_ACCOUNT", $id_acc);
 		$this->db->where("j.KODE_REGISTRASI", $kode_reg);
+                $this->db->where("j.STATUS_KANDIDAT", 1);
 		$this->db->where("p.STATUS_PESANAN", 3);
 
 		return $this->db->get();
