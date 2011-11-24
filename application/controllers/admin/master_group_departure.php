@@ -59,19 +59,25 @@ class master_group_departure extends CI_Controller{
                 $this->load_form_group_departure();
             }
     }
-
-    public function delete_group_departure($group_departure_id){
+	
+    public function delete_group_departure(){
 		$this->load->model('group_departure_model');
 		$this->load->model('packet_model');
 		$this->load->model('room_model');
 		$this->load->model('room_availability_model');
 		$this->load->model('log_model');
         
-		if(is_null($group_departure_id)){
+		if(!isset($_POST['items'])){
 			redirect('admin/master_group_departure/view_list_group_departure');
 
 		}
 		
+		$error = '';
+		$success = '';
+		$group_departure_ids = explode(',',$this->input->post('items'));
+		
+		foreach($group_departure_ids as $group_departure_id){
+
 		$value = $this->group_departure_model->get_group_berdasarkan_id($group_departure_id)->result();
         
 		if(!empty($value)){
@@ -81,21 +87,39 @@ class master_group_departure extends CI_Controller{
 
 		
 			if(!empty($paket)  || !empty($room)  ||  !empty($room_availability)){
-			$this->session->set_userdata('error',true);
-			$this->session->set_userdata('error_messege','Grup keberangkatan '.$value[0]->KODE_GROUP.' masih digunakan pada data lain');
+				if($error != ''){
+					$error .= ', ';
+				}
+					$error .= $value[0]->KODE_GROUP;	
 			}
 			else{
 				$this->group_departure_model->delete_group($group_departure_id);
-				$this->session->set_userdata('notification',true);
-				$this->session->set_userdata('notification_messege','Grup keberangkatan '.$value[0]->KODE_GROUP.' berhasil dihapus');
-				
+				if($success != ''){
+				$success .= ', ';
+				}
+					$success .= $value[0]->KODE_GROUP;
+			 
 				$log = "Menghapus grup keberangkatan dengan id ".$group_departure_id;
 				$this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
 
 			}
 			
         }       
-		redirect('admin/master_group_departure/view_list_group_departure');
+		}
+		$messege = '';
+		
+		if($success != ''){
+			$messege .= 'data grup keberangkatan : '.$success.' berhasil dihapus';
+		}
+		if($success != '' && $error != ''){
+			$messege .= ' sedangkan ';
+		}
+		if($error != ''){
+			$messege .= 'data grup keberangkatan : '.$error.' tidak dapat dihapus karena masih digunakan data yang lain';
+		}
+		
+		$this->output->set_header($this->config->item('ajax_header'));
+		$this->output->set_output($messege);
        
     }
     
@@ -106,7 +130,7 @@ class master_group_departure extends CI_Controller{
 		
 		$colModel['no'] = array('No',30,TRUE,'center',0);
 		$colModel['edit'] = array('Edit',50,FALSE,'center',0);
-		$colModel['delete'] = array('Delete',50,FALSE,'center',0);
+		// $colModel['delete'] = array('Delete',50,FALSE,'center',0);
 		
 		$colModel['KODE_GROUP'] = array('Kode Group',100,TRUE,'center',2);
 		$colModel['KETERANGAN'] = array('Keterangan',100,TRUE,'center',2);
@@ -138,7 +162,8 @@ class master_group_departure extends CI_Controller{
 
 		$buttons[] = array('separator');
 		$buttons[] = array('Tambah','add','js');
-                $buttons[] = array('separator');
+		$buttons[] = array('separator');
+		$buttons[] = array('Hapus','delete','js');
 
 		$content['js_grid'] = build_grid_js('flex1',base_url()."index.php/admin/master_group_departure/json_list_group_departure",$colModel,'no','asc',$gridParams,$buttons);
 		$content['added_js'] =
@@ -150,7 +175,27 @@ class master_group_departure extends CI_Controller{
 					location.href='".site_url('/admin/master_group_departure/add_group_departure')."';
 				}
 
-    			
+    			if (com=='Hapus'){
+				   if($('.trSelected',grid).length>0){
+					   if(confirm('Anda yakin ingin menghapus ' + $('.trSelected',grid).length + ' buah data?')){
+							var items = $('.trSelected',grid);
+							var itemlist ='';
+							for(i=0;i<items.length;i++){
+								itemlist+= items[i].id.substr(3)+',';
+							}
+							$.ajax({
+							   type: 'POST',
+							   url: '".site_url('/admin/master_group_departure/delete_group_departure')."',
+							   data: 'items='+itemlist,
+							   success: function(data){
+								$('#flex1').flexReload();
+								alert(data);
+							   }
+							});
+						}
+					}
+				}
+				
 
              
 			}
@@ -229,7 +274,7 @@ class master_group_departure extends CI_Controller{
 									$row->ID_GROUP,
 									$no = $no+1,
 									$edit,
-									$delete,
+								//	$delete,
 									$row->KODE_GROUP,
 									$row->KETERANGAN,
 									date('d-m-Y',strtotime($row->TANGGAL_KEBERANGKATAN_JD)),
