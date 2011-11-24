@@ -163,7 +163,7 @@ class Registration extends CI_Controller {
 	function check_validasi() {
 		//setting rules
 		$this->form_validation->set_rules('nama', 'Nama', 'required');
-		$this->form_validation->set_rules('email', 'E-mail', 'required|valid_email');
+		$this->form_validation->set_rules('email', 'E-mail', 'required|valid_email|callback_email_is_exist');
 		$this->form_validation->set_rules('telp', 'Telp', '');
 		$this->form_validation->set_rules('mobile', 'Mobile', '');
 		$this->form_validation->set_rules('province', 'Propinsi', 'callback_check_dropdown');
@@ -176,6 +176,7 @@ class Registration extends CI_Controller {
 		$this->form_validation->set_message('required', '%s wajib diisi !');
 		$this->form_validation->set_message('valid_email', '%s wajib berisi alamat email yang benar !');
 		$this->form_validation->set_message('min_length', '%s minimum berisi 10 karakter !');
+		$this->form_validation->set_message('email_is_exist', '%s sudah digunakan!');
 		
 		return $this->form_validation->run();
     }
@@ -202,6 +203,11 @@ class Registration extends CI_Controller {
 				return FALSE;
 		}else
 				return TRUE;
+    }
+	
+	function email_is_exist($value){
+		$this->load->model('accounts_model');
+		return $this->accounts_model->is_email_enable($value);
     }
 	
 	function send_email($key, $waiting){

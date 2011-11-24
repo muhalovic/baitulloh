@@ -36,7 +36,7 @@ class master_group_departure extends CI_Controller{
 		}
           if($this->validate_form_group_departure()==true){
             $this->form_group_departureDB("update",$group_departure_id);
-			redirect('admin/master_group_departure/view_list_group_departure');
+			redirect('admin/master_group_departure/edit_group_departure/'.$group_departure_id);
             }
             else{
                 $this->load_form_group_departure($group_departure_id);
@@ -53,28 +53,73 @@ class master_group_departure extends CI_Controller{
       
         if($this->validate_form_group_departure()==true){
                 $this->form_group_departureDB("insert");
-				redirect('admin/master_group_departure/view_list_group_departure');
+				redirect('admin/master_group_departure/add_group_departure');
             }
             else{
                 $this->load_form_group_departure();
             }
     }
-
-    public function delete_group_departure($group_departure_id){
+	
+    public function delete_group_departure(){
 		$this->load->model('group_departure_model');
+		$this->load->model('packet_model');
+		$this->load->model('room_model');
+		$this->load->model('room_availability_model');
+		$this->load->model('log_model');
         
-		if(is_null($group_departure_id)){
+		if(!isset($_POST['items'])){
 			redirect('admin/master_group_departure/view_list_group_departure');
 
 		}
 		
+		$error = '';
+		$success = '';
+		$group_departure_ids = explode(',',$this->input->post('items'));
+		
+		foreach($group_departure_ids as $group_departure_id){
+
 		$value = $this->group_departure_model->get_group_berdasarkan_id($group_departure_id)->result();
         
 		if(!empty($value)){
-            
-			 $this->group_departure_model->delete_group($group_departure_id);
+		$paket = $this->packet_model->get_packet_related_with_group($group_departure_id)->result();
+		$room = $this->room_model->get_room_related_with_group($group_departure_id)->result();
+		$room_availability = $this->room_availability_model->get_room_availability_related_with_group($group_departure_id)->result();
+
+		
+			if(!empty($paket)  || !empty($room)  ||  !empty($room_availability)){
+				if($error != ''){
+					$error .= ', ';
+				}
+					$error .= $value[0]->KODE_GROUP;	
+			}
+			else{
+				$this->group_departure_model->delete_group($group_departure_id);
+				if($success != ''){
+				$success .= ', ';
+				}
+					$success .= $value[0]->KODE_GROUP;
+			 
+				$log = "Menghapus grup keberangkatan dengan id ".$group_departure_id;
+				$this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
+
+			}
+			
         }       
-		redirect('admin/master_group_departure/view_list_group_departure');
+		}
+		$messege = '';
+		
+		if($success != ''){
+			$messege .= 'data grup keberangkatan : '.$success.' berhasil dihapus';
+		}
+		if($success != '' && $error != ''){
+			$messege .= ' sedangkan ';
+		}
+		if($error != ''){
+			$messege .= 'data grup keberangkatan : '.$error.' tidak dapat dihapus karena masih digunakan data yang lain';
+		}
+		
+		$this->output->set_header($this->config->item('ajax_header'));
+		$this->output->set_output($messege);
        
     }
     
@@ -85,7 +130,7 @@ class master_group_departure extends CI_Controller{
 		
 		$colModel['no'] = array('No',30,TRUE,'center',0);
 		$colModel['edit'] = array('Edit',50,FALSE,'center',0);
-		$colModel['delete'] = array('Delete',50,FALSE,'center',0);
+		// $colModel['delete'] = array('Delete',50,FALSE,'center',0);
 		
 		$colModel['KODE_GROUP'] = array('Kode Group',100,TRUE,'center',2);
 		$colModel['KETERANGAN'] = array('Keterangan',100,TRUE,'center',2);
@@ -117,7 +162,8 @@ class master_group_departure extends CI_Controller{
 
 		$buttons[] = array('separator');
 		$buttons[] = array('Tambah','add','js');
-                $buttons[] = array('separator');
+		$buttons[] = array('separator');
+		$buttons[] = array('Hapus','delete','js');
 
 		$content['js_grid'] = build_grid_js('flex1',base_url()."index.php/admin/master_group_departure/json_list_group_departure",$colModel,'no','asc',$gridParams,$buttons);
 		$content['added_js'] =
@@ -129,7 +175,27 @@ class master_group_departure extends CI_Controller{
 					location.href='".site_url('/admin/master_group_departure/add_group_departure')."';
 				}
 
-    			
+    			if (com=='Hapus'){
+				   if($('.trSelected',grid).length>0){
+					   if(confirm('Anda yakin ingin menghapus ' + $('.trSelected',grid).length + ' buah data?')){
+							var items = $('.trSelected',grid);
+							var itemlist ='';
+							for(i=0;i<items.length;i++){
+								itemlist+= items[i].id.substr(3)+',';
+							}
+							$.ajax({
+							   type: 'POST',
+							   url: '".site_url('/admin/master_group_departure/delete_group_departure')."',
+							   data: 'items='+itemlist,
+							   success: function(data){
+								$('#flex1').flexReload();
+								alert(data);
+							   }
+							});
+						}
+					}
+				}
+				
 
              
 			}
@@ -149,6 +215,34 @@ class master_group_departure extends CI_Controller{
              
 			</script>
 			";
+			
+			if($this->session->userdata('notification')==true){
+		   $content['notifikasi'] = '<div id="message-green">
+						<table border="0" width="100%" cellpadding="0" cellspacing="0">
+							<tr>
+								<td class="green-left">'.$this->session->userdata('notification_messege').'</td>
+								<td class="green-right"><a class="close-green"><img src="'.base_url().'images/table/icon_close_green.gif"   alt=""  /></a></td>
+							</tr>
+						</table><br>
+					</div>';
+		   $this->session->unset_userdata('notification');
+		   $this->session->unset_userdata('notification_messege');
+		}
+		
+		if($this->session->userdata('error')==true){
+		   $content['error'] ='<div id="message-blue">
+								<table border="0" width="100%" cellpadding="0" cellspacing="0">
+									<tr>
+										<td class="blue-left">'.$this->session->userdata('error_messege').'</td>
+										<td class="blue-right"><a class="close-blue"><img src="'.base_url().'images/table/icon_close_blue.gif"   alt="" /></a></td>
+									</tr>
+								</table><br>
+							</div>';
+
+		   $this->session->unset_userdata('error');
+		   $this->session->unset_userdata('error_messege');
+	   }
+			
                 $contents['content'] = $this->load->view('admin/grid',$content,true);
                 
                 $this->load->view('admin/front',$contents);
@@ -180,7 +274,7 @@ class master_group_departure extends CI_Controller{
 									$row->ID_GROUP,
 									$no = $no+1,
 									$edit,
-									$delete,
+								//	$delete,
 									$row->KODE_GROUP,
 									$row->KETERANGAN,
 									date('d-m-Y',strtotime($row->TANGGAL_KEBERANGKATAN_JD)),
@@ -212,7 +306,7 @@ class master_group_departure extends CI_Controller{
 	
 		
 		$this->form_validation->set_rules('kode_group','Kode Grup','required|xss_clean|prep_for_form');
-		$this->form_validation->set_rules('keterangan','Keterangan','required|xss_clean|prep_for_form');
+		$this->form_validation->set_rules('keterangan','Keterangan','xss_clean|prep_for_form');
 		$this->form_validation->set_rules('pagu_sv','Pagu Saudi Arabia Airlines','required|xss_clean|prep_for_form');
 		$this->form_validation->set_rules('pagu_ga','Pagu Garuda Indonesia Airlines','required|xss_clean|prep_for_form');
         $this->form_validation->set_rules('hari','Jumlah Hari','required|xss_clean|prep_for_form');
@@ -323,13 +417,19 @@ class master_group_departure extends CI_Controller{
             $content['JATUH_TEMPO_PELUNASAN'] = $this->input->post('thn_jatuh_tempo_pelunasan').'-'.$this->input->post('bln_jatuh_tempo_pelunasan').'-'.$this->input->post('tgl_jatuh_tempo_pelunasan');
             $content['JATUH_TEMPO_BERKAS'] = $this->input->post('thn_jatuh_tempo_berkas').'-'.$this->input->post('bln_jatuh_tempo_berkas').'-'.$this->input->post('tgl_jatuh_tempo_berkas');
             $content['BATAS_WAITING_LIST'] = $this->input->post('thn_batas_waiting_list').'-'.$this->input->post('bln_batas_waiting_list').'-'.$this->input->post('tgl_batas_waiting_list');
-            
+            $content['type'] = "Ditambahkan";
        }
        else{
            
 		   $content = $values;
+		   $content['type'] = "Diubah";
                      
        }
+	   
+	     if($this->session->userdata('notification')==true){
+		   $content['notification'] = "true";
+		   $this->session->unset_userdata('notification');
+	   }
 
       
      $contents['content'] = $this->load->view('admin/form_master_group',$content,true);
@@ -344,6 +444,7 @@ class master_group_departure extends CI_Controller{
 // ---------------- Database handler function ----------------------------------
     private function form_group_departureDB($action,$currentgroup_departure_id=""){
         $this->load->model('group_departure_model');
+        $this->load->model('log_model');
         $group_departure = $this->group_departure_model->get_group_berdasarkan_id($this->input->post('group_departure_id'))->row(); 
 	
         if(is_null($group_departure)){
@@ -371,20 +472,20 @@ class master_group_departure extends CI_Controller{
        
         if($action =="insert"){
             $this->group_departure_model->add_group($group_departure);
+			$this->session->set_userdata('notification',true);
+			$log = "Menambah grup keberangkatan baru";
+			$this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
+			
         }
         elseif($action =="update"){
             $this->group_departure_model->update_group($currentgroup_departure_id,$group_departure);
+			$this->session->set_userdata('notification',true);
+			$log = "Mengubah grup keberangkatan dengan id ".$currentgroup_departure_id;
+			$this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
+			
         }
     }
 
-// ---------------- Private function -------------------------------------------
-	private function cek_session(){
-		if(!$this->session->group_departuredata('group_departure_id')){
-			redirect('login');
-		}
-		if($this->session->group_departuredata('id_role')!=1){
-			redirect('menu_utama');
-		}
-	}
+
 }
 ?>

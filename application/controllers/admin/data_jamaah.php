@@ -958,7 +958,7 @@ class Data_jamaah extends CI_Controller {
 			foreach($data_jamaah->result() as $row)
 			{
 
-				$data_packet = $this->packet_model->get_packet_byAccAll($row->ID_ACCOUNT, $row->KODE_REGISTRASI);
+				$data_packet = $this->packet_model->get_packet_byAcc($row->ID_ACCOUNT, $row->KODE_REGISTRASI);
 				if($data_packet->result() != NULL)
 				{
 					foreach($data_packet->result() as $rows)

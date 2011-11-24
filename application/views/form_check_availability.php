@@ -5,7 +5,7 @@
 			<!--  start step-holder -->
 			<div id="step-holder">
 				<div class="step-no">1</div>
-				<div class="step-dark-left">Cek Ketersediaan</a></div>
+				<div class="step-dark-left">Cek Ketersediaan</div>
 				<div class="step-dark-right">&nbsp;</div>
 				<div class="step-no-off">2</div>
 				<div class="step-light-left">Hasil Pengecekan</div>
@@ -163,12 +163,22 @@
 							<ul class="greyarrow">
 								<li><a id="info_mk"></a>&nbsp;</li> 
 							</ul>
+                              <div class="lines-dotted-short"></div>
+                               Sisa Seat Garuda Indonesia:
+							<ul class="greyarrow">
+								<li><a id="info_ga"></a>&nbsp;</li>
+							</ul>
+                               
+                               Sisa Seat Saudi Airlines:
+							<ul class="greyarrow">
+								<li><a id="info_sv"></a>&nbsp;</li>
+							</ul>
                             <div class="lines-dotted-short"></div>	
                                Batas Akhir Pembayaran Uang Muka:
 							<ul class="greyarrow">
 								<li><a id="info_dp"></a>&nbsp;</li> 
 							</ul>
-                            <div class="lines-dotted-short"></div>	
+                            
                                Batas Akhir Pelunasan:
 							<ul class="greyarrow">
 								<li><a id="info_lunas"></a>&nbsp;</li> 
@@ -178,7 +188,7 @@
 							<ul class="greyarrow">
 								<li><a id="info_paspor"></a>&nbsp;</li> 
 							</ul>
-                            <div class="lines-dotted-short"></div>	
+                            
                                 Batas Akhir Pengumpulan Berkas Fisik:
 							<ul class="greyarrow">
 								<li><a id="info_berkas"></a>&nbsp;</li> 
@@ -278,6 +288,8 @@
 							 document.getElementById('info_berkas').innerHTML = pecah[5];
 							 document.getElementById('info_kode').innerHTML = pecah[6];
 							 document.getElementById('info_ket').innerHTML = pecah[7];
+                                                         document.getElementById('info_ga').innerHTML = pecah[8]+" Seat(s)";
+                                                         document.getElementById('info_sv').innerHTML = pecah[9]+" Seat(s)";
                         }
                 });
               return false;

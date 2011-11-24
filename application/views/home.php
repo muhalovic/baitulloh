@@ -138,13 +138,13 @@
 		<td>
 			<!--  start related-activities -->
 			<div id="related-activities">
-				
+
 				<!--  start related-act-top -->
 				<div id="related-act-top">
-                	<img src="<?php echo base_url();?>images/forms/header_related_act.gif" width="271" height="43" alt="" />
+					<img src="<?php echo base_url();?>images/forms/header_related_act.gif" width="271" height="43" alt="" />
 				</div>
 				<!-- end related-act-top -->
-					
+
 				<!--  start related-act-bottom -->
 				<div id="related-act-bottom">
 					<!--  start related-act-inner -->
@@ -153,49 +153,58 @@
 						<div class="right">
 							<h5>Keterangan Group <a id="info_kode"></a></h5>
                             <br /><i><div id="info_ket"></div></i>
-                              <br />  Keberangkatan:
+                              <br />  Keberangkatan :
 							<ul class="greyarrow">
-								<li><a id="info_mk"></a>&nbsp;</li> 
+								<li><a id="info_mk"></a>&nbsp;</li>
 							</ul>
-                            <div class="lines-dotted-short"></div>	
+                              <div class="lines-dotted-short"></div>
+                               Sisa Seat Garuda Indonesia:
+							<ul class="greyarrow">
+								<li><a id="info_ga"></a>&nbsp;</li>
+							</ul>
+
+                               Sisa Seat Saudi Airlines:
+							<ul class="greyarrow">
+								<li><a id="info_sv"></a>&nbsp;</li>
+							</ul>
+                            <div class="lines-dotted-short"></div>
                                Batas Akhir Pembayaran Uang Muka:
 							<ul class="greyarrow">
-								<li><a id="info_dp"></a>&nbsp;</li> 
+								<li><a id="info_dp"></a>&nbsp;</li>
 							</ul>
-                            <div class="lines-dotted-short"></div>	
+
                                Batas Akhir Pelunasan:
 							<ul class="greyarrow">
-								<li><a id="info_lunas"></a>&nbsp;</li> 
+								<li><a id="info_lunas"></a>&nbsp;</li>
 							</ul>
-                            <div class="lines-dotted-short"></div>	
+                            <div class="lines-dotted-short"></div>
                                 Batas Akhir Upload Data Passport:
 							<ul class="greyarrow">
-								<li><a id="info_paspor"></a>&nbsp;</li> 
+								<li><a id="info_paspor"></a>&nbsp;</li>
 							</ul>
-                            <div class="lines-dotted-short"></div>	
+
                                 Batas Akhir Pengumpulan Berkas Fisik:
 							<ul class="greyarrow">
-								<li><a id="info_berkas"></a>&nbsp;</li> 
+								<li><a id="info_berkas"></a>&nbsp;</li>
 							</ul>
 						</div>
-						
-						<div class="clear"></div>		
+
+						<div class="clear"></div>
 					</div>
-                    
                     <div id="related-act-inner">
 						<div class="left"><a href=""><img src="<?php echo base_url();?>images/forms/icon_plus.gif" width="21" height="21" alt="" /></a></div>
 						<div class="right">
 							<h5>Perysaratan Umum<a id="info_kode"></a></h5>
 							<ul class="greyarrow">
-								<li>Calon Jamaah harus memiliki Passport asli minimal 6 bulan masa berlaku dengan 3 suku kata.</li> 
+								<li>Calon Jamaah harus memiliki Passport asli minimal 6 bulan masa berlaku dengan 3 suku kata.</li>
 							</ul>
 						</div>
-							
-						<div class="clear"></div>		
+
+						<div class="clear"></div>
 					</div>
 					<!-- end related-act-inner -->
-						
-					<div class="clear"></div>			
+
+					<div class="clear"></div>
 				</div>
 				<!-- end related-act-bottom -->
 			</div>
@@ -281,6 +290,8 @@
 							 document.getElementById('info_berkas').innerHTML = pecah[5];
 							 document.getElementById('info_kode').innerHTML = pecah[6];
 							 document.getElementById('info_ket').innerHTML = pecah[7];
+                                                         document.getElementById('info_ga').innerHTML = pecah[8]+" Seat(s)";
+                                                         document.getElementById('info_sv').innerHTML = pecah[9]+" Seat(s)";
                         }
                 });
               return false;
