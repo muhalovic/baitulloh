@@ -33,12 +33,12 @@ class Master_room extends CI_Controller {
 		$total_data		= ''.$total_data ;
 		
 		$colModel['no'] 				= array('No',40,TRUE,'center',0);
+		$colModel['EDIT']		 		= array('Edit',50,FALSE,'center',0);
 		$colModel['JENIS_KAMAR'] 		= array('Tipe Kamar',150,TRUE,'center',1);
 		$colModel['KODE_GROUP'] 		= array('Nama Group',150,TRUE,'center',1);
 		$colModel['NAMA_PROGRAM'] 		= array('Program',150,TRUE,'center',1);
 		$colModel['HARGA_KAMAR']		= array('Harga ($)',150,TRUE,'center',1);
 		$colModel['JUMLAH_KAMAR'] 		= array('Jumlah Kamar',100,FALSE,'center',1);
-		$colModel['EDIT']		 		= array('Edit',80,FALSE,'center',0);
 		
 		$gridParams = array(
 		'width' => '1190',
@@ -123,17 +123,17 @@ class Master_room extends CI_Controller {
                 
 		foreach ($records['records']->result() as $row)
 		{
-			$url_edit = '<a style="cursor:pointer" href="'.site_url().'/admin/master_room/edit/'.$row->ID_AVAILABILITY.'"><img src="'.base_url().'/images/flexigrid/book.png"></a>';
+			$url_edit = '<a style="cursor:pointer" href="'.site_url().'/admin/master_room/edit/'.$row->ID_AVAILABILITY.'"><img src="'.base_url().'/images/flexigrid/edit.jpg"></a>';
 			
 			$record_items[] = array(
 				$row->ID_AVAILABILITY,
 				$no = $no+1,
+				$url_edit,
 				$row->JENIS_KAMAR,
 				$row->KODE_GROUP,	
 				$row->NAMA_PROGRAM,
 				$this->cek_ribuan($row->HARGA_KAMAR),
 				$row->JUMLAH_KAMAR,
-				$url_edit,
 			);
 		}
 		
