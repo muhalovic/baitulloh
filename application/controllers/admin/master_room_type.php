@@ -25,6 +25,8 @@ class master_room_type extends CI_Controller{
         
 		$this->view_list_room_type();
     }
+	
+	
 
 // ----------------- Public view -----------------------------------------------
 
