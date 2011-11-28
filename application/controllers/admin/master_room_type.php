@@ -25,6 +25,8 @@ class master_room_type extends CI_Controller{
         
 		$this->view_list_room_type();
     }
+	
+	
 
 // ----------------- Public view -----------------------------------------------
 
@@ -95,7 +97,7 @@ class master_room_type extends CI_Controller{
 				$error .= $value[0]->JENIS_KAMAR;	
 			}
 			else{
-			 $log = "Menghapus tipe kamar dengan id ".$room_type_id;
+			 $log = "Menghapus tipe kamar dengan id ".$room_type_id.' ('.$value[0]->JENIS_KAMAR.')';
 			 $this->room_type_model->delete_room_type($room_type_id);
 			 if($success != ''){
 				$success .= ', ';
@@ -136,6 +138,7 @@ class master_room_type extends CI_Controller{
 		
 		$colModel['JENIS_KAMAR'] = array('Jenis Kamar',100,TRUE,'center',2);
 		$colModel['CAPACITY'] = array('Kapasitas',100,TRUE,'center',2);
+		$colModel['STATUS'] = array('Status',100,TRUE,'center',2);
 		
 
 
@@ -261,7 +264,14 @@ class master_room_type extends CI_Controller{
 			
 			$edit = '<img alt="Edit"  style="cursor:pointer" src="'.base_url().'images/flexigrid/edit.jpg" onclick="edit(\''.$row->ID_ROOM_TYPE.'\')">';
 			// $delete = '<img alt="Delete"  style="cursor:pointer" src="'.base_url().'images/flexigrid/delete.jpg" onclick="hapus(\''.$row->ID_PROGRAM.'\')">';
-                 
+         
+		if($row->STATUS == 0){
+			$status = 'tidak aktif';
+			}
+			else{
+			$status = 'aktif';
+			}
+					 
 			
 			$record_items[] = array(
 									$row->ID_ROOM_TYPE,
@@ -269,7 +279,8 @@ class master_room_type extends CI_Controller{
 									$edit,
 									//$delete,
 									$row->JENIS_KAMAR,
-									$row->CAPACITY
+									$row->CAPACITY,
+									$status
 			);
 		}
 
@@ -290,7 +301,7 @@ class master_room_type extends CI_Controller{
 		
 		$this->form_validation->set_rules('jenis_kamar','Jenis Kamar','required|xss_clean|prep_for_form');
 		$this->form_validation->set_rules('capacity','Kapasitas','required|numeric|xss_clean|prep_for_form');
-        
+        $this->form_validation->set_rules('status','Status','required|xss_clean|prep_for_form');
 		
 		$this->form_validation->set_error_delimiters('<p class="error">', '</p>');
 
@@ -322,6 +333,7 @@ class master_room_type extends CI_Controller{
             
             $content['JENIS_KAMAR'] = $this->input->post('jenis_kamar');
             $content['CAPACITY'] = $this->input->post('capacity');
+            $content['STATUS'] = 1;
             $content['type'] = "Ditambahkan";
 
             
@@ -358,18 +370,19 @@ class master_room_type extends CI_Controller{
         }
             $room_type['JENIS_KAMAR'] = $this->input->post('jenis_kamar');
             $room_type['CAPACITY'] = $this->input->post('capacity');
-       
+			$room_type['STATUS'] = $this->input->post('status');
+		   
         if($action =="insert"){
             $this->room_type_model->add_room_type($room_type);
 			$this->session->set_userdata('notification',true);
 			
-			$log = "Menambah tipe kamar baru";
+			$log = "Menambah tipe kamar baru : ".$room_type['JENIS_KAMAR'];
 			$this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
         }
         elseif($action =="update"){
             $this->room_type_model->update_room_type($currentroom_type_id,$room_type);
 			$this->session->set_userdata('notification',true);
-			$log = "Mengubah tipe kamar dengan id ".$currentroom_type_id;
+			$log = "Mengubah tipe kamar dengan id ".$currentroom_type_id.' ('.$room_type['JENIS_KAMAR'].')';
 			$this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
 			
         }

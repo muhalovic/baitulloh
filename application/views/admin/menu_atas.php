@@ -66,6 +66,7 @@
                                         <li class="<?=($this->uri->segment(2)==='master_room_type')?'sub_current':''?>"><a href="<? echo site_url() ?>/admin/master_room_type/">Tipe Kamar</a></li>
                                         <li class="<?=($this->uri->segment(2)==='master_relation')?'sub_current':''?>"><a href="<? echo site_url() ?>/admin/master_relation/">Relasi</a></li>
                                         <li class="<?=($this->uri->segment(2)==='master_propinsi')?'sub_current':''?>"><a href="<? echo site_url() ?>/admin/master_propinsi/">Propinsi</a></li>
+                                        <li class="<?=($this->uri->segment(2)==='master_clothes_size')?'sub_current':''?>"><a href="<? echo site_url() ?>/admin/master_clothes_size/">Ukuran Pakaian</a></li>
 
 										
 									</ul>

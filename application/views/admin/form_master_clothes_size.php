@@ -4,8 +4,8 @@
 <div id="message-green">
 						<table border="0" width="100%" cellpadding="0" cellspacing="0">
 							<tr>
-								<td class="green-left">Jenis Kamar Berhasil <?php echo $type ?>.</td>
-								<td class="green-right"><a class="close-green"><img src="<?php echo base_url().'images/table/icon_close_green.gif' ?>"   alt="" onclick="window.location = '<?php echo base_url().'index.php/admin/master_room_type/' ?>'" /></a></td>
+								<td class="green-left">Ukuran Pakaian Berhasil <?php echo $type ?>.</td>
+								<td class="green-right"><a class="close-green"><img src="<?php echo base_url().'images/table/icon_close_green.gif' ?>"   alt="" onclick="window.location = '<?php echo base_url().'index.php/admin/master_clothes_size/' ?>'" /></a></td>
 							</tr>
 						</table><br>
 					</div>
@@ -17,30 +17,17 @@
 			<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
 				
 				<tr>
-					<? form_error('jenis_kamar') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
-					<th valign="top">Jenis Kamar (*)</th>
-					<td><input type="text" name="jenis_kamar" value="<?php echo $JENIS_KAMAR;?>" class="<? echo $class;?>" /></td>
+					<? form_error('size') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
+					<th valign="top">Ukuran Pakaian (*)</th>
+					<td><input type="text" name="size" value="<?php echo $SIZE;?>" class="<? echo $class;?>" /></td>
 					<td>
-						<? if(form_error('jenis_kamar') != '') {?>
+						<? if(form_error('size') != '') {?>
 						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('jenis_kamar'); ?></div>
+						<div class="error-inner"><?php echo form_error('size'); ?></div>
 						<? }?>
 					</td>
 				</tr>
 				
-				
-				<tr>
-					<? 
-					form_error('capacity') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
-					<th valign="top">Kapasitas (*)</th>
-					<td><input type="text" name="capacity" value="<?php echo $CAPACITY;?>" class="<? echo $class;?>" /></td>
-					<td>
-						<? if(form_error('capacity') != '') {?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('capacity'); ?></div>
-						<? }?>
-					</td>
-				</tr>
 				
 				<tr>
 					<? //form_error('status') == '' ? $class = 'form-textarea':$class = 'form-textarea'; ?>
@@ -57,7 +44,7 @@
 						<? }?>
 					</td>
 				</tr>
-				
+								
 				<tr>
 					<th>&nbsp;</th>
 					<td valign="top">

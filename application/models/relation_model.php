@@ -44,7 +44,7 @@ class Relation_model extends CI_Model {
 	
 	function update_relation($id, $data){
 		$this->db->trans_begin();
-                $this->db->where("ID_RELATION", $id);
+        $this->db->where("ID_RELATION", $id);
 		$this->db->update('relation', $data);
 
 		if ($this->db->trans_status() === FALSE)
@@ -55,6 +55,11 @@ class Relation_model extends CI_Model {
 	
 	function add_relation($data){
 		$this->db->insert('relation', $data);
+	}
+	
+	function delete_relation($data){
+		$this->db->where('ID_RELATION',$data);
+		$this->db->delete('relation');
 	}
 	
 

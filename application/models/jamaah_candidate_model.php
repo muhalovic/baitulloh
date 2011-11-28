@@ -224,6 +224,23 @@ class jamaah_candidate_model extends CI_Model {
 		return $this->db->get();
 	}
 	
+	
+	function get_jamaah_related_with_clothes_size($clothes_size_id){
+		$this->db->select("*");
+		$this->db->from("jamaah_candidate");
+		$this->db->where("ID_SIZE", $clothes_size_id);
+		
+		return $this->db->get();
+	}
+	
+	function get_jamaah_related_with_relation($relation_id){
+		$this->db->select("*");
+		$this->db->from("jamaah_candidate");
+		$this->db->where("ID_RELATION", $relation_id);
+		
+		return $this->db->get();
+	}
+	
 }
 
 ?>

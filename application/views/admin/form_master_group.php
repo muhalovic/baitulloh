@@ -64,7 +64,7 @@
 				
 								<tr>
 					<? form_error('keterangan') == '' ? $class = 'form-textarea':$class = 'form-textarea'; ?>
-					<th valign="top">Keterangan (*)</th>
+					<th valign="top">Keterangan</th>
 					<td><textarea name="keterangan" class="<? echo $class;?>"><?php echo $KETERANGAN;?></textarea></td>
 					<td>
 						<? if(form_error('keterangan') != '') {?>
@@ -373,7 +373,22 @@
 					</td>
 				</tr>
 			
-								
+				<tr>
+					<? //form_error('status') == '' ? $class = 'form-textarea':$class = 'form-textarea'; ?>
+					<th valign="top">Status (*)</th>
+					<td>
+						
+					    <input type="radio" value=1 name="status" <?php if( $STATUS == 1){echo 'checked';}?> class="<? //echo $class;?>" /> aktif &nbsp;&nbsp;&nbsp;
+					    <input type="radio" value=0 name="status" <?php if( $STATUS == 0){echo 'checked';}?> class="<? //echo $class;?>" /> tidak aktif</td>
+					
+					<td>
+						<? if(form_error('status') != '') {?>
+						<div class="error-left"></div>
+						<div class="error-inner"><?php echo form_error('status'); ?></div>
+						<? }?>
+					</td>
+				</tr>	
+				
 				<tr>
 					<th>&nbsp;</th>
 					<td valign="top">

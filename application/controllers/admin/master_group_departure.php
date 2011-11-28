@@ -99,7 +99,7 @@ class master_group_departure extends CI_Controller{
 				}
 					$success .= $value[0]->KODE_GROUP;
 			 
-				$log = "Menghapus grup keberangkatan dengan id ".$group_departure_id;
+				$log = "Menghapus grup keberangkatan dengan id ".$group_departure_id.'('.$value[0]->KODE_GROUP.')';
 				$this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
 
 			}
@@ -144,6 +144,8 @@ class master_group_departure extends CI_Controller{
 		$colModel['PAGU_SV'] = array('Pagu Saudi Arabia Airlines',150,TRUE,'center',2);
 		$colModel['PAGU_GA'] = array('Pagu Garuda Indonesia Airlines',150,TRUE,'center',2);
 		$colModel['HARI'] = array('Jumlah Hari',100,TRUE,'center',2);
+		$colModel['STATUS'] = array('Status',100,TRUE,'center',2);
+		
         
 
 
@@ -269,6 +271,13 @@ class master_group_departure extends CI_Controller{
 			$edit = '<img alt="Edit"  style="cursor:pointer" src="'.base_url().'images/flexigrid/edit.jpg" onclick="edit(\''.$row->ID_GROUP.'\')">';
 			$delete = '<img alt="Delete"  style="cursor:pointer" src="'.base_url().'images/flexigrid/delete.jpg" onclick="hapus(\''.$row->ID_GROUP.'\')">';
                  
+			if($row->STATUS == 0){
+			$status = 'tidak aktif';
+			}
+			else{
+			$status = 'aktif';
+			}
+				 
 			
 			$record_items[] = array(
 									$row->ID_GROUP,
@@ -286,7 +295,8 @@ class master_group_departure extends CI_Controller{
 									date('d-m-Y',strtotime($row->BATAS_WAITING_LIST)),
 									$row->PAGU_SV,
 									$row->PAGU_GA,
-									$row->HARI
+									$row->HARI,
+									$status
 			);
 		}
 
@@ -317,7 +327,7 @@ class master_group_departure extends CI_Controller{
         $this->form_validation->set_rules('tgl_jatuh_tempo_pelunasan','Jatuh Tempo Pelunasan','required|xss_clean|prep_for_form|callback_is_date['.$this->input->post('thn_jatuh_tempo_pelunasan').'-'.$this->input->post('bln_jatuh_tempo_pelunasan').'-'.$this->input->post('tgl_jatuh_tempo_pelunasan').']');
         $this->form_validation->set_rules('tgl_jatuh_tempo_berkas','Jatuh Tempo Berkas','required|xss_clean|prep_for_form|callback_is_date['.$this->input->post('thn_jatuh_tempo_berkas').'-'.$this->input->post('bln_jatuh_tempo_berkas').'-'.$this->input->post('tgl_jatuh_tempo_berkas').']');
         $this->form_validation->set_rules('tgl_batas_waiting_list','Batas Waiting List','required|xss_clean|prep_for_form|callback_is_date['.$this->input->post('thn_batas_waiting_list').'-'.$this->input->post('bln_batas_waiting_list').'-'.$this->input->post('tgl_batas_waiting_list').']');
-        
+        $this->form_validation->set_rules('status','Status','required|xss_clean|prep_for_form');
 		
 		$this->form_validation->set_error_delimiters('<p class="error">', '</p>');
 
@@ -417,7 +427,8 @@ class master_group_departure extends CI_Controller{
             $content['JATUH_TEMPO_PELUNASAN'] = $this->input->post('thn_jatuh_tempo_pelunasan').'-'.$this->input->post('bln_jatuh_tempo_pelunasan').'-'.$this->input->post('tgl_jatuh_tempo_pelunasan');
             $content['JATUH_TEMPO_BERKAS'] = $this->input->post('thn_jatuh_tempo_berkas').'-'.$this->input->post('bln_jatuh_tempo_berkas').'-'.$this->input->post('tgl_jatuh_tempo_berkas');
             $content['BATAS_WAITING_LIST'] = $this->input->post('thn_batas_waiting_list').'-'.$this->input->post('bln_batas_waiting_list').'-'.$this->input->post('tgl_batas_waiting_list');
-            $content['type'] = "Ditambahkan";
+            $content['STATUS'] = 1;
+			$content['type'] = "Ditambahkan";
        }
        else{
            
@@ -469,18 +480,19 @@ class master_group_departure extends CI_Controller{
             $group_departure['JATUH_TEMPO_PELUNASAN'] = $this->input->post('thn_jatuh_tempo_pelunasan').'-'.$this->input->post('bln_jatuh_tempo_pelunasan').'-'.$this->input->post('tgl_jatuh_tempo_pelunasan');
             $group_departure['JATUH_TEMPO_BERKAS'] = $this->input->post('thn_jatuh_tempo_berkas').'-'.$this->input->post('bln_jatuh_tempo_berkas').'-'.$this->input->post('tgl_jatuh_tempo_berkas');
             $group_departure['BATAS_WAITING_LIST'] = $this->input->post('thn_batas_waiting_list').'-'.$this->input->post('bln_batas_waiting_list').'-'.$this->input->post('tgl_batas_waiting_list');
-       
+			$group_departure['STATUS'] = $this->input->post('status');
+			
         if($action =="insert"){
             $this->group_departure_model->add_group($group_departure);
 			$this->session->set_userdata('notification',true);
-			$log = "Menambah grup keberangkatan baru";
+			$log = "Menambah grup keberangkatan baru :".$group_departure['KODE_GROUP'];
 			$this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
 			
         }
         elseif($action =="update"){
             $this->group_departure_model->update_group($currentgroup_departure_id,$group_departure);
 			$this->session->set_userdata('notification',true);
-			$log = "Mengubah grup keberangkatan dengan id ".$currentgroup_departure_id;
+			$log = "Mengubah grup keberangkatan dengan id ".$currentgroup_departure_id.' ('.$group_departure['KODE_GROUP'].')';
 			$this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
 			
         }

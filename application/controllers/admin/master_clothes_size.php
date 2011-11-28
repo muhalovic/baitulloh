@@ -6,11 +6,11 @@
 
  if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 /**
- * Description of master_relation
+ * Description of master_clothes_size
  *
  * @author wiwit
  */
-class master_relation extends CI_Controller{
+class master_clothes_size extends CI_Controller{
 
     public function  __construct() {
         parent::__construct();
@@ -23,80 +23,81 @@ class master_relation extends CI_Controller{
 
     public function index(){
         
-		$this->view_list_relation();
+		$this->view_list_clothes_size();
     }
 
 // ----------------- Public view -----------------------------------------------
 
-    public function edit_relation($relation_id=null){
+    public function edit_clothes_size($clothes_size_id=null){
        
-		if(is_null($relation_id)){
-			redirect('master_relation/view_list_relation');
+		if(is_null($clothes_size_id)){
+			redirect('master_clothes_size/view_list_clothes_size');
 
 		}
-          if($this->validate_form_relation()==true){
-            $this->form_relationDB("update",$relation_id);
-			redirect('admin/master_relation/edit_relation/'.$relation_id);
+          if($this->validate_form_clothes_size()==true){
+            $this->form_clothes_sizeDB("update",$clothes_size_id);
+			redirect('admin/master_clothes_size/edit_clothes_size/'.$clothes_size_id);
             }
             else{
-                $this->load_form_relation($relation_id);
+                $this->load_form_clothes_size($clothes_size_id);
             }
     }
 
-    // public function view_relation(){
+    // public function view_clothes_size(){
        // Auth::cekSession('');
          
     // }
 
-    public function add_relation(){
+    public function add_clothes_size(){
       
       
-        if($this->validate_form_relation()==true){
-                $this->form_relationDB("insert");
+        if($this->validate_form_clothes_size()==true){
+                $this->form_clothes_sizeDB("insert");
 				
-				redirect('admin/master_relation/add_relation');
+				redirect('admin/master_clothes_size/add_clothes_size');
             }
             else{
 
-                $this->load_form_relation();
+                $this->load_form_clothes_size();
             }
     }
 
-    public function delete_relation(){
-		$this->load->model('relation_model');
+    public function delete_clothes_size(){
+		$this->load->model('clothes_size_model');
 		$this->load->model('jamaah_candidate_model');
 		$this->load->model('log_model');
         
 		if(!isset($_POST['items'])){
-			redirect('admin/master_relation/view_list_relation');
+			redirect('admin/master_clothes_size/view_list_clothes_size');
 		}
 		
 		$error = '';
 		$success = '';
-		$relation_ids = explode(',',$this->input->post('items'));
+		$messege = '';
+		$clothes_size_ids = explode(',',$this->input->post('items'));
 		
-		foreach($relation_ids as $relation_id){
-		$value = $this->relation_model->get_relation($relation_id)->result();
+		foreach($clothes_size_ids as $clothes_size_id){
+		$value = $this->clothes_size_model->get_clothes_size($clothes_size_id)->result();
         
 		
 		if(!empty($value)){
-			$jamaah = $this->jamaah_candidate_model->get_jamaah_related_with_relation($relation_id)->result();
+		$jamaah = $this->jamaah_candidate_model->get_jamaah_related_with_clothes_size($clothes_size_id)->result();
 		
 		
 			if(!empty($jamaah)){
 				if($error != ''){
 					$error .= ', ';
 				}
-					$error .= $value[0]->JENIS_RELASI;	
+					$error .= $value[0]->SIZE;	
 			}
 			else{
-				$this->relation_model->delete_relation($relation_id);
+				$this->clothes_size_model->delete_clothes_size($clothes_size_id);
 				if($success != ''){
 				$success .= ', ';
 				}
-					$success .= $value[0]->JENIS_RELASI;
+					$success .= $value[0]->SIZE;
 			 
-				$log = "Menghapus relasi dengan id ".$relation_id.' ('.$value[0]->JENIS_RELASI.')';
+				$log = "Menghapus ukuran pakaian dengan id ".$clothes_size_id.' ('.$value[0]->SIZE.')';
 				$this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
 
 			}
@@ -105,16 +106,14 @@ class master_relation extends CI_Controller{
 		}
 		
 		
-		$messege = '';
-		
 		if($success != ''){
-			$messege .= 'data relasi : '.$success.' berhasil dihapus';
+			$messege .= 'data ukuran pakaian : '.$success.' berhasil dihapus';
 		}
 		if($success != '' && $error != ''){
 			$messege .= ' sedangkan ';
 		}
 		if($error != ''){
-			$messege .= 'data relasi : '.$error.' tidak dapat dihapus karena masih digunakan data yang lain';
+			$messege .= 'data ukuran pakaian : '.$error.' tidak dapat dihapus karena masih digunakan data yang lain';
 		}
 	
 		
@@ -124,7 +123,7 @@ class master_relation extends CI_Controller{
     }
     
 
-    public function view_list_relation(){
+    public function view_list_clothes_size(){
          $this->load->helper('flexigrid');
 
 		
@@ -132,8 +131,7 @@ class master_relation extends CI_Controller{
 		$colModel['edit'] = array('Edit',50,FALSE,'center',0);
 		
 		
-		$colModel['JENIS_RELASI'] = array('Jenis Relasi',100,TRUE,'center',2);
-		$colModel['KETERANGAN'] = array('Keterangan',200,TRUE,'center',2);
+		$colModel['SIZE'] = array('Ukuran Pakaian',100,TRUE,'center',2);
 		$colModel['STATUS'] = array('Status',100,TRUE,'center',2);
 		
 
@@ -146,7 +144,7 @@ class master_relation extends CI_Controller{
 			'rpOptions' => '[5,10,15,20,25,40]',
 			'pagestat' => 'Menampilkan: {from} hingga {to} dari {total} hasil.',
 			'blockOpacity' => 0.5,
-			'title' => 'Daftar Tipe Kamar',
+			'title' => 'Daftar Ukuran Pakaian',
 			'showTableToggleBtn' => false
 		);
 
@@ -155,14 +153,14 @@ class master_relation extends CI_Controller{
         $buttons[] = array('separator');
 		$buttons[] = array('Hapus','delete','js');
 
-		$content['js_grid'] = build_grid_js('flex1',base_url()."index.php/admin/master_relation/json_list_relation",$colModel,'no','asc',$gridParams,$buttons);
+		$content['js_grid'] = build_grid_js('flex1',base_url()."index.php/admin/master_clothes_size/json_list_clothes_size",$colModel,'no','asc',$gridParams,$buttons);
 		$content['added_js'] =
 			"<script type='text/javascript'>
 			function js(com,grid)
 			{
 				if(com=='Tambah')
 				{
-					location.href='".site_url('/admin/master_relation/add_relation')."';
+					location.href='".site_url('/admin/master_clothes_size/add_clothes_size')."';
 				}
 				
 				if (com=='Hapus'){
@@ -175,7 +173,7 @@ class master_relation extends CI_Controller{
 							}
 							$.ajax({
 							   type: 'POST',
-							   url: '".site_url('/admin/master_relation/delete_relation')."',
+							   url: '".site_url('/admin/master_clothes_size/delete_clothes_size')."',
 							   data: 'items='+itemlist,
 							   success: function(data){
 								$('#flex1').flexReload();
@@ -194,13 +192,13 @@ class master_relation extends CI_Controller{
 
 			function edit(hash){
 				if(confirm('Anda yakin ingin merubah data ini?')){
-					location.href='".site_url()."/admin/master_relation/edit_relation/'+hash;
+					location.href='".site_url()."/admin/master_clothes_size/edit_clothes_size/'+hash;
 				}
 			}
 
 			function hapus(hash){
 				if(confirm('Anda yakin ingin menghapus data ini?')){
-					location.href='".site_url()."/admin/master_relation/delete_relation/'+hash;
+					location.href='".site_url()."/admin/master_clothes_size/delete_clothes_size/'+hash;
 				}
 			}
              
@@ -240,17 +238,17 @@ class master_relation extends CI_Controller{
                 $this->load->view('admin/front',$contents);
     }
 
-    public function json_list_relation(){
+    public function json_list_clothes_size(){
                 
 		$this->load->library('flexigrid');
-        $this->load->model('relation_model');
+        $this->load->model('clothes_size_model');
 
 
-		$valid_fields = array('ID_RELATION');
-		$this->flexigrid->validate_post('ID_RELATION','asc',$valid_fields);
+		$valid_fields = array('ID_SIZE');
+		$this->flexigrid->validate_post('ID_SIZE','asc',$valid_fields);
 		
 	
-		$records = $this->relation_model->get_grid_relation();
+		$records = $this->clothes_size_model->get_grid_clothes_size();
 		$this->output->set_header($this->config->item('json_header'));
 		
 		$no = 0;
@@ -258,7 +256,7 @@ class master_relation extends CI_Controller{
 		{
                     
 			
-			$edit = '<img alt="Edit"  style="cursor:pointer" src="'.base_url().'images/flexigrid/edit.jpg" onclick="edit(\''.$row->ID_RELATION.'\')">';
+			$edit = '<img alt="Edit"  style="cursor:pointer" src="'.base_url().'images/flexigrid/edit.jpg" onclick="edit(\''.$row->ID_SIZE.'\')">';
 			// $delete = '<img alt="Delete"  style="cursor:pointer" src="'.base_url().'images/flexigrid/delete.jpg" onclick="hapus(\''.$row->ID_PROGRAM.'\')">';
                  
 			if($row->STATUS == 0){
@@ -269,12 +267,11 @@ class master_relation extends CI_Controller{
 			}
 			
 			$record_items[] = array(
-									$row->ID_RELATION,
+									$row->ID_SIZE,
 									$no = $no+1,
 									$edit,
 									//$delete,
-									$row->JENIS_RELASI,
-									$row->KETERANGAN,
+									$row->SIZE,
 									$status
 			);
 		}
@@ -289,13 +286,12 @@ class master_relation extends CI_Controller{
     
 // ---------------- Validation function ----------------------------------------
 
-    private function validate_form_relation(){
+    private function validate_form_clothes_size(){
         $this->load->library('form_validation');
 		
 	
 		
-		$this->form_validation->set_rules('jenis_relasi','Jenis Relasi','required|xss_clean|prep_for_form');
-		$this->form_validation->set_rules('keterangan','Keterangan','xss_clean|prep_for_form');
+		$this->form_validation->set_rules('size','Size','required|xss_clean|prep_for_form');
 		$this->form_validation->set_rules('status','Status','required|xss_clean|prep_for_form');
         
 		
@@ -318,17 +314,16 @@ class master_relation extends CI_Controller{
 	
 // ---------------- loader view function ---------------------------------------
 
-    private function load_form_relation($relation_id=""){
+    private function load_form_clothes_size($clothes_size_id=""){
         
-        $this->load->model('relation_model');
+        $this->load->model('clothes_size_model');
 
         
-        $values = (array)$this->relation_model->get_relation($relation_id)->row();
+        $values = (array)$this->clothes_size_model->get_clothes_size($clothes_size_id)->row();
 			
         if(empty($values)){
             
-            $content['JENIS_RELASI'] = $this->input->post('jenis_relasi');
-            $content['KETERANGAN'] = $this->input->post('keterangan');
+            $content['SIZE'] = $this->input->post('size');
             $content['STATUS'] = 1;
             $content['type'] = "Ditambahkan";
 
@@ -346,7 +341,7 @@ class master_relation extends CI_Controller{
 	   }
 
       
-     $contents['content'] = $this->load->view('admin/form_master_relation',$content,true);
+     $contents['content'] = $this->load->view('admin/form_master_clothes_size',$content,true);
      
        $contents['added_js']="";
       $this->load->view('admin/front',$contents);
@@ -356,38 +351,37 @@ class master_relation extends CI_Controller{
 
 
 // ---------------- Database handler function ----------------------------------
-    private function form_relationDB($action,$currentrelation_id=""){
-        $this->load->model('relation_model');
+    private function form_clothes_sizeDB($action,$currentclothes_size_id=""){
+        $this->load->model('clothes_size_model');
         $this->load->model('log_model');
-        $relation = $this->relation_model->get_relation($this->input->post('relation_id'))->row(); 
+        $clothes_size = $this->clothes_size_model->get_clothes_size($this->input->post('clothes_size_id'))->row(); 
 	
-        if(is_null($relation)){
-        $relation = array();
+        if(is_null($clothes_size)){
+        $clothes_size = array();
         }
-            $relation['JENIS_RELASI'] = $this->input->post('jenis_relasi');
-            $relation['KETERANGAN'] = $this->input->post('keterangan');
-            $relation['STATUS'] = $this->input->post('status');
+            $clothes_size['SIZE'] = $this->input->post('size');
+            $clothes_size['STATUS'] = $this->input->post('status');
 		
         if($action =="insert"){
-            $this->relation_model->add_relation($relation);
+            $this->clothes_size_model->add_clothes_size($clothes_size);
 			$this->session->set_userdata('notification',true);
 			
-			$log = "Menambah relasi baru : ".$relation['JENIS_RELASI'];
+			$log = "Menambah ukuran pakaian baru : ".$clothes_size['SIZE'];
 			$this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
         }
         elseif($action =="update"){
-            $this->relation_model->update_relation($currentrelation_id,$relation);
+            $this->clothes_size_model->update_clothes_size($currentclothes_size_id,$clothes_size);
 			$this->session->set_userdata('notification',true);
-			$log = "Mengubah relasi dengan id ".$currentrelation_id.' ('.$relation['JENIS_RELASI'].')';
+			$log = "Mengubah relasi dengan id ".$currentclothes_size_id.' ('.$clothes_size['SIZE'].')';
 			$this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
 			
         }
 		
 		elseif($action =="delete"){
-			$relation = array('STATUS'=>0);
-            $this->relation_model->update_relation($currentrelation_id,$relation);
+			$clothes_size = array('STATUS'=>0);
+            $this->clothes_size_model->update_clothes_size($currentclothes_size_id,$clothes_size);
 			$this->session->set_userdata('notification',true);
-			$log = "Menghapus/deaktif relasi dengan id ".$currentrelation_id;
+			$log = "Menghapus/deaktif relasi dengan id ".$currentclothes_size_id;
 			$this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
 			
         }
