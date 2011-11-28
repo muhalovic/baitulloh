@@ -43,7 +43,7 @@ function jumptolink2(group, program)
 	var selectedopt2=program.options[program.selectedIndex];
 	
 	if (+selectedopt.value != 0 && +selectedopt2.value != 0)
-	window.location="<? echo site_url().'/admin/laporan/cetak/' ?>"+selectedopt.value+"/"+selectedopt2.value+"/2";
+	window.location="<? echo site_url().'/admin/laporan/cetak_excel/' ?>"+selectedopt.value+"/"+selectedopt2.value;
 }
 
 </script>
