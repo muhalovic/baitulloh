@@ -64,6 +64,7 @@ class master_relation extends CI_Controller{
 
     public function delete_relation(){
 		$this->load->model('relation_model');
+		$this->load->model('jamaah_candidate_model');
 		$this->load->model('log_model');
         
 		if(!isset($_POST['items'])){
@@ -79,26 +80,43 @@ class master_relation extends CI_Controller{
         
 		
 		if(!empty($value)){
-			 $log = "Menghapus relasi dengan id ".$relation_id;
-			 $this->form_relationDB("delete",$relation_id);
-	
-			if($success != ''){
+			$jamaah = $this->jamaah_candidate_model->get_jamaah_related_with_relation($relation_id)->result();
+		
+		
+			if(!empty($jamaah)){
+				if($error != ''){
+					$error .= ', ';
+				}
+					$error .= $value[0]->JENIS_RELASI;	
+			}
+			else{
+				$this->relation_model->delete_relation($relation_id);
+				if($success != ''){
 				$success .= ', ';
-			 }
-			
-			 $success .= $value[0]->JENIS_RELASI;
-			 $this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
-			
+				}
+					$success .= $value[0]->JENIS_RELASI;
+			 
+				$log = "Menghapus relasi dengan id ".$relation_id.' ('.$value[0]->JENIS_RELASI.')';
+				$this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
+
 			}
         }
 		
-		
+		}
 		
 		
 		$messege = '';
 		
+		if($success != ''){
 			$messege .= 'data relasi : '.$success.' berhasil dihapus';
-		
+		}
+		if($success != '' && $error != ''){
+			$messege .= ' sedangkan ';
+		}
+		if($error != ''){
+			$messege .= 'data relasi : '.$error.' tidak dapat dihapus karena masih digunakan data yang lain';
+		}
+	
 		
 		$this->output->set_header($this->config->item('ajax_header'));
 		$this->output->set_output($messege);
@@ -354,13 +372,13 @@ class master_relation extends CI_Controller{
             $this->relation_model->add_relation($relation);
 			$this->session->set_userdata('notification',true);
 			
-			$log = "Menambah relasi baru";
+			$log = "Menambah relasi baru : ".$relation['JENIS_RELASI'];
 			$this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
         }
         elseif($action =="update"){
             $this->relation_model->update_relation($currentrelation_id,$relation);
 			$this->session->set_userdata('notification',true);
-			$log = "Mengubah relasi dengan id ".$currentrelation_id;
+			$log = "Mengubah relasi dengan id ".$currentrelation_id.' ('.$relation['JENIS_RELASI'].')';
 			$this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
 			
         }

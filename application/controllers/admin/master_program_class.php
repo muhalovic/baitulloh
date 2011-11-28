@@ -96,7 +96,7 @@ class master_program_class extends CI_Controller{
 		
 			}
 			else{
-			 $log = "Menghapus program dengan id ".$program_class_id;
+			 $log = "Menghapus program dengan id ".$program_class_id.' ('.$value[0]->NAMA_PROGRAM.')';
 			 $this->program_class_model->delete_program($program_class_id);
 			 if($success != ''){
 				$success .= ', ';
@@ -140,6 +140,7 @@ class master_program_class extends CI_Controller{
 		$colModel['HOTEL_MADINAH'] = array('Hotel Madinah',175,TRUE,'center',2);
 		$colModel['MASKAPAI'] = array('Maskapai',150,TRUE,'center',2);
 		$colModel['TRANSPORTASI'] = array('Transportasi',150,TRUE,'center',2);
+		$colModel['STATUS'] = array('Status',100,TRUE,'center',2);
 		
 
 
@@ -266,7 +267,13 @@ class master_program_class extends CI_Controller{
 			$edit = '<img alt="Edit"  style="cursor:pointer" src="'.base_url().'images/flexigrid/edit.jpg" onclick="edit(\''.$row->ID_PROGRAM.'\')">';
 			$delete = '<img alt="Delete"  style="cursor:pointer" src="'.base_url().'images/flexigrid/delete.jpg" onclick="hapus(\''.$row->ID_PROGRAM.'\')">';
                  
-			
+			if($row->STATUS == 0){
+			$status = 'tidak aktif';
+			}
+			else{
+			$status = 'aktif';
+			}
+					
 			$record_items[] = array(
 									$row->ID_PROGRAM,
 									$no = $no+1,
@@ -277,7 +284,8 @@ class master_program_class extends CI_Controller{
 									$row->HOTEL_MAKKAH,
 									$row->HOTEL_MADINAH,
 									$row->MASKAPAI,
-									$row->TRANSPORTASI
+									$row->TRANSPORTASI,
+									$status
 			);
 		}
 
@@ -302,7 +310,7 @@ class master_program_class extends CI_Controller{
 		$this->form_validation->set_rules('hotel_madinah','Hotel Madinah','required|xss_clean|prep_for_form');
         $this->form_validation->set_rules('maskapai','Maskapai','required|xss_clean|prep_for_form');
         $this->form_validation->set_rules('transportasi','Transportasi','required|xss_clean|prep_for_form');
-        
+        $this->form_validation->set_rules('status','Status','required|xss_clean|prep_for_form');
 		
 		$this->form_validation->set_error_delimiters('<p class="error">', '</p>');
 
@@ -339,6 +347,7 @@ class master_program_class extends CI_Controller{
             $content['HOTEL_MADINAH'] = $this->input->post('hotel_madinah');
             $content['MASKAPAI'] = $this->input->post('maskapai');
             $content['TRANSPORTASI'] = $this->input->post('transportasi');
+            $content['STATUS'] = 1;
             $content['type'] = "Ditambahkan";
 
             
@@ -379,18 +388,19 @@ class master_program_class extends CI_Controller{
             $program_class['HOTEL_MADINAH'] = $this->input->post('hotel_madinah');
             $program_class['MASKAPAI'] = $this->input->post('maskapai');
             $program_class['TRANSPORTASI'] = $this->input->post('transportasi');
-       
-        if($action =="insert"){
+			$program_class['STATUS'] = $this->input->post('status');
+        
+		if($action =="insert"){
             $this->program_class_model->add_program($program_class);
 			$this->session->set_userdata('notification',true);
 			
-			$log = "Menambah program baru";
+			$log = "Menambah program baru : ".$program_class['NAMA_PROGRAM'];
 			$this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
         }
         elseif($action =="update"){
             $this->program_class_model->update_program($currentprogram_class_id,$program_class);
 			$this->session->set_userdata('notification',true);
-			$log = "Mengubah program dengan id ".$currentprogram_class_id;
+			$log = "Mengubah program dengan id ".$currentprogram_class_id.' ('.$program_class['NAMA_PROGRAM'].')';
 			$this->log_model->log(null, null, $this->session->userdata('id_user'), $log);
 			
         }
