@@ -27,6 +27,10 @@
 						echo form_dropdown('group', $group_options, $group,'id="group" class="dropdown_medium" onChange="get_group();"'); 
 					?>
 				</span>
+				<? if(form_error('group') != '') {?>
+					<label class="col1"> &nbsp; </label>
+					<span class="col2"><div class="error"><?php echo form_error('group'); ?></div></span>
+				<? }?>
 			</div>
 
 			<div class="row">
