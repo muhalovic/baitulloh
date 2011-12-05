@@ -218,7 +218,7 @@ class Check_availability extends CI_Controller {
     //cek pilihan sdh bener ap blm
     function cek_dropdown($value){
 		if($value==0){
-				$this->form_validation->set_message('cek_dropdown', 'Harap memilih salah satu %s !');
+				$this->form_validation->set_message('cek_dropdown', 'Pilih salah satu %s !');
 				return FALSE;
 		}else
 				return TRUE;

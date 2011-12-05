@@ -20,6 +20,10 @@
 	<div class="content_left">
 		<?php echo form_open('check_availability/do_check'); ?>
 			<div class="row">
+				<? if(form_error('group') != '') {?>
+					<label class="col1"> &nbsp; </label>
+					<span class="col2"><div class="error_validation"><?php echo form_error('group'); ?></div></span>
+				<? }?>
 				<label class="col1">Grup Keberangkatan</label>
 				<span class="col2">
 					<?php 
@@ -27,13 +31,13 @@
 						echo form_dropdown('group', $group_options, $group,'id="group" class="dropdown_medium" onChange="get_group();"'); 
 					?>
 				</span>
-				<? if(form_error('group') != '') {?>
-					<label class="col1"> &nbsp; </label>
-					<span class="col2"><div class="error"><?php echo form_error('group'); ?></div></span>
-				<? }?>
 			</div>
 
 			<div class="row">
+				<? if(form_error('program') != '') {?>
+					<label class="col1"> &nbsp; </label>
+					<span class="col2"><div class="error_validation"><?php echo form_error('program'); ?></div></span>
+				<? }?>
 				<label class="col1">Kelas Program</label>
 				<span class="col2">
 					<?php 
