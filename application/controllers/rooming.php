@@ -8,6 +8,11 @@ class Rooming extends CI_Controller {
                 $this->cekSession();
                 $this->cekOrder();
 	}
+
+        function select(){
+            $data['content'] = $this->load->view('form_rooming_1', null, true);
+            $this->load->view('front',$data);
+        }
 	
 	function index(){            
 		$this->load->model('room_model');
@@ -187,7 +192,21 @@ class Rooming extends CI_Controller {
             
 		//setting rules
 		$this->form_validation->set_rules('room', 'Kamar', 'callback_check_dropdown');
+                $this->form_validation->set_rules('candidate', 'Pilihan Kamar', 'callback_check_room');
                 return $this->form_validation->run();
+        }
+
+        function check_room($val){
+            $this->load->model('room_model');
+            
+            $idroom = $this->input->post('room');
+            $room = $this->room_model->get_room_capacity($idroom);
+            
+            if (count($val) > $room->row()->CAPACITY){
+                    $this->form_validation->set_message('check_room', 'Maaf %s melebihi kapasitas !');
+                    return FALSE;
+            }else
+                return TRUE;
         }
 
         //cek pilihan sdh bener ap blm

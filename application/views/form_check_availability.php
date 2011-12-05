@@ -28,7 +28,7 @@
 					?>
 				</span>
 			</div>
-			
+
 			<div class="row">
 				<label class="col1">Kelas Program</label>
 				<span class="col2">
@@ -159,7 +159,6 @@
 			
 		</div>
 		
-		
 	</div>
 	<!-- END RIGHT SIDE -->
 </div>
@@ -226,6 +225,8 @@
 							 document.getElementById('info_berkas').innerHTML = pecah[5];
 							 document.getElementById('info_kode').innerHTML = pecah[6];
 							 document.getElementById('info_ket').innerHTML = pecah[7];
+                                                         document.getElementById('info_ga').innerHTML = pecah[8]+" Seat(s)";
+                                                         document.getElementById('info_sv').innerHTML = pecah[9]+" Seat(s)";
                         }
                 });
 				return false;

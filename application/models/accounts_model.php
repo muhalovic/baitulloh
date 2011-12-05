@@ -5,6 +5,7 @@ class Accounts_model extends CI_Model {
 	function __construct()
 	{
 		parent::__construct();
+		$this->CI = get_instance();
 	}
 
         // get all account without waiting list
@@ -87,6 +88,45 @@ class Accounts_model extends CI_Model {
 	{
 		$this->db->where('ID_ACCOUNT', $id_account);
 		$this->db->update('accounts' , $data);
+	}
+	
+	function get_grid_account(){
+		
+		$this->db->select("*");
+		$this->db->from("accounts");
+		$this->db->where("STATUS",1);
+		$this->CI->flexigrid->build_query();
+		
+		$return['records'] = $this->db->get(); 
+		
+		$this->db->select("*");
+		$this->db->from("accounts");
+		
+		$return['record_count'] = $this->db->get()->num_rows; 
+		
+		return $return;
+		
+	
+		
+	}
+	
+	function delete_account($id_account,$kode_registrasi){
+		$this->db->where('ID_ACCOUNT',$id_account)->where('KODE_REGISTRASI',$kode_registrasi)->delete('accounts');
+	}
+	
+	function is_email_enable($email){
+		$this->db->select('*');
+		$this->db->from('accounts');
+		$this->db->where('EMAIL',$email);
+		$list = $this->db->get()->result();
+		
+		if(empty($list)){
+			return true;
+		}
+		else{
+			return false;
+		}
+		
 	}
 }
 

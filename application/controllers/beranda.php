@@ -442,14 +442,16 @@ class Beranda extends CI_Controller {
 				$lunas = $this->konversi_tanggal($row->JATUH_TEMPO_PELUNASAN);
 				$dp = $this->konversi_tanggal($row->JATUH_TEMPO_UANG_MUKA);
 				$berkas = $this->konversi_tanggal($row->JATUH_TEMPO_BERKAS );
-				
-				$data = $jd."#".$mk."#".$paspor."#".$lunas."#".$dp."#".$berkas."#".$kode."#".$ket;
+				$pagu_ga = $row->PAGU_GA;
+                                $pagu_sv = $row->PAGU_SV;
+
+				$data = $jd."#".$mk."#".$paspor."#".$lunas."#".$dp."#".$berkas."#".$kode."#".$ket."#".$pagu_ga."#".$pagu_sv;
 			}
 			echo $data;
 		
 		} else {
 			
-			echo " # # # # # # # ";
+			echo " # # # # # # # # # ";
 		}
 
 	}

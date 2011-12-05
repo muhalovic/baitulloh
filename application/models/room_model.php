@@ -23,6 +23,15 @@ class Room_model extends CI_Model {
 		return $this->db->get();
 	}
 
+        function get_room_capacity($id){
+            $this->db->select("*");
+		$this->db->from("room");
+                $this->db->join("room_type", "room_type.ID_ROOM_TYPE=room.ID_ROOM_TYPE");
+		$this->db->where("ID_ROOM", $id);
+
+		return $this->db->get();
+        }
+
         function update_room($id, $data){
 		$this->db->trans_begin();
                 $this->db->where("ID_ROOM", $id);
@@ -70,6 +79,30 @@ class Room_model extends CI_Model {
 		$this->db->where("room.ID_GROUP", $group);
 		$this->db->where("AVAILABILITY", 1);
                 $this->db->group_by("room.ID_GROUP");
+		
+		return $this->db->get();
+	}
+	
+	function get_room_related_with_program($id_program){
+            $this->db->select("*");
+			$this->db->from("room");
+			$this->db->where("ID_PROGRAM", $id_program);
+		
+		return $this->db->get();
+	}
+	
+	function get_room_related_with_group($id_group){
+            $this->db->select("*");
+			$this->db->from("room");
+			$this->db->where("ID_GROUP", $id_group);
+		
+		return $this->db->get();
+	}
+	
+	function get_room_related_with_room_type($id_room_type){
+            $this->db->select("*");
+			$this->db->from("room");
+			$this->db->where("ID_ROOM_TYPE", $id_room_type);
 		
 		return $this->db->get();
 	}

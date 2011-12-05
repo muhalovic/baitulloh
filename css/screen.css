@@ -626,6 +626,32 @@ a:hover.action-delete	{
 	text-indent: -3000px;
 	width: 80px;
 	}
+
+.form-submit-pdf	{
+	background: url(../images/forms/submit_pdf.png) no-repeat;
+	border: none;
+	cursor: pointer;
+	display: block;
+	float: left;
+	height: 30px;
+	margin: 0 4px 0 0;
+	padding: 0;
+	text-indent: -3000px;
+	width: 80px;
+	}
+
+.form-submit-excel	{
+	background: url(../images/forms/submit_excel.png) no-repeat;
+	border: none;
+	cursor: pointer;
+	display: block;
+	float: left;
+	height: 30px;
+	margin: 0 4px 0 10px;
+	padding: 0;
+	text-indent: -3000px;
+	width: 80px;
+	}
 	
 .form-submit-front	{
 	background: url(../images/forms/form_submit.gif) no-repeat;
@@ -672,6 +698,8 @@ a:hover.action-delete	{
 	width: 186px;
 	}
 
+
+
 .inp-form-text	{
 	color: #393939;
 	height: 25px;
@@ -689,6 +717,24 @@ a:hover.action-delete	{
 	padding: 6px 6px 0 6px;
 	width: 187px;
 	}
+
+.inp-form-small{
+	border-radius: 5px;
+	border-color:#B2B3B5;
+	color: #393939;
+	height: 25px;
+	padding: 6px 6px 0 6px;
+	width: 40px;
+}
+
+.inp-form-small-error{
+	border-radius: 5px;
+	border-color: red;
+	height: 25px;
+	padding: 6px 6px 0 6px;
+	width: 45px;
+}
+	
 .form-textarea	{
 	background: url(../images/forms/form_textarea.gif) no-repeat;
 	border: none;
@@ -1852,3 +1898,18 @@ table.front_price td {
 	font-size:12px;
 }
 
+.div_info_1 {
+	border:1px #e0e0e0 solid; 
+	background:#f5f5f5; 
+	color:#707070; 
+	padding:6px 17px 6px 17px;
+	margin-bottom:2px;
+}
+
+.div_info_2 {
+	border:1px #d8e1e9 solid; 
+	background:#e4edf5; 
+	color:#2e74b2; 
+	padding:6px 17px 6px 17px;
+	margin-bottom:2px;
+}

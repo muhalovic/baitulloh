@@ -26,7 +26,7 @@ class Room_packet_model extends CI_Model {
 	function get_room_packet_byIDpack($id){
 		$this->db->select("*");
 		$this->db->from("room_packet");
-                $this->db->join("room_type rt","rt.ID_ROOM_TYPE = room_packet.ID_ROOM_TYPE");
+        $this->db->join("room_type rt","rt.ID_ROOM_TYPE = room_packet.ID_ROOM_TYPE");
 		$this->db->where("ID_PACKET", $id);
 		
 		return $this->db->get();
@@ -55,6 +55,14 @@ class Room_packet_model extends CI_Model {
             $this->db->where("ID_PACKET", $id);
             $this->db->delete("room_packet");
         }
+		
+	function get_room_packet_related_with_room_type($id_room_type){
+            $this->db->select("*");
+			$this->db->from("room_packet");
+			$this->db->where("ID_ROOM_TYPE", $id_room_type);
+		
+		return $this->db->get();
+	}
 }
 
 ?>

@@ -116,12 +116,12 @@
 							((o.selectedPosition == 'right')
 							?
 							("<p class='AddOne' title='Add Selected'>&rsaquo;</p>" +
-							"<p class='AddAll' title='Add All'>&raquo;</p>" +
+							//"<p class='AddAll' title='Add All'>&raquo;</p>" +
 							"<p class='RemoveOne' title='Remove Selected'>&lsaquo;</p>" +
 							"<p class='RemoveAll' title='Remove All'>&laquo;</p>")
 							:
 							("<p class='AddOne' title='Add Selected'>&lsaquo;</p>" +
-							"<p class='AddAll' title='Add All'>&laquo;</p>" +
+							//"<p class='AddAll' title='Add All'>&laquo;</p>" +
 							"<p class='RemoveOne' title='Remove Selected'>&rsaquo;</p>" +
 							"<p class='RemoveAll' title='Remove All'>&raquo;</p>")
 							) +

@@ -9,15 +9,18 @@
 		
 		<link rel="stylesheet" href="<?php echo base_url();?>css/screen.css" type="text/css" media="screen" title="default" />
         <link rel="stylesheet" href="<?php echo base_url();?>css/flexigrid.css" type="text/css" />
+        <link rel="stylesheet" href="<?php echo base_url();?>css/jquery-ui-1.8.16.custom.css" type="text/css" />
 		<!--[if IE]>
 		<link rel="stylesheet" media="all" type="text/css" href="css/pro_dropline_ie.css" />
 		<![endif]-->
 
 		<!--  jquery core -->
-		<script src="<?php echo base_url();?>js/jquery/jquery-1.4.1.min.js" type="text/javascript"></script>
+		<script src="<?php echo base_url();?>js/jquery-1.6.2.min.js" type="text/javascript"></script>
+		<script src="<?php echo base_url();?>js/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
 		 
 		<!--  checkbox styling script -->
-		<script src="<?php echo base_url();?>js/jquery/ui.core.js" type="text/javascript"></script>
+		<!--<script src="<?php echo base_url();?>js/jquery/ui.core.js" type="text/javascript"></script>
+		-->
 		<script src="<?php echo base_url();?>js/jquery/ui.checkbox.js" type="text/javascript"></script>
 		<script src="<?php echo base_url();?>js/jquery/jquery.bind.js" type="text/javascript"></script>
 		
@@ -30,6 +33,15 @@
 			return false;
 			});
 		});
+		$(function() {
+				$( "#date-pick" ).datepicker({
+						showOn: "button",
+						buttonImage: "<?php echo base_url();?>images/calendar.jpg",
+						buttonImageOnly: true,
+						changeMonth: true,
+						changeYear: true
+				});
+			});
 		</script>  
 
 		<![if !IE 7]>
@@ -96,8 +108,13 @@
 
 		<!--  date picker script -->
 		<link rel="stylesheet" href="<?php echo base_url();?>css/datePicker.css" type="text/css" />
+		<!--
+		<script src="<?php echo base_url();?>js/jquery-1.6.2.min.js" type="text/javascript"></script>
+		<script src="<?php echo base_url();?>js/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
+		
 		<script src="<?php echo base_url();?>js/jquery/date.js" type="text/javascript"></script>
 		<script src="<?php echo base_url();?>js/jquery/jquery.datePicker.js" type="text/javascript"></script>
+		
 		<script type="text/javascript" charset="utf-8">
 			$(function()
 			{
@@ -106,9 +123,10 @@
 				.datePicker(
 					// associate the link with a date picker
 					{
-						createButton:false,
+						createButton:true,
 						startDate:'01/01/2005',
-						endDate:'31/12/2020'
+						endDate:'31/12/2020',
+						
 					}
 				).bind(
 					// when the link is clicked display the date picker
@@ -164,8 +182,10 @@
 				// and update the datePicker to reflect it...
 				$('#d').trigger('change');
 			});
+			
+			
 		</script>
-
+-->
 		<!-- MUST BE THE LAST SCRIPT IN <HEAD></HEAD></HEAD> png fix -->
 		<script src="<?php echo base_url();?>js/jquery/jquery.pngFix.pack.js" type="text/javascript"></script>
 		<script type="text/javascript">
@@ -175,6 +195,7 @@
 		</script>
 		<!--<script type="text/javascript" src="<?php echo base_url();?>js/jquery.pack.js"></script>-->
         <script type="text/javascript" src="<?php echo base_url();?>js/flexigrid.pack.js"></script>
+		
 	</head>
 	
 	<body> 
