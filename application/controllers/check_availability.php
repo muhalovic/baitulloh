@@ -23,12 +23,12 @@ class Check_availability extends CI_Controller {
 		$program = $this->program_class_model->get_all_program();
 		$room = $this->room_type_model->get_all_roomType();
 
-		$group_options['0'] = '-- Pilih Group --';
+		$group_options['0'] = '-- Pilih Grup Keberangkatan --';
 		foreach($group->result() as $row){
 				$group_options[$row->ID_GROUP] = $row->KODE_GROUP;
 		}
 		
-		$program_options['0'] = '-- Pilih Program --';
+		$program_options['0'] = '-- Pilih Kelas Program --';
 		foreach($program->result() as $row){
 				$program_options[$row->ID_PROGRAM] = $row->NAMA_PROGRAM;
 		}

@@ -1,0 +1,130 @@
+form {
+	width: 335px;
+	color:#3d3d3d;
+	text-shadow: 1px 1px 1px #fff;
+}
+
+.col1 {
+	padding:5px 0 0 0;
+	text-align: left;
+	width: 135px;
+	height: 20px;
+	margin: 0 0 0 0 ;
+	float: left;
+}
+
+.col2 {
+	width: 250px;
+	display: block;
+	float: left;
+	margin: 0;
+}
+
+.col2comment {
+	width: 195px;
+	height: 98px;
+	margin: 0;
+	display: block;
+	float: left;
+}
+
+.col1comment {
+	text-align: right;
+	width: 135px;
+	height: 98px;
+	float: left;
+	display: block;
+	margin-right: 2px;
+}
+
+div.row {
+	clear: both;
+	width: 500px;
+}
+
+.submit {
+	height: 29px;
+	width: 330px;
+	padding-top: 5px;
+	clear: both;
+} 
+
+.input {
+	background-color: #e3e3e3;
+	color: #3d3d3d;
+	padding: 3px;
+	border:thin solid #aeaeae;
+	font-size:11px;
+}
+
+.input_small{
+	background-color: #e3e3e3;
+	color: #3d3d3d;
+	padding: 3px;
+	border:thin solid #aeaeae;
+	width:50px;
+	font-size:11px;
+}
+
+.textarea {
+	border: 1px solid #8595B2;
+	background-color: #fff;
+	font: 11px/14px "Lucida Grande", "Trebuchet MS", Arial, Helvetica, sans-serif;
+	color: #5A698B;
+	margin: 4px 0 5px 8px;
+}
+
+.dropdown{
+	background: #e3e3e3;
+	border:thin solid #aeaeae;
+	color:#3d3d3d;
+	font-size:11px;
+	padding:2px;
+}
+
+.dropdown_medium{
+	background: #e3e3e3;
+	border:thin solid #aeaeae;
+	color:#3d3d3d;
+	font-size:11px;
+	padding:2px;
+	width:180px;
+}
+
+.dropdown_small{
+	background: #e3e3e3;
+	border:thin solid #aeaeae;
+	color:#3d3d3d;
+	font-size:11px;
+	padding:2px;
+	width:110px;
+}
+
+#dvFile{
+	margin:0 0 2px 0;
+}
+
+/* BUTTON */
+.submit_button{
+	background: url(../images/front/goldbutton.png);
+	width:80px;
+	height:30px;
+	border:none;
+	color:#fff;
+	font-size:11px;
+	font-weight:bold;
+	cursor:pointer;
+	text-shadow:1px 1px 1px #3E3E3E;
+}
+
+.reset_button{
+	background: url(../images/front/greybutton.png);
+	width:80px;
+	height:30px;
+	border:none;
+	color:#fff;
+	font-size:11px;
+	font-weight:bold;
+	cursor:pointer;
+	text-shadow:1px 1px 1px #3E3E3E;
+}
