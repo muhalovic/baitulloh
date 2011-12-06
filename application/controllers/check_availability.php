@@ -54,12 +54,17 @@ class Check_availability extends CI_Controller {
 	}
 	
 	function do_check(){
+		$data[] = null;
+		$data['content'] = $this->load->view('result_page',$data,true);
+		$this->load->view('front',$data);
+		
+		/*
 		if ($this->cek_validasi() == FALSE){
 			//$this->session->set_userdata('failed_form','Kegagalan Menyimpan Data, Kesalahan Pengisian Form!');
 			$this->front();
 		}
 		else{
-			/*
+			
 			$this->load->model('group_departure_model');
 			$this->load->model('program_class_model');
 			
@@ -191,11 +196,11 @@ class Check_availability extends CI_Controller {
                         $data['room_choice2'] = $room_choice2;
 			$data['plane_flag'] = $plane_flag;
 			$data['message'] = $message;
-			*/
+			
 			$data[] = null;
 			$data['content'] = $this->load->view('result_page',$data,true);
 			$this->load->view('front',$data);
-		}
+		}*/
 	}
 	
 	function cek_validasi() {
