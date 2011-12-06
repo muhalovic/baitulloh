@@ -24,6 +24,13 @@
 							<? 
 							if($this->uri->segment(1) === 'login'){
 							echo form_error('email'); 
+							 if(isset($msg))
+							{															
+								echo '<span class="error">
+										<strong>'.$msg.'
+									  </span>';
+							}
+						
 							}?>
 						</div>
 						<div>
@@ -45,6 +52,18 @@
 							<?
 							if($this->uri->segment(1) === 'forgot'){
 							echo form_error('email'); 
+						 if(isset($msg))
+							{								
+								echo '<span class="error">
+										'.$msg.'
+									  </span>';
+							}
+						 if(isset($success))
+							{								
+								echo '<span class="success">
+										'.$success.'
+									  </span>';
+							}
 							}?>
 						</div>
 						<div class="bottom">

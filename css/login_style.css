@@ -180,6 +180,13 @@ form.forgot_password{
 	display:block;
 	margin:4px 30px;
 }
+.form_wrapper span.success{
+	color:green;
+	font-size:11px;
+	font-style:italic;
+	display:block;
+	margin:4px 30px;
+}
 .form_wrapper input[type="submit"] {
 	background: #e3e3e3;
 	border: 1px solid #ccc;

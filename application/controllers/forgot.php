@@ -106,7 +106,7 @@ class Forgot extends CI_Controller {
 				
 			}
 			else{
-				$data['cek_form'] = 1;
+				$data['msg'] = '<strong>Email</strong> tidak ditemukan di Database';
 				$data['cek_error'] = "-error";
 				$data['content'] = $this->load->view('form_login', $data, true);
 				$this->load->view('front', $data);
@@ -207,11 +207,11 @@ class Forgot extends CI_Controller {
 		$email = str_replace("_at_", "@", $email);
 		if($this->session->set_userdata('sukses') == 'true')
 		{ 
-			$data['msg'] = "Sistem berhasil mereset password <i><strong><a href='mailto:".$email."'> ".$email."</a></strong></i> . periksa inbox Email Anda";
+			$data['success'] = "Sistem berhasil mereset password <i><strong><a href='mailto:".$email."'> ".$email."</a></strong></i> . periksa inbox Email Anda";
 			
 			$this->session->unset_userdata('sukses');
 				
-			$data['content'] = $this->load->view('form_reset', $data, true);
+			$data['content'] = $this->load->view('form_login', $data, true);
 			$this->load->view('front', $data);
 		}else{
 			redirect(site_url()."/login");

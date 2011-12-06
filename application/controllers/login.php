@@ -71,7 +71,7 @@ class Login extends CI_Controller {
 			}
 			//apabila login tidak sesuai dengan email dan password maka user akan masuk halaman login
 			else{
-				$data['cek_form'] = 1;
+				$data['msg'] = 'Email</strong> atau <strong>Password</strong> salah';
 				$data['cek_error'] = "-error";
 				$data['content'] = $this->load->view('form_login', $data, true);
 				$this->load->view('front', $data);
