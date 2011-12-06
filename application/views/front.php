@@ -14,6 +14,19 @@
 	
 		<!-- JAVASCRIPT -->
 		<script src="<?php echo base_url();?>js/jquery/jquery-1.4.1.min.js" type="text/javascript"></script>
+        <script src="<?php echo base_url();?>js/jquery.js" type="text/javascript"></script>
+		<script>
+        // tooltip
+        $(function() {
+			$("#myform :input").tooltip({
+				position: "center right",
+				offset: [-2, 10],
+				effect: "fade",
+				opacity: 0.7
+			
+			});
+        });
+        </script>
 	</head>
 	
 	<body> 

@@ -120,6 +120,22 @@ class Packet_model extends CI_Model {
 		
 		return $this->db->get();
 	}
+	
+	function sum_jumlah_orang($id_group, $id_program)
+	{
+		$status = array(1,3);
+		
+		$this->db->select_sum('JUMLAH_ADULT');
+		$this->db->select_sum('CHILD_WITH_BED');
+		$this->db->select_sum('CHILD_NO_BED');
+		$this->db->select_sum('INFANT');
+		$this->db->from('packet');
+		$this->db->where('ID_GROUP', $id_group);
+		$this->db->where('ID_PROGRAM', $id_program);
+		$this->db->where_in($status);
+		
+		return $this->db->get();
+	}
 }
 
 ?>

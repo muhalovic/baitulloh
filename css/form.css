@@ -135,3 +135,19 @@ div.row {
 	cursor:pointer;
 	text-shadow:1px 1px 1px #3E3E3E;
 }
+
+.tooltip {
+	background-color:#000;
+	border:1px solid #fff;
+	padding:10px 15px;
+	width:200px;
+	display:none;
+	color:#fff;
+	text-align:left;
+	font-size:11px;
+
+	/* outline radius for mozilla/firefox only */
+	-moz-box-shadow:0 0 10px #000;
+	-webkit-box-shadow:0 0 10px #000;
+	text-shadow:none !important;
+}
