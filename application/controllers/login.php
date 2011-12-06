@@ -33,6 +33,7 @@ class Login extends CI_Controller {
 		
 		$this->form_validation->set_message('required', '<strong>%s</strong> tidak boleh kosong!');
 		$this->form_validation->set_message('valid_email', 'penulisan <strong>%s</strong> tidak benar!');
+		$this->form_validation->set_error_delimiters('<span class="error">', '</span>');
 		
 		if($this->form_validation->run() == TRUE)
 		{
@@ -51,7 +52,7 @@ class Login extends CI_Controller {
 						'email' 			=> $row->EMAIL,
 						'nama'				=> $row->NAMA_USER,
 						'kode_registrasi' 	=> $row->KODE_REGISTRASI,
-                                                'order_packet' => $packet->num_rows() > 0 ? 1:0
+                        'order_packet'      => $packet->num_rows() > 0 ? 1:0
 					);
 					
 					$this->session->set_userdata($newdata);

@@ -33,6 +33,8 @@ class Forgot extends CI_Controller {
 		$this->form_validation->set_message('required', '<strong>%s</strong> tidak boleh kosong!');
 		$this->form_validation->set_message('valid_email', 'penulisan <strong>%s</strong> tidak benar!');
 		
+		$this->form_validation->set_error_delimiters('<span class="error">', '</span>');
+		
 		if($this->form_validation->run() == TRUE)
 		{
 			$email 	= $this->input->post('email');
@@ -106,7 +108,7 @@ class Forgot extends CI_Controller {
 			else{
 				$data['cek_form'] = 1;
 				$data['cek_error'] = "-error";
-				$data['content'] = $this->load->view('form_forgot', $data, true);
+				$data['content'] = $this->load->view('form_login', $data, true);
 				$this->load->view('front', $data);
 			}
 		
@@ -170,14 +172,14 @@ class Forgot extends CI_Controller {
 			} else {
 				
 				$data['msg'] = "Maaf, data tidak sesuai dengan sistem kami. silahkan ulangi dengan mengklik <a href='".site_url()."/forgot'>link ini</a>";
-				$data['content'] = $this->load->view('form_reset', $data, true);
+				$data['content'] = $this->load->view('form_login', $data, true);
 				$this->load->view('front', $data);
 			}
 		
 		} else {
 			
 			$data['msg'] = "Maaf, masa berlaku reset password telah berakhir. silahkan ulangi lagi dengan mengklik <a href='".site_url()."/forgot'>link ini</a>";
-			$data['content'] = $this->load->view('form_reset', $data, true);
+			$data['content'] = $this->load->view('form_login', $data, true);
 			$this->load->view('front', $data);
 		}
 	}
@@ -195,7 +197,7 @@ class Forgot extends CI_Controller {
 			$data['cek_error'] = "-error";
 		}
 		
-		$data['content'] = $this->load->view('form_forgot',$data, true);
+		$data['content'] = $this->load->view('form_login',$data, true);
 		$this->load->view('front', $data);
 	}
 	
