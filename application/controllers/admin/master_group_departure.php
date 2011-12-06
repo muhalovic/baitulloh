@@ -141,8 +141,6 @@ class master_group_departure extends CI_Controller{
 		$colModel['JATUH_TEMPO_PELUNASAN'] = array('Jatuh Tempo Pelunasan',150,TRUE,'center',2);
 		$colModel['JATUH_TEMPO_BERKAS'] = array('Jatuh Tempo Berkas',150,TRUE,'center',2);
 		$colModel['BATAS_WAITING_LIST'] = array('Batas Waiting List',150,TRUE,'center',2);
-		$colModel['PAGU_SV'] = array('Pagu Saudi Arabia Airlines',150,TRUE,'center',2);
-		$colModel['PAGU_GA'] = array('Pagu Garuda Indonesia Airlines',150,TRUE,'center',2);
 		$colModel['HARI'] = array('Jumlah Hari',100,TRUE,'center',2);
 		$colModel['STATUS'] = array('Status',100,TRUE,'center',2);
 		
@@ -293,8 +291,6 @@ class master_group_departure extends CI_Controller{
 									date('d-m-Y',strtotime($row->JATUH_TEMPO_PELUNASAN)),
 									date('d-m-Y',strtotime($row->JATUH_TEMPO_BERKAS)),
 									date('d-m-Y',strtotime($row->BATAS_WAITING_LIST)),
-									$row->PAGU_SV,
-									$row->PAGU_GA,
 									$row->HARI,
 									$status
 			);
@@ -317,9 +313,7 @@ class master_group_departure extends CI_Controller{
 		
 		$this->form_validation->set_rules('kode_group','Kode Grup','required|xss_clean|prep_for_form');
 		$this->form_validation->set_rules('keterangan','Keterangan','xss_clean|prep_for_form');
-		$this->form_validation->set_rules('pagu_sv','Pagu Saudi Arabia Airlines','required|xss_clean|prep_for_form');
-		$this->form_validation->set_rules('pagu_ga','Pagu Garuda Indonesia Airlines','required|xss_clean|prep_for_form');
-        $this->form_validation->set_rules('hari','Jumlah Hari','required|xss_clean|prep_for_form');
+	    $this->form_validation->set_rules('hari','Jumlah Hari','required|xss_clean|prep_for_form');
         $this->form_validation->set_rules('tgl_keberangkatan_jd','Tanggal Keberangkatan Jeddah','required|xss_clean|prep_for_form|callback_is_date['.$this->input->post('thn_keberangkatan_jd').'-'.$this->input->post('bln_keberangkatan_jd').'-'.$this->input->post('tgl_keberangkatan_jd').']');
         $this->form_validation->set_rules('tgl_keberangkatan_mk','Tanggal Keberangkatan Mekkah','required|xss_clean|prep_for_form|callback_is_date['.$this->input->post('thn_keberangkatan_mk').'-'.$this->input->post('bln_keberangkatan_mk').'-'.$this->input->post('tgl_keberangkatan_mk').']');
         $this->form_validation->set_rules('tgl_jatuh_tempo_paspor','Jatuh Tempo Paspor','required|xss_clean|prep_for_form|callback_is_date['.$this->input->post('thn_jatuh_tempo_paspor').'-'.$this->input->post('bln_jatuh_tempo_paspor').'-'.$this->input->post('tgl_jatuh_tempo_paspor').']');
@@ -417,8 +411,6 @@ class master_group_departure extends CI_Controller{
             $content['JATUH_TEMPO_PELUNASAN'] = $this->input->post('jatuh_tempo_pelunasan');
             $content['JATUH_TEMPO_BERKAS'] = $this->input->post('jatuh_tempo_berkas');
             $content['BATAS_WAITING_LIST'] = $this->input->post('batas_waiting_list');
-            $content['PAGU_SV'] = $this->input->post('pagu_sv');
-            $content['PAGU_GA'] = $this->input->post('pagu_ga');
             $content['HARI'] = $this->input->post('hari');
             $content['TANGGAL_KEBERANGKATAN_JD'] = $this->input->post('thn_keberangkatan_jd').'-'.$this->input->post('bln_keberangkatan_jd').'-'.$this->input->post('tgl_keberangkatan_jd');
             $content['TANGGAL_KEBERANGKATAN_MK'] = $this->input->post('thn_keberangkatan_mk').'-'.$this->input->post('bln_keberangkatan_mk').'-'.$this->input->post('tgl_keberangkatan_mk');
@@ -470,8 +462,6 @@ class master_group_departure extends CI_Controller{
             $group_departure['JATUH_TEMPO_PELUNASAN'] = $this->input->post('jatuh_tempo_pelunasan');
             $group_departure['JATUH_TEMPO_BERKAS'] = $this->input->post('jatuh_tempo_berkas');
             $group_departure['BATAS_WAITING_LIST'] = $this->input->post('batas_waiting_list');
-            $group_departure['PAGU_SV'] = $this->input->post('pagu_sv');
-            $group_departure['PAGU_GA'] = $this->input->post('pagu_ga');
             $group_departure['HARI'] = $this->input->post('hari');
             $group_departure['TANGGAL_KEBERANGKATAN_JD'] = $this->input->post('thn_keberangkatan_jd').'-'.$this->input->post('bln_keberangkatan_jd').'-'.$this->input->post('tgl_keberangkatan_jd');
             $group_departure['TANGGAL_KEBERANGKATAN_MK'] = $this->input->post('thn_keberangkatan_mk').'-'.$this->input->post('bln_keberangkatan_mk').'-'.$this->input->post('tgl_keberangkatan_mk');

@@ -27,28 +27,6 @@
 					</td>
 				</tr>
 				
-				<tr>
-					<? form_error('pagu_sv') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
-					<th valign="top">Pagu Saudi Arabia Airlines (*)</th>
-					<td><input type="text" name="pagu_sv" value="<?php echo $PAGU_SV;?>" class="<? echo $class;?>" /></td>
-					<td>
-						<? if(form_error('pagu_sv') != '') {?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('pagu_sv'); ?></div>
-						<? }?>
-					</td>
-				</tr>
-				<tr>
-					<? form_error('pagu_ga') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
-					<th valign="top">Pagu Garuda Indonesia Airlines (*)</th>
-					<td><input type="text" name="pagu_ga" value="<?php echo $PAGU_GA;?>" class="<? echo $class;?>" /></td>
-					<td>
-						<? if(form_error('pagu_ga') != '') {?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('pagu_ga'); ?></div>
-						<? }?>
-					</td>
-				</tr>
 				
 				<tr>
 					<? form_error('hari') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>

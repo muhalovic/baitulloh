@@ -128,6 +128,37 @@ class Accounts_model extends CI_Model {
 		}
 		
 	}
+	
+	function is_email_active($email){
+		$this->db->select('*');
+		$this->db->from('accounts');
+		$this->db->where('EMAIL',$email);
+		$this->db->where('STATUS','1');
+		$list = $this->db->get()->result();
+		
+		if(empty($list)){
+			return false;
+		}
+		else{
+			return true;
+		}
+		
+	}
+
+	function cek_login($email,$pass){
+		$this->db->select('*');
+		$this->db->from('accounts');
+		$this->db->where('EMAIL',$email);
+		$this->db->where('PASSWORD',$pass);
+		$list = $this->db->get()->row();
+		
+		return $list;
+
+		
+	}
+	
+	
+	
 }
 
 ?>
