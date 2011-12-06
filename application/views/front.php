@@ -35,7 +35,7 @@
 			<div class="line"></div>
 			<div class="nav">
 				<a href="<?php echo site_url();?>"><div class="label">Registrasi</div></a>
-				<a href="<?php echo base_url();?>"><div class="label">Login</div></a>
+				<a href="<?php echo base_url().'index.php/login/';?>"><div class="label">Login</div></a>
 				<a href="http://umrahkamilah.com"><div class="label">Website</div></a>
 			</div>
 			<div class="line"></div>
