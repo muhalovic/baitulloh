@@ -51,6 +51,7 @@ class Check_availability extends CI_Controller {
 			$this->front();
 		}
 		else{
+			/*
 			$this->load->model('group_departure_model');
 			$this->load->model('program_class_model');
 			
@@ -182,7 +183,8 @@ class Check_availability extends CI_Controller {
                         $data['room_choice2'] = $room_choice2;
 			$data['plane_flag'] = $plane_flag;
 			$data['message'] = $message;
-			
+			*/
+			$data[] = null;
 			$data['content'] = $this->load->view('result_page',$data,true);
 			$this->load->view('front',$data);
 		}

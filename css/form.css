@@ -5,6 +5,8 @@ form {
 }
 
 .col1 {
+	font-family: 'Oswald', Arial, sans-serif;
+	font-size:12px;
 	padding:5px 0 0 0;
 	text-align: left;
 	width: 135px;

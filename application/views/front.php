@@ -10,6 +10,7 @@
 		<!-- CSS -->
 		<link rel="stylesheet" href="<?php echo base_url();?>css/newkamilah.css" type="text/css" media="screen" title="default" /> 
 		<link rel="stylesheet" href="<?php echo base_url();?>css/form.css" type="text/css" media="screen" title="default" /> 
+		<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css' />
 	
 		<!-- JAVASCRIPT -->
 		<script src="<?php echo base_url();?>js/jquery/jquery-1.4.1.min.js" type="text/javascript"></script>
