@@ -25,7 +25,14 @@ class Check_availability extends CI_Controller {
 
 		$group_options['0'] = '-- Pilih Grup Keberangkatan --';
 		foreach($group->result() as $row){
-				$group_options[$row->ID_GROUP] = $row->KODE_GROUP;
+				if(strlen($row->KODE_GROUP) < 7)
+				{
+					$kode = $row->KODE_GROUP." - ".$this->konversi_tanggal2($row->TANGGAL_KEBERANGKATAN_JD);
+				}else{
+					$kode = $row->KODE_GROUP;
+				}
+				
+				$group_options[$row->ID_GROUP] = $kode;
 		}
 		
 		$program_options['0'] = '-- Pilih Kelas Program --';
@@ -34,8 +41,9 @@ class Check_availability extends CI_Controller {
 		}
 		
 		$room_options = '';
+		$input_room = "<input type='text' name='jml_kamar[]' id='jml_kamar' class='input_small'>";
 		foreach($room->result() as $row){
-				$room_options[$row->ID_ROOM_TYPE] = $row->JENIS_KAMAR;
+				$room_options .= $row->JENIS_KAMAR." - Jumlah Orang : ".$input_room."<br>";
 		}
 			
 		$data['group_options'] = $group_options;
@@ -286,19 +294,70 @@ class Check_availability extends CI_Controller {
 				$lunas = $this->konversi_tanggal($row->JATUH_TEMPO_PELUNASAN);
 				$dp = $this->konversi_tanggal($row->JATUH_TEMPO_UANG_MUKA);
 				$berkas = $this->konversi_tanggal($row->JATUH_TEMPO_BERKAS );
-                                $pagu_ga = $row->PAGU_GA;
-                                $pagu_sv = $row->PAGU_SV;
 				
-				$data = $jd."#".$mk."#".$paspor."#".$lunas."#".$dp."#".$berkas."#".$kode."#".$ket."#".$pagu_ga."#".$pagu_sv;
+				$data = $jd."#".$mk."#".$paspor."#".$lunas."#".$dp."#".$berkas."#".$kode."#".$ket;
 			}
 			echo $data;
 		
 		} else {
 			
-			echo " # # # # # # # # # ";
+			echo " # # # # # # # ";
 		}
 
 	}
+	
+	function getProgram()
+	{
+		$this->load->model('program_class_model');
+		
+		if ($_POST['id_program']!='' && $_POST['id_program']!= 0) { 
+			$parent = $_POST['id_program'];
+			$parent2 = $_POST['id_group'];
+			
+			$info_jumlah_kamar = $this->hitung_jumlah_kamar($parent2, $parent);
+			
+			$data_group	= $this->program_class_model->get_program($parent);			
+			foreach ($data_group->result() as $row){
+				
+				$maskapai = $row->MASKAPAI;
+				$hotel_mk = $row->HOTEL_MAKKAH;
+				$hotel_jd = $row->HOTEL_MADINAH;
+				$transportasi = $row->TRANSPORTASI;
+				
+				$data = $maskapai."#".$hotel_mk."#".$hotel_jd."#".$transportasi."#".$info_jumlah_kamar;
+			}
+			echo $data;
+		
+		} else {
+			
+			echo " # # # # ";
+		}
+
+	}
+	
+	function hitung_jumlah_kamar($id_group, $id_program)
+	{
+		$this->load->model('room_availability_model');
+		$this->load->model('room_type_model');
+		
+		$tipe_kamar = $this->room_type_model->get_all_roomType_aktif();
+		$hitung_kamar = '';
+		foreach($tipe_kamar->result() as $row)
+		{
+			$nama_tipe = $row->JENIS_KAMAR;
+			$kapasitas = $row->CAPACITY;
+			
+			$kmr_tersedia = $this->room_availability_model->get_price_room($row->ID_ROOM_TYPE, $id_program, $id_group);
+			foreach($kmr_tersedia->result() as $rows)
+			{
+				$hitung_kamar .= "<br>- <strong>".$nama_tipe."</strong> masih tersedia untuk <strong>".($rows->JUMLAH_KAMAR * $kapasitas)."</strong> Orang";
+			}
+		}
+		
+		return $hitung_kamar;
+	}
+			
+			
 	
 	function konversi_tanggal($tgl){
       $tanggal = substr($tgl,8,2);
@@ -370,6 +429,53 @@ class Check_availability extends CI_Controller {
           break;
 	   } 
 	   return $strHari.", ".$tanggal.' '.$bulan.' '.$tahun;
+    }
+	
+	function konversi_tanggal2($tgl){
+      $tanggal = substr($tgl,8,2);
+      $bln    = substr($tgl,5,2);
+	  $bulan = ""; $strHari = "";
+      $tahun    = substr($tgl,0,4);
+
+      switch ($bln){
+        case 1:
+          $bulan =  "Januari";
+          break;
+        case 2:
+          $bulan =  "Februari";
+          break;
+        case 3:
+          $bulan = "Maret";
+          break;
+        case 4:
+          $bulan =  "April";
+          break;
+        case 5:
+          $bulan =  "Mei";
+          break;
+        case 6:
+          $bulan =  "Juni";
+          break;
+        case 7:
+          $bulan =  "Juli";
+          break;
+        case 8:
+          $bulan =  "Agustus";
+          break;
+        case 9:
+          $bulan =  "September";
+          break;
+        case 10:
+          $bulan =  "Oktober";
+          break;
+        case 11:
+          $bulan =  "November";
+          break;
+        case 12:
+          $bulan =  "Desember";
+          break;
+	   } 
+	   return $tanggal.' '.$bulan.' '.$tahun;
     }
 }
 

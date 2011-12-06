@@ -18,7 +18,7 @@
 <div class="center">
 	<!-- LEFT SIDE -->
 	<div class="content_left">
-		<?php echo form_open('check_availability/do_check'); ?>
+		<?php $attr = array('name' => 'check'); echo form_open('check_availability/do_check', $attr); ?>
 			<div class="row">
 				<? if(form_error('group') != '') {?>
 					<label class="col1"> &nbsp; </label>
@@ -42,7 +42,7 @@
 				<span class="col2">
 					<?php 
 						$program = 0; if(set_value('program')!='') $program = set_value('program');
-						echo form_dropdown('program', $program_options, $program,'id="program" class="dropdown_medium"'); 
+						echo form_dropdown('program', $program_options, $program,'id="program" class="dropdown_medium"  onChange="get_program();"'); 
 					?>
 				</span>
 			</div>
@@ -82,22 +82,8 @@
 			<div class="row">
 				<label class="col1">Konfigurasi Kamar</label>
 				<span class="col2">
-					<div id="dvFile">
-					<?php $kamar = 0; if(set_value('kamar')!='') $kamar = set_value('kamar');?>
-						<select name="kamar[]" id="kamar" class="dropdown_small">
-							<option value="0">-- Pilih Kamar --</option>
-							<?php foreach ($room_options as $key=>$value){ ?>
-								<option value="<?=$key?>"><?=$value?></option>
-							<? } ?>
-						</select>
-					<label>Jumlah</label>
-					<select name="jml_kamar[]" id="jml_kamar" class="dropdown">
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-					</select>								
-					<a href="javascript:_add_more();" id="add-more"><img src="<?php echo base_url();?>images/front/icon_plus.gif" width="16" height="16" valign="middle" alt="" /></a>	
-					</div>
+				<?php echo $room_options; ?>
+                <br />
 				</span>
 			</div>
 			
@@ -134,13 +120,14 @@
 			</div>
 			
 			<!-- On change bagian ini -->
-			<div>
+			<div id='front_keterangan' style="display:none">
 				<p>
-					<div>Keberangkatan :</div>
-					<div>Maskapai :</div>
-					<div>Hotel :</div>
-					<div>Transportasi :</div>
-					<div>Kamar :</div>
+					<div>Keberangkatan : <strong><span id="info_mk"></span></strong></div>
+					<div>Maskapai &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <strong><span id="maskapai"></span></strong></div>
+					<div>Hotel Makkah &nbsp;&nbsp;&nbsp;: <strong><span id="hotel_mk"></span></strong></div>
+					<div>Hotel Madinah &nbsp;&nbsp;: <strong><span id="hotel_jd"></span></strong></div>
+					<div>Transportasi &nbsp;&nbsp;&nbsp;&nbsp;: <strong><span id="transportasi"></span></strong></div>
+					<div>Kamar &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span id="info_kamar"></span></div>
 				</p>
 			</div>
 			<!----->
@@ -155,12 +142,12 @@
 			</div>
 			
 			<!-- On change bagian ini -->
-			<div>
+			<div id='front_informasi' style="display:none">
 				<p>
-					<div>Batas Akhir Uang Muka :</div>
-					<div>Batas Akhir Pelunasan :</div>
-					<div>Upload Data Paspor :</div>
-					<div>Pengumpulan Berkas Fisik :</div>
+					<div>Batas Akhir Uang Muka &nbsp;&nbsp;&nbsp;&nbsp;: <strong><span id="info_dp"></span></strong></div>
+					<div>Batas Akhir Pelunasan &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <strong><span id="info_lunas"></span></strong></div>
+					<div>Upload Data Paspor &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <strong><span id="info_paspor"></span></strong></div>
+					<div>Pengumpulan Berkas Fisik : <strong><span id="info_berkas"></span></strong></div>
 				</p>
 			</div>
 			<!----->
@@ -214,6 +201,7 @@
 	function get_group() 
 	{	
 		var prp = $("#group").val();
+		
                 $.ajax({
                         url: "<?=base_url();?>index.php/check_availability/getGroup/",
                         global: false,
@@ -233,8 +221,51 @@
 							 document.getElementById('info_berkas').innerHTML = pecah[5];
 							 document.getElementById('info_kode').innerHTML = pecah[6];
 							 document.getElementById('info_ket').innerHTML = pecah[7];
-                                                         document.getElementById('info_ga').innerHTML = pecah[8]+" Seat(s)";
-                                                         document.getElementById('info_sv').innerHTML = pecah[9]+" Seat(s)";
+							 }
+                });
+					 
+			var cek_program = document.getElementById('program').value;
+				if(+prp !=  0 && cek_program != 0)
+					{
+						document.getElementById('front_keterangan').style.display="inline";
+						document.getElementById('front_informasi').style.display="inline";
+					}else{
+						document.getElementById('front_keterangan').style.display="none";
+						document.getElementById('front_informasi').style.display="none";
+					}
+				return false;
+	}
+	
+	function get_program() 
+	{	
+		var prp = $("#program").val();
+		var cek_group = document.getElementById('group').value;
+		
+                $.ajax({
+                        url: "<?=base_url();?>index.php/check_availability/getProgram/",
+                        global: false,
+                        type: "POST",
+                        async: false,
+                        dataType: "html",
+                        data: "id_program="+ prp +"&id_group="+ cek_group, //the name of the $_POST variable and its value
+                        success: function (response) {
+							 var bahan = response;
+							 var pecah = bahan.split("#");
+							 
+                           document.getElementById('maskapai').innerHTML = pecah[0];
+                           document.getElementById('hotel_mk').innerHTML = pecah[1];
+                           document.getElementById('hotel_jd').innerHTML = pecah[2];
+                           document.getElementById('transportasi').innerHTML = pecah[3];
+                           document.getElementById('info_kamar').innerHTML = pecah[4];
+									
+									if(+prp != 0 && cek_group !=  0)
+									{
+										document.getElementById('front_keterangan').style.display="inline";
+										document.getElementById('front_informasi').style.display="inline";
+									}else{
+										document.getElementById('front_keterangan').style.display="none";
+										document.getElementById('front_informasi').style.display="none";
+									}
                         }
                 });
 				return false;
