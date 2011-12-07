@@ -54,7 +54,7 @@
 				<? }?>
 				<label class="col1">Jumlah Dewasa</label>
 				<span class="col2">
-					<input type="text" name="jml_adult" value="<?php echo set_value('jml_adult');?>" class="input_small" title="Harap diisi dengan angka" />
+					<input type="text" name="jml_adult" value="<?php echo set_value('jml_adult');?>"  title="Harap diisi dengan angka" />
 					<label>( di atas 11 tahun )</label>
 				</span>
 			</div>
@@ -143,7 +143,7 @@
 			
 			<!-- On change bagian ini -->
 			<div id='front_keterangan' class="front_keterangan" style="display:none">
-               <table width="100%" border="0" align="left">
+               <table width="100%" border="0" align="left" cellpadding="0" cellspacing="0">
                   <tr>
                     <td width="20%">Keberangkatan</td>
                     <td>: <strong><span id="info_mk"></span></strong></td>
@@ -175,8 +175,10 @@
 			<div class="clear"></div>
 			
 			<div class="title">
-				<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
-				<span class="text_title">Informasi Batas Akhir</span>
+				<p>
+					<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
+					<span class="text_title">Informasi Batas Akhir</span>
+				</p>
 			</div>
 			
 			<div align="center">
@@ -185,7 +187,7 @@
 
 			<!-- On change bagian ini -->
 			<div id='front_informasi' style="display:none">
-                   <table width="100%" border="0" align="left">
+                   <table width="100%" border="0" align="left" cellpadding="0" cellspacing="0">
                       <tr>
                         <td width="40%">Batas Akhir Uang Muka</td>
                         <td>: <strong><span id="info_dp"></span></strong></td>
