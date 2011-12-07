@@ -18,11 +18,11 @@
 		<script>
         // tooltip
         $(function() {
-			$("#myform :input").tooltip({
+			$("#myform :input[title]").tooltip({
 				position: "center right",
 				offset: [-2, 10],
 				effect: "fade",
-				opacity: 0.7
+				opacity: 0.8
 			
 			});
         });
