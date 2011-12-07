@@ -282,6 +282,8 @@
                 });
 					 
 				document.getElementById('program').value=0;
+				document.getElementById('front_keterangan').style.display="none";
+				document.getElementById('front_informasi').style.display="none";
 				/*if(+prp !=  0 && cek_program != 0)
 					{
 						document.getElementById('front_keterangan').style.display="inline";
