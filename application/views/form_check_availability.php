@@ -54,8 +54,8 @@
 				<? }?>
 				<label class="col1">Jumlah Dewasa</label>
 				<span class="col2">
-					<input type="text" name="jml_adult" value="<?php echo set_value('jml_adult');?>" class="input_small" title="di atas 11 tahun" />
-					<label>Orang</label>
+					<input type="text" name="jml_adult" value="<?php echo set_value('jml_adult');?>" class="input_small" title="Harap diisi dengan angka" />
+					<label>( di atas 11 tahun )</label>
 				</span>
 			</div>
 			
@@ -66,8 +66,8 @@
 				<? }?>
 				<label class="col1">Anak Dengan Ranjang</label>
 				<span class="col2">
-					<input type="text" name="with_bed" value="<?php echo set_value('with_bed');?>" class="input_small" title="23 Bulan - 11 Tahun" />
-					<label>Orang</label>
+					<input type="text" name="with_bed" value="<?php echo set_value('with_bed');?>" class="input_small" title="Harap diisi dengan angka" />
+					<label>( 23 Bulan - 11 Tahun )</label>
 				</span>
 			</div>
 			
@@ -78,8 +78,8 @@
 				<? }?>
 				<label class="col1">Anak Tanpa Ranjang</label>
 				<span class="col2">
-					<input type="text" name="no_bed" value="<?php echo set_value('no_bed');?>" class="input_small" title="23 Bulan - 11 Tahun" />
-					<label>Orang</label>
+					<input type="text" name="no_bed" value="<?php echo set_value('no_bed');?>" class="input_small" title="Harap diisi dengan angka" />
+					<label>( 23 Bulan - 11 Tahun )</label>
 				</span>
 			</div>
 			
@@ -90,8 +90,8 @@
 				<? }?>
 				<label class="col1">Bayi</label>
 				<span class="col2">
-					<input type="text" name="infant" value="<?php echo set_value('infant');?>" class="input_small" title="0 - 23 Bulan" />
-					<label>Orang</label>
+					<input type="text" name="infant" value="<?php echo set_value('infant');?>" class="input_small" title="Harap diisi dengan angka" />
+					<label>( 0 - 23 Bulan )</label>
 				</span>
 			</div>
 			
@@ -142,34 +142,37 @@
 			</div>
 			
 			<!-- On change bagian ini -->
-			<div id='front_keterangan' style="display:none">
-            <p>
-              <div>
+			<div id='front_keterangan' class="front_keterangan" style="display:none">
                <table width="100%" border="0" align="left">
                   <tr>
                     <td width="20%">Keberangkatan</td>
                     <td>: <strong><span id="info_mk"></span></strong></td>
                   </tr>
+				  <tr>
                     <td>Maskapai</td>
                     <td>: <strong><span id="maskapai"></span></strong></td>
                   </tr>
+				  <tr>
                     <td>Hotel Makkah</td>
                     <td>: <strong><span id="hotel_mk"></span></strong></td>
                   </tr>
+				  <tr>
                     <td>Hotel Madinah</td>
                     <td>: <strong><span id="hotel_jd"></span></strong></td>
                   </tr>
+				  <tr>
                     <td>Transportasi</td>
                     <td>: <strong><span id="transportasi"></span></strong></td>
                   </tr>
+				  <tr>
                     <td valign="top">Kamar</td>
                     <td>: <span id="info_kamar"></span><span id="info_kamar_2"></span></td>
                   </tr>
                 </table>
-              </div>
-            </p>
 			</div>
 			<!----->
+			
+			<div class="clear"></div>
 			
 			<div class="title">
 				<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
@@ -182,29 +185,31 @@
 
 			<!-- On change bagian ini -->
 			<div id='front_informasi' style="display:none">
-				<p>
-                <div>
                    <table width="100%" border="0" align="left">
                       <tr>
                         <td width="40%">Batas Akhir Uang Muka</td>
                         <td>: <strong><span id="info_dp"></span></strong></td>
                       </tr>
+					  <tr>
                         <td>Batas Akhir Pelunasan</td>
                         <td>: <strong><span id="info_lunas"></span></strong></td>
                       </tr>
+					  <tr>
                         <td>Upload Data Paspor</td>
                         <td>: <strong><span id="info_paspor"></span></strong></td>
                       </tr>
+					  <tr>
                         <td>Pengumpulan Berkas Fisik</td>
                         <td>: <strong><span id="info_berkas"></span></strong></td>
                       </tr>
                     </table>
-                  </div>
-				</p>
 			</div>
 			<!----->
 			
+			<div class="clear"></div>
+			
 		</div>
+		<!-- END INFO SHAPE -->
 		
 	</div>
 	<!-- END RIGHT SIDE -->

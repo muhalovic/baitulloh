@@ -208,6 +208,7 @@ h3{
 
 .info_shape{
 	width:330px;
+	height:100%;
 	/* background:#E3E3E3; */
 	border: thin dashed #AEAEAE;
 	/* -moz-border-radius: 20px; */
@@ -252,7 +253,9 @@ h3{
 	clear:both;
 }
 
-
+.front_keterangan{
+	height:300px;
+}
 
 
 
