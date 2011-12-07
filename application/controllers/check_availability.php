@@ -42,8 +42,8 @@ class Check_availability extends CI_Controller {
 		
 		$room_options = '';
 		foreach($room->result() as $row){
-				$input_room = "<input type='text' name='jml_kamar[]' id='jml_kamar' class='input_small' title='Harap ditulis munggunakan Angka'>";
-				$room_options .= "<tr><td><strong>".$row->JENIS_KAMAR."</strong></td><td>Untuk ".$input_room." Orang</td></tr>";
+				$input_room = "<input type='text' name='jml_kamar[]' id='jml_kamar' class='input_small' title='Harap diisi dengan Angka'>";
+				$room_options .= "<tr><td><strong>".$row->JENIS_KAMAR."</strong> Untuk</td><td> ".$input_room." Orang</td></tr>";
 		}
 			
 		$data['group_options'] = $group_options;
@@ -209,6 +209,12 @@ class Check_availability extends CI_Controller {
 		$no_bed = $this->input->post('no_bed')=='' ? 0:$this->input->post('no_bed');
 		$infant = $this->input->post('infant')=='' ? 0:$this->input->post('infant');
 		$total = $adult + $with_bed + $no_bed + $infant;
+		
+		$id_group = $this->input->post('group');
+		$id_program	 = $this->input->post('program');
+		$data_id = array('total' => $total,
+						 'id_group' => $id_group,
+						 'id_program' => $id_program);
 			
 		//setting rules
 		$config = array(
@@ -216,9 +222,9 @@ class Check_availability extends CI_Controller {
 				array('field'=>'program','label'=>'Kelas Program', 'rules'=>'callback_cek_dropdown'),
 				array('field'=>'jml_adult','label'=>'Jumlah Dewasa', 'rules'=>"required|integer|callback_check_jml[$total]"),
 				array('field'=>'with_bed','label'=>'Anak Dengan Ranjang', 'rules'=>"integer"),
-				array('field'=>'no_bed','label'=>'Anak Tanpa Ranjang', 'rules'=>"integer"),
+				array('field'=>'no_bed','label'=>'Anak Tanpa Ranjang', 'rules'=>"integer|callback_check_sisa_kamar[$data_id]"),
 				array('field'=>'infant','label'=>'Bayi', 'rules'=>"integer|callback_check_jml[$adult]"),
-				array('field'=>'jml_kamar[]','label'=>'Konfigurasi Kamar', 'rules'=>'required|integer'),
+				array('field'=>'jml_kamar[]','label'=>'Konfigurasi Kamar', 'rules'=>'required|integer|'),
 				//array('field'=>'jml_kamar','label'=>'Jumlah', 'rules'=>'callback_cek_dropdown'),
 		);
 
@@ -271,10 +277,18 @@ class Check_availability extends CI_Controller {
     }
 	
 	// cek ketersediaan kamar
-	function check_sisa_kamar($value, $total)
+	function check_sisa_kamar($value, $data)
 	{
-		// cek disini
+		$id_group = '';
+		if($value == "100")
+		{
+			$this->form_validation->set_message('check_sisa_kamar', "test ".$id_group."!");
+				return FALSE;
+		}else
+			return TRUE;
 	}
+	
+	
 	function getKamar(){
 		$this->load->model('room_type_model');
                 
@@ -342,9 +356,9 @@ class Check_availability extends CI_Controller {
 			$hitung_pagu = $total_pagu - $total_org;
 			
 			if($hitung_pagu > 0){
-				$sisa_pagu = " - tersedia ".$hitung_pagu." Seat(s)";
+				$sisa_pagu = " - sisa ".$hitung_pagu." Seat <font color='green'>TERSEDIA</font>";
 			}else{
-				$sisa_pagu = " - tersedia 0 Seat";
+				$sisa_pagu = " - sisa 0 Seat <font color='red'>PENUH</font>";
 			}
 			
 			
@@ -406,9 +420,9 @@ class Check_availability extends CI_Controller {
 			
 			if($tot > 0)
 			{
-				$status_kamar = "<font color='green'><strong>ADA</strong></font>";
+				$status_kamar = "<font color='green'><strong>TERSEDIA</strong></font>";
 			}else{
-				$status_kamar = "<font color='red'><strong>HABIS</strong></font>";
+				$status_kamar = "<font color='red'><strong>PENUH</strong></font>";
 				$tot = 0;
 			}
 			
@@ -419,7 +433,7 @@ class Check_availability extends CI_Controller {
 				$spasi = NULL;
 			}
 			
-			$views .= "<strong>".$spasi.$nama_tipe."</strong> masih tersedia untuk ".$tot." Orang ".$status_kamar."<br>";
+			$views .= "<strong>".$spasi.$nama_tipe."</strong> tersedia untuk ".$tot." Orang ".$status_kamar."<br>";
 			$no +=1;
 		}
 		

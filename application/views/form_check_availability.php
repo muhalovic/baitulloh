@@ -102,7 +102,7 @@
 				<? }?>
 				<label class="col1">Konfigurasi Kamar</label>
 				<span class="col2">
-				<table width="80%">
+				<table width="70%">
 				<?php echo $room_options; ?>
 				</table>
                 <br />
@@ -134,7 +134,7 @@
 			
 			<div class="title">
 				<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
-				<span class="text_title">Keterangan Grup & Kelas Keberangkatan</span>
+				<span class="text_title">Keterangan Grup & Kelas Keberangkatan (Real Time)</span>
 			</div>
 			
 			<div align="center">
