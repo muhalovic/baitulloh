@@ -198,14 +198,15 @@ class Registration extends CI_Controller {
 		$this->form_validation->set_rules('mobile', 'Mobile', '');
 		$this->form_validation->set_rules('province', 'Propinsi', 'required');
 		$this->form_validation->set_rules('kota', 'Kota', 'required');
-		$this->form_validation->set_rules('alamat', 'Alamat', 'required');
+		$this->form_validation->set_rules('alamat', 'Alamat', 'required|max_length[255]');
 		$this->form_validation->set_rules('id_card', 'No ID Card', 'required|min_length[10]');
 		$this->form_validation->set_rules('captcha', 'Captcha', 'required|callback_check_captcha');
 		
 		//$this->form_validation->set_error_delimiters('<li class="error">', '</li>');
 		$this->form_validation->set_message('required', '%s wajib diisi !');
 		$this->form_validation->set_message('valid_email', '%s wajib berisi alamat email yang benar !');
-		$this->form_validation->set_message('min_length', '%s minimum berisi 10 karakter !');
+		$this->form_validation->set_message('min_length', '%s minimum berisi %s karakter !');
+		$this->form_validation->set_message('max_length', '%s maksimal berisi %s karakter !');
 		$this->form_validation->set_message('email_is_exist', '%s sudah digunakan!');
 		$this->form_validation->set_message('check_captcha', '%s tidak benar');
 		

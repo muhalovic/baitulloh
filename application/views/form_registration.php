@@ -18,7 +18,7 @@
 <div class="center">
 	<!-- LEFT SIDE -->
 	<div class="content_left">
-		<?php echo form_open('registration/do_register'); ?>
+		<?php echo form_open('registration/do_register',array('id' => 'myform')); ?>
 			<div class="row">
 				<? if(form_error('nama') != '') {?>
 					<label class="col1"> &nbsp; </label>
@@ -26,7 +26,7 @@
 				<? }?>
 				<label class="col1">Nama (*)</label>
 				<span class="col2">
-					<input type="text" name="nama" value="<?php echo set_value('nama');?>"  />
+					<input type="text" class="input_medium" title="Isikan nama anda" name="nama" value="<?php echo set_value('nama');?>"  />
 				</span>
 			</div>
 			
@@ -37,7 +37,7 @@
 				<? }?>
 				<label class="col1">Email (*)</label>
 				<span class="col2">
-					<input type="text" name="email" value="<?php echo set_value('email');?>"  />
+					<input type="text" name="email" title="Isikan email anda" value="<?php echo set_value('email');?>"  />
 				</span>
 			</div>
 			
@@ -48,7 +48,7 @@
 				<? }?>
 				<label class="col1">Telepon</label>
 				<span class="col2">
-					<input type="text" name="telp" value="<?php echo set_value('telp');?>"  />
+					<input type="text" name="telp" title="Isikan nomor telepon anda" value="<?php echo set_value('telp');?>"  />
 				</span>
 			</div>
 
@@ -59,7 +59,7 @@
 				<? }?>
 				<label class="col1">Mobile</label>
 				<span class="col2">
-					<input type="text" name="mobile" value="<?php echo set_value('mobile');?>"  />
+					<input type="text" name="mobile" title="Isikan nomor handphone anda" value="<?php echo set_value('mobile');?>"  />
 				</span>
 			</div>
 			
@@ -71,7 +71,7 @@
 				<label class="col1">Propinsi (*)</label>
 				<span class="col2">
 					<? $province = 0; if(set_value('province')!='') $province = set_value('province');
-							echo form_dropdown('province', $province_options, $province,'id="province" class="chzn-select"'); ?>
+							echo form_dropdown('province', $province_options, $province,'id="province" class="chzn-select" title="Pilih provinsi tempat tinggal anda"'); ?>
 							
 				</span>
 			</div>
@@ -84,7 +84,7 @@
 				<label class="col1">Kota (*)</label>
 				<span class="col2">
 					<? $kota = 0; if(set_value('kota')!='') $kota = set_value('kota');
-							echo form_dropdown('kota', $kota_options, $kota,'id="kota" class="chzn-select" data-allows-new-values="true"'); ?>
+							echo form_dropdown('kota', $kota_options, $kota,'id="kota" class="chzn-select" data-allows-new-values="true" title="Pilih kota tempat tinggal anda"'); ?>
 							
 				</span>
 			</div>
@@ -95,7 +95,7 @@
 				<? }?>
 				<label class="col1">Alamat (*)</label>
 				<span class="col2">
-					<input type="text" name="alamat" value="<?php echo set_value('alamat');?>"  />
+					<textarea title="Iskan alamat tempat tinggal anda" name="alamat" > <?php echo set_value('alamat');?>  </textarea>
 				</span>
 			</div>			
 			
@@ -104,9 +104,9 @@
 					<label class="col1"> &nbsp; </label>
 					<span class="col2"><div class="error_validation"><?php echo form_error('id_card'); ?></div></span>
 				<? }?>
-				<label class="col1">No ID Card (contoh KTP) (*)</label>
+				<label class="col1">No Identitas (*)</label>
 				<span class="col2">
-					<input type="text" name="id_card" value="<?php echo set_value('id_card');?>"  />
+					<input type="text" name="id_card" title="Isikan 10 digit nomor identitas anda (contoh: KTP)" value="<?php echo set_value('id_card');?>"  />
 				</span>
 			</div>
 			
@@ -125,7 +125,7 @@
 			
 				<label class="col1"></label>
 				<span class="col2">
-					<input type="text" name="captcha"   />
+					<input type="text" name="captcha"  title="Isikan angka yang tertera pada gambar"  />
 				</span>
 			</div>
 
