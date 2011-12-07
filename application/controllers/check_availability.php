@@ -279,7 +279,7 @@ class Check_availability extends CI_Controller {
 	// cek ketersediaan kamar
 	function check_sisa_kamar($value, $data)
 	{
-		$id_group = '';
+		$id_group = $data['id_group'];
 		if($value == "100")
 		{
 			$this->form_validation->set_message('check_sisa_kamar', "test ".$id_group."!");
@@ -346,19 +346,27 @@ class Check_availability extends CI_Controller {
 			$info_jumlah_kamar = $this->hitung_jumlah_kamar($parent2, $parent);
 			
 			// hitung total jamaah per paket per keberangkatan
-			$data_packet = $this->packet_model->sum_jumlah_orang($parent2, $parent)->row();
+			$data_packet = $this->packet_model->sum_jumlah_orang($parent)->row();
 			$total_org = $data_packet->JUMLAH_ADULT + $data_packet->CHILD_WITH_BED + $data_packet->CHILD_NO_BED + $data_packet->INFANT;
 			
 			// cari total pagu
-			$data_program = $this->program_class_model->get_program($parent)->row();
-			$total_pagu = $data_program->PAGU;
+			$data_program = $this->program_class_model->get_program_ByGroup($parent, $parent2);
+			if($data_program->result()!= NULL)
+			{
+				foreach($data_program->result() as $row)
+				{
+					$total_pagu = $row->PAGU;
+				}
+			}else{
+				$total_pagu = 0;
+			}
 			
 			$hitung_pagu = $total_pagu - $total_org;
 			
 			if($hitung_pagu > 0){
 				$sisa_pagu = " - sisa ".$hitung_pagu." Seat <font color='green'>TERSEDIA</font>";
 			}else{
-				$sisa_pagu = " - sisa 0 Seat <font color='red'>PENUH</font>";
+				$sisa_pagu = " - sisa 0 Seat <font color='red'>TIDAK TERSEDIA</font>";
 			}
 			
 			
@@ -422,7 +430,7 @@ class Check_availability extends CI_Controller {
 			{
 				$status_kamar = "<font color='green'><strong>TERSEDIA</strong></font>";
 			}else{
-				$status_kamar = "<font color='red'><strong>PENUH</strong></font>";
+				$status_kamar = "<font color='red'><strong>TIDAK TERSEDIA</strong></font>";
 				$tot = 0;
 			}
 			

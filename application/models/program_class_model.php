@@ -60,6 +60,15 @@ class Program_class_model extends CI_Model {
 		$this->db->where('ID_PROGRAM',$data);
 		$this->db->delete('program_class');
 	}
+	
+	function get_program_ByGroup($id_program, $id_group){
+		$this->db->select("*");
+		$this->db->from("program_class");
+		$this->db->where("ID_PROGRAM", $id_program);
+		$this->db->where("ID_GROUP", $id_group);
+		
+		return $this->db->get();
+	}
 }
 
 ?>
