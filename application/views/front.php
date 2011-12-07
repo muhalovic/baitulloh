@@ -10,10 +10,11 @@
 		<!-- CSS -->
 		<link rel="stylesheet" href="<?php echo base_url();?>css/newkamilah.css" type="text/css" media="screen" title="default" /> 
 		<link rel="stylesheet" href="<?php echo base_url();?>css/form.css" type="text/css" media="screen" title="default" /> 
+		<link rel="stylesheet" href="<?php echo base_url();?>css/chosen.css" type="text/css" media="screen" title="default" /> 
 		<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css' />
 	
 		<!-- JAVASCRIPT -->
-		<script src="<?php echo base_url();?>js/jquery/jquery-1.4.1.min.js" type="text/javascript"></script>
+		<script src="<?php echo base_url();?>js/jquery-1.6.2.min.js" type="text/javascript"></script>
         <script src="<?php echo base_url();?>js/jquery.js" type="text/javascript"></script>
 		<script>
         // tooltip
@@ -24,8 +25,16 @@
 				effect: "fade",
 				opacity: 0.9
 			});
+			$("#myform :textarea[title]").tooltip({
+				position: "center right",
+				offset: [-2, 10],
+				effect: "fade",
+				opacity: 0.8
+			
+			});
         });
         </script>
+
 	</head>
 	
 	<body> 
@@ -60,7 +69,11 @@
 			<!-- END CONTENT -->
 		</div>
 		<!-- END MAIN SECTION -->
-		
+		<script src="<?php echo base_url();?>js/chosen.jquery.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			$(".chzn-select").chosen({no_results_text: "Data yang dicari tidak ditemukan"});
+			
+		</script>
 		<!-- FOOTER SECTION -->
 		<div class="footer">
 			<div class="line"></div>Kamilah Wisata - Membangun Karakter Jamaah Menuju Kehidupan yang Lebih Baik.<div class="line"></div>
