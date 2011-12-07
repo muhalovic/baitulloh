@@ -19,16 +19,43 @@ class Registration extends CI_Controller {
 		$waiting = $this->input->post('waiting');
 		
 		$this->load->model('province_model');
+		$this->load->model('kota_model');
+		$this->load->helper('captcha');
+		
 		$province = $this->province_model->get_all_province();
-
-		$province_options['0'] = '-- Pilih Propinsi --';
+		
+		$kota_options[''] = '-- Pilih Kota --';
+		if(isset($_POST['province'])){
+		$kota = $this->kota_model->get_kota_by_province($this->input->post('province'));
+		foreach($kota->result() as $row){
+			$kota_options[$row->ID_KOTA] = $row->NAMA_KOTA;
+		}
+		}
+		
+		$province_options[''] = '-- Pilih Propinsi --';
 		foreach($province->result() as $row){
 				$province_options[$row->ID_PROPINSI] = $row->NAMA_PROPINSI;
 		}
 		
+		$vals = array(
+		'img_path' => 'captcha/',
+		'img_url' => base_url().'captcha/',
+		'font_path' => './path/to/fonts/texb.ttf',
+		'img_width' => '100',
+		'img_height' => 30,
+		'expiration' => 60,
+		'length'=> 5,
+		'numberonly'=>true
+		);
+		
+		$this->session->unset_userdata('captcha');
+		$captcha = create_captcha($vals);
+		$this->session->set_userdata('captcha',$captcha['word']);
+			
+	
 		if ($waiting != '' & $waiting != NULL){
 			$data['waiting'] = $waiting;
-                        $data['jml_adult'] = $this->input->post('jml_adult');
+            $data['jml_adult'] = $this->input->post('jml_adult');
 			$data['with_bed'] = $this->input->post('with_bed');
 			$data['no_bed'] = $this->input->post('no_bed');
 			$data['infant'] = $this->input->post('infant');
@@ -42,8 +69,11 @@ class Registration extends CI_Controller {
                             $room_choice2[$i] = array('ID_ROOM_TYPE'=>$kamar[$i], 'JUMLAH'=>$jml_kamar[$i]);
                         }
                         $data['room_choice2'] = $room_choice2;
-                }
+         }
+				
+		$data['captcha'] = $captcha['image'];
 		$data['province_options'] = $province_options;
+		$data['kota_options'] = $kota_options;
 		$data['content'] = $this->load->view('form_registration',$data,true);
 		$this->load->view('front',$data);
 	}
@@ -62,7 +92,7 @@ class Registration extends CI_Controller {
 			else{
 				$this->load->model('accounts_model');
 				$this->load->model('log_model');
-                                $this->load->model('packet_model');
+                $this->load->model('packet_model');
 				
 				$this->accounts_model->insert_new_account($this->data_field);						
 				$this->log_model->log(null, $this->data_field['KODE_REGISTRASI'], null, 'REGISTER new account, EMAIL = '.$this->data_field['EMAIL'].', KODE_REGISTRASI = '.$this->data_field['KODE_REGISTRASI']);
@@ -166,34 +196,32 @@ class Registration extends CI_Controller {
 		$this->form_validation->set_rules('email', 'E-mail', 'required|valid_email|callback_email_is_exist');
 		$this->form_validation->set_rules('telp', 'Telp', '');
 		$this->form_validation->set_rules('mobile', 'Mobile', '');
-		$this->form_validation->set_rules('province', 'Propinsi', 'callback_check_dropdown');
-		$this->form_validation->set_rules('kota', 'Kota', '');
-		$this->form_validation->set_rules('alamat', 'Alamat', '');
+		$this->form_validation->set_rules('province', 'Propinsi', 'required');
+		$this->form_validation->set_rules('kota', 'Kota', 'required');
+		$this->form_validation->set_rules('alamat', 'Alamat', 'required');
 		$this->form_validation->set_rules('id_card', 'No ID Card', 'required|min_length[10]');
-		$this->form_validation->set_rules('recaptcha_response_field', 'Captcha Code', 'callback_check_captcha['.$this->input->post('recaptcha_challenge_field').']');
+		$this->form_validation->set_rules('captcha', 'Captcha', 'required|callback_check_captcha');
 		
 		//$this->form_validation->set_error_delimiters('<li class="error">', '</li>');
 		$this->form_validation->set_message('required', '%s wajib diisi !');
 		$this->form_validation->set_message('valid_email', '%s wajib berisi alamat email yang benar !');
 		$this->form_validation->set_message('min_length', '%s minimum berisi 10 karakter !');
 		$this->form_validation->set_message('email_is_exist', '%s sudah digunakan!');
+		$this->form_validation->set_message('check_captcha', '%s tidak benar');
 		
 		return $this->form_validation->run();
     }
 	
-	function check_captcha($response, $challenge){
-		require_once('recaptchalib.php');
+	function check_captcha($response){
+		if($this->session->userdata('captcha')!= $response){
+			$this->session->unset_userdata('captcha');
+			return false;
+		}
+		else{
+			$this->session->unset_userdata('captcha');
+			return true;
+		}
 		
-		$privatekey = '6LcqPskSAAAAAKxPuiPKr6XH4qnIUWQfAG9-R9qq';
-		$resp = recaptcha_check_answer ($privatekey, $_SERVER["REMOTE_ADDR"], $challenge, $response);
-		
-		if ($resp->is_valid) {
-                return TRUE;
-        } else {
-                # set the error code so that we can display it
-				$this->form_validation->set_message('check_captcha', "Kode salah, silahkan coba lagi");
-				return FALSE;
-        }
 	}
 
     //cek pilihan sdh bener ap blm
@@ -221,7 +249,7 @@ class Registration extends CI_Controller {
 		
 		$data['key'] = $key;
 		$data['subject'] = 'Aktivasi Akun';
-                $data['waiting'] = $waiting;
+        $data['waiting'] = $waiting;
 		$data['NAMA_USER'] = $this->data_field['NAMA_USER'];
 		$data['PASSWORD'] = $this->tmp_pass;
 		$data['KODE_REGISTRASI'] = $this->data_field['KODE_REGISTRASI'];
