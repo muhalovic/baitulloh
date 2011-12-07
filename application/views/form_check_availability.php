@@ -281,8 +281,8 @@
 							 }
                 });
 					 
-			
-				if(+prp !=  0 && cek_program != 0)
+				document.getElementById('program').value=0;
+				/*if(+prp !=  0 && cek_program != 0)
 					{
 						document.getElementById('front_keterangan').style.display="inline";
 						document.getElementById('front_informasi').style.display="inline";
@@ -290,7 +290,7 @@
 						document.getElementById('front_keterangan').style.display="none";
 						document.getElementById('front_informasi').style.display="none";
 					}
-				return false;
+				return false;*/
 	}
 	
 	function get_program() 
