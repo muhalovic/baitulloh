@@ -42,7 +42,7 @@ class Check_availability extends CI_Controller {
 		
 		$room_options = '';
 		foreach($room->result() as $row){
-				$input_room = "<input type='text' name='jml_kamar[]' id='jml_kamar' class='input_small' title='Harap diisi dengan Angka'>";
+				$input_room = "<input type='text' name='jml_kamar[]' id='jml_kamar' class='input_small'  value='".set_value('jml_kamar[]')."' title='Harap diisi dengan Angka'><input type='hidden' name='tipe_kamar[]' value='".$row->ID_ROOM_TYPE."'>";
 				$room_options .= "<tr><td><strong>".$row->JENIS_KAMAR."</strong> Untuk</td><td> ".$input_room." Orang</td></tr>";
 		}
 			
@@ -67,6 +67,7 @@ class Check_availability extends CI_Controller {
 			
 			$this->load->model('group_departure_model');
 			$this->load->model('program_class_model');
+			$this->load->model('packet_model');
 			
 			$group = $this->input->post('group');
             $kelas_program = $this->input->post('program');
@@ -77,18 +78,51 @@ class Check_availability extends CI_Controller {
 									
 			$group_info = $this->group_departure_model->get_group($group);
 			$kode_group = $group_info->row()->KODE_GROUP;
-			$pagu_sv = $group_info->row()->PAGU_SV;
-			$pagu_ga = $group_info->row()->PAGU_GA;
 			$depart_jd = $group_info->row()->TANGGAL_KEBERANGKATAN_JD;
 			$depart_mk = $group_info->row()->TANGGAL_KEBERANGKATAN_MK;
+			$jatu_tempo = $group_info->row()->JATUH_TEMPO_PASPOR;
+			$uang_muka = $group_info->row()->JATUH_TEMPO_UANG_MUKA;
+			$pelunasan = $group_info->row()->JATUH_TEMPO_PELUNASAN;
+			$kirim_berkas = $group_info->row()->JATUH_TEMPO_BERKAS;
 			
 			$program_info = $this->program_class_model->get_program($kelas_program);
 			$nama_program = $program_info->row()->NAMA_PROGRAM;
+			$maskapai = $program_info->row()->MASKAPAI;
+			$hotel_mk = $program_info->row()->HOTEL_MAKKAH;
+			$hotel_md = $program_info->row()->HOTEL_MADINAH;
+			$transportasi = $program_info->row()->TRANSPORTASI;
 			
 			$total_candidate = $jml_adult + $with_bed + $no_bed + $infant;	
 			
+			// hitung total jamaah per paket per keberangkatan
+			$data_packet = $this->packet_model->sum_jumlah_orang($kelas_program)->row();
+			$total_org = $data_packet->JUMLAH_ADULT + $data_packet->CHILD_WITH_BED + $data_packet->CHILD_NO_BED + $data_packet->INFANT;
+			
+			// cari total pagu
+			$data_program = $this->program_class_model->get_program_ByGroup($kelas_program, $group);
+			if($data_program->result()!= NULL)
+			{
+				foreach($data_program->result() as $row)
+				{
+					$total_pagu = $row->PAGU;
+				}
+			}else{
+				$total_pagu = 0;
+			}
+			
+			$hitung_pagu = $total_pagu - $total_org;
+			
+			if($hitung_pagu > 0){
+				$sisa_pagu = " - sisa ".$hitung_pagu." Seat <font color='green'>TERSEDIA</font>";
+				$waiting_list = FALSE;
+			}else{
+				$sisa_pagu = " - sisa 0 Seat <font color='red'>TIDAK TERSEDIA</font>";
+				$waiting_list = TRUE;
+			}
+			
+			
 			// check pagu pesawat
-			$flag = FALSE; $plane_flag = FALSE;
+			/*$flag = FALSE; $plane_flag = FALSE;
 			if ($pagu_sv > $total_candidate){
 				$message = "Seat Pesawat tersedia. Keberangkatan menggunakan pesawat Saudi Airlines";
 				$flag = TRUE; $plane_flag = TRUE;
@@ -103,7 +137,7 @@ class Check_availability extends CI_Controller {
 				$message = "Seat Pesawat tersedia. Keberangkatan menggunakan pesawat Saudi Airlines sejumlah $pagu_sv kursi dan Garuda Indonesia Airlines sejumlah $kursi_sisa kursi";
 				$plane_flag = TRUE;
 			}else
-				$message = "Paket yang anda inginkan saat ini sedang tak tersedia.";
+				$message = "Paket yang anda inginkan saat ini sedang tak tersedia.";*/
 			
 			// check room avilability
 			$this->load->model('room_model');
@@ -111,14 +145,22 @@ class Check_availability extends CI_Controller {
 		
 			$kamar = $this->input->post('kamar');
 			$jml_kamar = $this->input->post('jml_kamar');
+			$id_tipe_kamar = $this->input->post('tipe_kamar');
 			$total_candidate -= ($no_bed + $infant);
 			$flag_room = TRUE;
 			$room_capacity = 0;
 			$tmp_candidate = $total_candidate;
 			$available_beds = $this->room_model->count_available_beds($group)->row()->JML_BEDS;
 			$data['waiting'] = FALSE;
+			$konfig_kamar = '';
 			
-			for($i=0; $i<count($kamar); $i++){				
+			for($i=0; $i<count($jml_kamar); $i++)
+			{
+				$room_type = $this->room_type_model->get_roomType($id_tipe_kamar[$i]);
+				if($jml_kamar[$i] == 0) { $jml_kamar[$i] = 0; }
+				$konfig_kamar .= "<strong>".$room_type->row()->JENIS_KAMAR."</strong> : <strong>".$jml_kamar[$i]."</strong> Orang<br>";
+			}
+			/*for($i=0; $i<count($kamar); $i++){				
 				if($kamar[$i]!='0'  && $kamar[$i] != ''){
 					$room_type = $this->room_type_model->get_roomType($kamar[$i]);
 					$room_choice[$i] = "<pre>".$room_type->row()->JENIS_KAMAR." jumlah ".$jml_kamar[$i]." Kamar</pre>";
@@ -182,8 +224,33 @@ class Check_availability extends CI_Controller {
 			if ($plane_flag){
 				$data['depart_jd'] = date_format(date_create($depart_jd), "d M Y");
 				$data['depart_mk'] = date_format(date_create($depart_mk), "d M Y");
+			}*/
+			
+			if($waiting_list)
+			{
+				$value_waiting_list = 1;
+				$txt_waiting = "(Daftar Tunggu)";
+			}else{
+				$value_waiting_list = 0;
+				$txt_waiting = "";
 			}
 			
+			$data['waiting_list'] = $value_waiting_list;
+			$data['txt_waiting'] = $txt_waiting;
+			
+			$data['info_berangkat'] = $this->konversi_tanggal($depart_mk);
+			$data['jatu_tempo'] = $this->konversi_tanggal($jatu_tempo);
+			$data['uang_muka'] = $this->konversi_tanggal($uang_muka);
+			$data['pelunasan'] = $this->konversi_tanggal($pelunasan);
+			$data['kirim_berkas'] = $this->konversi_tanggal($kirim_berkas);
+			$data['maskapai'] = $maskapai.$sisa_pagu;
+			$data['hotel_mk'] = $hotel_mk;
+			$data['hotel_md'] = $hotel_md;
+			$data['transportasi'] = $transportasi;
+			
+			$data['info_jumlah_kamar'] = $this->hitung_jumlah_kamar($group, $kelas_program);
+			
+			$data['konfig_kamar'] = $konfig_kamar;
 			$data['jml_adult'] = $jml_adult;
 			$data['with_bed'] = $with_bed;
 			$data['no_bed'] = $no_bed;
@@ -192,10 +259,6 @@ class Check_availability extends CI_Controller {
                         $data['program'] = $kelas_program;
 			$data['kode_group'] = $kode_group;
 			$data['nama_program'] = $nama_program;
-			$data['room_choice'] = $room_choice;
-                        $data['room_choice2'] = $room_choice2;
-			$data['plane_flag'] = $plane_flag;
-			$data['message'] = $message;
 			
 			$data[] = null;
 			$data['content'] = $this->load->view('result_page',$data,true);
@@ -210,11 +273,11 @@ class Check_availability extends CI_Controller {
 		$infant = $this->input->post('infant')=='' ? 0:$this->input->post('infant');
 		$total = $adult + $with_bed + $no_bed + $infant;
 		
-		$id_group = $this->input->post('group');
-		$id_program	 = $this->input->post('program');
-		$data_id = array('total' => $total,
-						 'id_group' => $id_group,
-						 'id_program' => $id_program);
+		$total_konfigurasi = 0;
+		foreach($this->input->post('jml_kamar') as $key => $values)
+		{
+			$total_konfigurasi += $values;
+		}
 			
 		//setting rules
 		$config = array(
@@ -222,9 +285,9 @@ class Check_availability extends CI_Controller {
 				array('field'=>'program','label'=>'Kelas Program', 'rules'=>'callback_cek_dropdown'),
 				array('field'=>'jml_adult','label'=>'Jumlah Dewasa', 'rules'=>"required|integer|callback_check_jml[$total]"),
 				array('field'=>'with_bed','label'=>'Anak Dengan Ranjang', 'rules'=>"integer"),
-				array('field'=>'no_bed','label'=>'Anak Tanpa Ranjang', 'rules'=>"integer|callback_check_sisa_kamar[$data_id]"),
+				array('field'=>'no_bed','label'=>'Anak Tanpa Ranjang', 'rules'=>"integer"),
 				array('field'=>'infant','label'=>'Bayi', 'rules'=>"integer|callback_check_jml[$adult]"),
-				array('field'=>'jml_kamar[]','label'=>'Konfigurasi Kamar', 'rules'=>'required|integer|'),
+				array('field'=>'jml_kamar[]','label'=>'Konfigurasi Kamar', 'rules'=>"callback_check_jml2[$total_konfigurasi]|callback_check_komparasi_kamar[$total]|callback_check_sisa_seat[$total_konfigurasi]"),
 				//array('field'=>'jml_kamar','label'=>'Jumlah', 'rules'=>'callback_cek_dropdown'),
 		);
 
@@ -276,16 +339,105 @@ class Check_availability extends CI_Controller {
 		}
     }
 	
-	// cek ketersediaan kamar
-	function check_sisa_kamar($value, $data)
+	//cek jumlah jika kosong
+    function check_jml2($value, $max){
+		if ($max < 0) {
+			$this->form_validation->set_message('check_jml2', "%s wajib diisi !");
+			return FALSE;
+		}else{
+			return TRUE;
+		}
+    }
+	
+	function check_komparasi_kamar($value, $total)
 	{
-		$id_group = $data['id_group'];
-		if($value == "100")
+		$total_konfigurasi = 0;
+		foreach($this->input->post('jml_kamar') as $key => $values)
 		{
-			$this->form_validation->set_message('check_sisa_kamar', "test ".$id_group."!");
+			$total_konfigurasi += $values;
+		}
+		
+		if($total_konfigurasi != $total)
+		{
+			$this->form_validation->set_message('check_komparasi_kamar', "Jumlah Orang Harus Sama dengan Jumlah Konfigurasi Kamar !");
 				return FALSE;
 		}else
 			return TRUE;
+	}
+	
+	// cek ketersediaan seat pesawat
+	function check_sisa_seat($value, $total)
+	{
+		$this->load->model('packet_model');
+		$this->load->model('program_class_model');
+		
+		$id_group = $this->input->post('group');
+		$id_program	 = $this->input->post('program');
+		
+		// hitung total jamaah per paket per keberangkatan
+		$data_packet = $this->packet_model->sum_jumlah_orang($id_program)->row();
+		$total_org = $data_packet->JUMLAH_ADULT + $data_packet->CHILD_WITH_BED + $data_packet->CHILD_NO_BED + $data_packet->INFANT;
+		
+		// cari total pagu
+		$data_program = $this->program_class_model->get_program_ByGroup($id_program, $id_group);
+		if($data_program->result()!= NULL)
+		{
+			foreach($data_program->result() as $row)
+			{
+				$total_pagu = $row->PAGU;
+			}
+		}else{
+			$total_pagu = 0;
+		}
+		
+		$hitung_pagu = $total_pagu - $total_org;
+		
+		if($hitung_pagu > $total){
+			return TRUE;
+		}else{
+			$this->form_validation->set_message('check_sisa_seat', "Jumlah Orang melebihi Pagu Penerbangan!");
+			return FALSE;
+		}
+	}
+	
+	// cek ketersediaan kamar
+	function check_sisa_kamar($value, $total)
+	{
+		$this->load->model('room_type_model');
+		$this->load->model('room_availability_model');
+		$this->load->model('room_packet_model');
+		
+		$tipe_kamar = $this->room_type_model->get_all_roomType_aktif();
+		$kmr_total = '';
+		$kmr_terisi = '';
+		$views = '';
+		$no = 1;
+		foreach($tipe_kamar->result() as $row)
+		{
+			$nama_tipe = $row->JENIS_KAMAR;
+			$kapasitas = $row->CAPACITY;
+			
+			$kmr_tersedia = $this->room_availability_model->get_price_room($row->ID_ROOM_TYPE, $id_program, $id_group);
+			foreach($kmr_tersedia->result() as $rows)
+			{
+				$kmr_total = $rows->JUMLAH_KAMAR * $kapasitas;
+			}
+			
+			
+			$kmr_aktif = $this->room_packet_model->periksa_kamar_aktif($row->ID_ROOM_TYPE, $id_group, $id_program);
+			if($kmr_aktif->result() != NULL)
+			{
+				foreach($kmr_aktif->result() as $rows)
+				{
+					$kmr_terisi = $rows->JUMLAH;
+				}
+				
+			}else{
+				$kmr_terisi = '0';
+			}
+			
+			$tot = $kmr_total - $kmr_terisi;
+		}
 	}
 	
 	
