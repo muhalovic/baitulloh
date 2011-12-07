@@ -42,7 +42,7 @@ class Check_availability extends CI_Controller {
 		
 		$room_options = '';
 		foreach($room->result() as $row){
-				$input_room = "<input type='text' name='jml_kamar[]' id='jml_kamar' class='input_small'>";
+				$input_room = "<input type='text' name='jml_kamar[]' id='jml_kamar' class='input_small' title='Harap ditulis munggunakan Angka'>";
 				$room_options .= "<tr><td><strong>".$row->JENIS_KAMAR."</strong></td><td>Untuk ".$input_room." Orang</td></tr>";
 		}
 			

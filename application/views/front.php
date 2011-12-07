@@ -49,7 +49,7 @@
 			<div class="nav">
 				<a href="<?php echo site_url();?>"><div class="label">Registrasi</div></a>
 				<a href="<?php echo base_url().'index.php/login/';?>"><div class="label">Login</div></a>
-				<a href="http://umrahkamilah.com"><div class="label">Website</div></a>
+				<a href="http://umrahkamilah.com"><div class="label">Informasi</div></a>
 			</div>
 			<div class="line"></div>
 			<!-- END NAVIGATION -->
@@ -64,7 +64,7 @@
 		
 		<!-- FOOTER SECTION -->
 		<div class="footer">
-			<div class="line"></div>Sistem Registrasi Online - Research & Development Team<div class="line"></div>
+			<div class="line"></div>Kamilah Wisata - Membangun Karakter Jamaah Menuju Kehidupan yang Lebih Baik.<div class="line"></div>
 		</div>
 		<!-- END FOOTER SECTION -->
 	</body>

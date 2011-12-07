@@ -28,7 +28,7 @@
 				<span class="col2">
 					<?php 
 						$group = 0; if(set_value('group')!='') $group = set_value('group');
-						echo form_dropdown('group', $group_options, $group,'id="group" class="dropdown_medium" onChange="get_group();"'); 
+						echo form_dropdown('group', $group_options, $group,'id="group" class="dropdown_medium" onChange="get_group();" title="Nama Group dan Tanggal Keberangkatan"'); 
 					?>
 				</span>
 			</div>
@@ -42,7 +42,7 @@
 				<span class="col2">
 					<?php 
 						$program = 0; if(set_value('program')!='') $program = set_value('program');
-						echo form_dropdown('program', $program_options, $program,'id="program" class="dropdown_medium"  onChange="get_program();"'); 
+						echo form_dropdown('program', $program_options, $program,'id="program" class="dropdown_medium"  onChange="get_program();" title="Nama Kelas Program"'); 
 					?>
 				</span>
 			</div>
@@ -54,8 +54,8 @@
 				<? }?>
 				<label class="col1">Jumlah Dewasa</label>
 				<span class="col2">
-					<input type="text" name="jml_adult" value="<?php echo set_value('jml_adult');?>" class="input_small" title="Harap isi menggunakan Angka" />
-					<label>( di atas 11 tahun )</label>
+					<input type="text" name="jml_adult" value="<?php echo set_value('jml_adult');?>" class="input_small" title="di atas 11 tahun" />
+					<label>Orang</label>
 				</span>
 			</div>
 			
@@ -66,8 +66,8 @@
 				<? }?>
 				<label class="col1">Anak Dengan Ranjang</label>
 				<span class="col2">
-					<input type="text" name="with_bed" value="<?php echo set_value('with_bed');?>" class="input_small" title="Harap isi menggunakan Angka" />
-					<label>( 23 Bulan - 11 Tahun )</label>
+					<input type="text" name="with_bed" value="<?php echo set_value('with_bed');?>" class="input_small" title="23 Bulan - 11 Tahun" />
+					<label>Orang</label>
 				</span>
 			</div>
 			
@@ -78,8 +78,8 @@
 				<? }?>
 				<label class="col1">Anak Tanpa Ranjang</label>
 				<span class="col2">
-					<input type="text" name="no_bed" value="<?php echo set_value('no_bed');?>" class="input_small" title="Harap isi menggunakan Angka" />
-					<label>( 23 Bulan - 11 Tahun )</label>
+					<input type="text" name="no_bed" value="<?php echo set_value('no_bed');?>" class="input_small" title="23 Bulan - 11 Tahun" />
+					<label>Orang</label>
 				</span>
 			</div>
 			
@@ -90,8 +90,8 @@
 				<? }?>
 				<label class="col1">Bayi</label>
 				<span class="col2">
-					<input type="text" name="infant" value="<?php echo set_value('infant');?>" class="input_small" title="Harap isi menggunakan Angka" />
-					<label>( 0 - 23 Bulan )</label>
+					<input type="text" name="infant" value="<?php echo set_value('infant');?>" class="input_small" title="0 - 23 Bulan" />
+					<label>Orang</label>
 				</span>
 			</div>
 			
