@@ -1,5 +1,5 @@
 form {
-	width: 335px;
+	width: 100%;
 	color:#3d3d3d;
 	text-shadow: 1px 1px 1px #fff;
 }
@@ -57,6 +57,9 @@ div.row {
 	padding: 3px;
 	border:thin solid #aeaeae;
 	font-size:11px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	margin:0;
 }
 
 .input_small{
@@ -66,6 +69,9 @@ div.row {
 	border:thin solid #aeaeae;
 	width:50px;
 	font-size:11px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	margin:0;
 }
 
 .textarea {
@@ -74,6 +80,9 @@ div.row {
 	font: 11px/14px "Lucida Grande", "Trebuchet MS", Arial, Helvetica, sans-serif;
 	color: #5A698B;
 	margin: 4px 0 5px 8px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	margin:0;
 }
 
 .dropdown{
@@ -82,6 +91,9 @@ div.row {
 	color:#3d3d3d;
 	font-size:11px;
 	padding:2px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	margin:0;
 }
 
 .dropdown_medium{
@@ -91,6 +103,9 @@ div.row {
 	font-size:11px;
 	padding:2px;
 	width:180px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	margin:0;
 }
 
 .dropdown_small{
@@ -100,6 +115,9 @@ div.row {
 	font-size:11px;
 	padding:2px;
 	width:110px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	margin:0;
 }
 
 #dvFile{
@@ -159,7 +177,7 @@ div.row {
 }
 
 .tooltip {
-	background-color:#000;
+	background-color:#333;
 	border:1px solid #fff;
 	padding:10px 15px;
 	width:200px;
@@ -167,6 +185,9 @@ div.row {
 	color:#fff;
 	text-align:left;
 	font-size:11px;
+	
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 
 	/* outline radius for mozilla/firefox only */
 	-moz-box-shadow:0 0 10px #000;

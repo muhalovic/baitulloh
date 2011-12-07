@@ -22,8 +22,7 @@
 				position: "center right",
 				offset: [-2, 10],
 				effect: "fade",
-				opacity: 0.8
-			
+				opacity: 0.9
 			});
         });
         </script>

@@ -197,7 +197,7 @@ class Forgot extends CI_Controller {
 			$data['cek_error'] = "-error";
 		}
 		
-		$data['content'] = $this->load->view('form_login',$data, true);
+		$data['content'] = $this->load->view('form_forgot',$data, true);
 		$this->load->view('front', $data);
 	}
 	
