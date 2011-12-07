@@ -63,6 +63,18 @@ class Room_packet_model extends CI_Model {
 		
 		return $this->db->get();
 	}
+	
+	function periksa_kamar_aktif($id_room_type, $id_group, $id_program)
+	{
+		$this->db->select_sum('rp.JUMLAH');
+		$this->db->from('room_packet rp');
+		$this->db->join('packet p', 'rp.ID_PACKET = p.ID_PACKET');
+		$this->db->where('ID_ROOM_TYPE', $id_room_type);
+		$this->db->where('p.ID_GROUP', $id_group);
+		$this->db->where('p.ID_PROGRAM', $id_program);
+		
+		return $this->db->get();
+	}
 }
 
 ?>

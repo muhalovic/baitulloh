@@ -18,7 +18,7 @@
 <div class="center">
 	<!-- LEFT SIDE -->
 	<div class="content_left">
-		<?php $attr = array('name' => 'check'); echo form_open('check_availability/do_check', $attr); ?>
+		<?php $attr = array('name' => 'check', 'id' => 'myform'); echo form_open('check_availability/do_check', $attr); ?>
 			<div class="row">
 				<? if(form_error('group') != '') {?>
 					<label class="col1"> &nbsp; </label>
@@ -28,7 +28,7 @@
 				<span class="col2">
 					<?php 
 						$group = 0; if(set_value('group')!='') $group = set_value('group');
-						echo form_dropdown('group', $group_options, $group,'id="group" class="dropdown_medium" onChange="get_group();"'); 
+						echo form_dropdown('group', $group_options, $group,'id="group" class="dropdown_medium" onChange="get_group();" title="Nama Group dan Tanggal Keberangkatan"'); 
 					?>
 				</span>
 			</div>
@@ -42,47 +42,69 @@
 				<span class="col2">
 					<?php 
 						$program = 0; if(set_value('program')!='') $program = set_value('program');
-						echo form_dropdown('program', $program_options, $program,'id="program" class="dropdown_medium"  onChange="get_program();"'); 
+						echo form_dropdown('program', $program_options, $program,'id="program" class="dropdown_medium"  onChange="get_program();" title="Nama Kelas Program"'); 
 					?>
 				</span>
 			</div>
 			
 			<div class="row">
+				<? if(form_error('jml_adult') != '') {?>
+					<label class="col1"> &nbsp; </label>
+					<span class="col2"><div class="error_validation"><?php echo form_error('jml_adult'); ?></div></span>
+				<? }?>
 				<label class="col1">Jumlah Dewasa</label>
 				<span class="col2">
-					<input type="text" name="jml_adult" value="<?php echo set_value('jml_adult');?>" class="input_small" />
+					<input type="text" name="jml_adult" value="<?php echo set_value('jml_adult');?>" class="input_small" title="Harap diisi dengan angka" />
 					<label>( di atas 11 tahun )</label>
 				</span>
 			</div>
 			
 			<div class="row">
+				<? if(form_error('with_bed') != '') {?>
+					<label class="col1"> &nbsp; </label>
+					<span class="col2"><div class="error_validation"><?php echo form_error('with_bed'); ?></div></span>
+				<? }?>
 				<label class="col1">Anak Dengan Ranjang</label>
 				<span class="col2">
-					<input type="text" name="with_bed" value="<?php echo set_value('with_bed');?>" class="input_small" />
+					<input type="text" name="with_bed" value="<?php echo set_value('with_bed');?>" class="input_small" title="Harap diisi dengan angka" />
 					<label>( 23 Bulan - 11 Tahun )</label>
 				</span>
 			</div>
 			
 			<div class="row">
+				<? if(form_error('no_bed') != '') {?>
+					<label class="col1"> &nbsp; </label>
+					<span class="col2"><div class="error_validation"><?php echo form_error('no_bed'); ?></div></span>
+				<? }?>
 				<label class="col1">Anak Tanpa Ranjang</label>
 				<span class="col2">
-					<input type="text" name="no_bed" value="<?php echo set_value('no_bed');?>" class="input_small" />
+					<input type="text" name="no_bed" value="<?php echo set_value('no_bed');?>" class="input_small" title="Harap diisi dengan angka" />
 					<label>( 23 Bulan - 11 Tahun )</label>
 				</span>
 			</div>
 			
 			<div class="row">
+				<? if(form_error('infant') != '') {?>
+					<label class="col1"> &nbsp; </label>
+					<span class="col2"><div class="error_validation"><?php echo form_error('infant'); ?></div></span>
+				<? }?>
 				<label class="col1">Bayi</label>
 				<span class="col2">
-					<input type="text" name="infant" value="<?php echo set_value('infant');?>" class="input_small" />
+					<input type="text" name="infant" value="<?php echo set_value('infant');?>" class="input_small" title="Harap diisi dengan angka" />
 					<label>( 0 - 23 Bulan )</label>
 				</span>
 			</div>
 			
 			<div class="row">
+            	<? if(form_error('jml_kamar[]') != '') {?>
+					<label class="col1"> &nbsp; </label>
+					<span class="col2"><div class="error_validation"><?php echo form_error('jml_kamar[]'); ?></div></span>
+				<? }?>
 				<label class="col1">Konfigurasi Kamar</label>
 				<span class="col2">
+				<table width="70%">
 				<?php echo $room_options; ?>
+				</table>
                 <br />
 				</span>
 			</div>
@@ -112,7 +134,7 @@
 			
 			<div class="title">
 				<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
-				<span class="text_title">Keterangan Grup & Kelas Keberangkatan</span>
+				<span class="text_title">Keterangan Grup & Kelas Keberangkatan (Real Time)</span>
 			</div>
 			
 			<div align="center">
@@ -120,17 +142,37 @@
 			</div>
 			
 			<!-- On change bagian ini -->
-			<div id='front_keterangan' style="display:none">
-				<p>
-					<div>Keberangkatan : <strong><span id="info_mk"></span></strong></div>
-					<div>Maskapai &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <strong><span id="maskapai"></span></strong></div>
-					<div>Hotel Makkah &nbsp;&nbsp;&nbsp;: <strong><span id="hotel_mk"></span></strong></div>
-					<div>Hotel Madinah &nbsp;&nbsp;: <strong><span id="hotel_jd"></span></strong></div>
-					<div>Transportasi &nbsp;&nbsp;&nbsp;&nbsp;: <strong><span id="transportasi"></span></strong></div>
-					<div>Kamar &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span id="info_kamar"></span></div>
-				</p>
+			<div id='front_keterangan' class="front_keterangan" style="display:none">
+               <table width="100%" border="0" align="left">
+                  <tr>
+                    <td width="20%">Keberangkatan</td>
+                    <td>: <strong><span id="info_mk"></span></strong></td>
+                  </tr>
+				  <tr>
+                    <td>Maskapai</td>
+                    <td>: <strong><span id="maskapai"></span></strong></td>
+                  </tr>
+				  <tr>
+                    <td>Hotel Makkah</td>
+                    <td>: <strong><span id="hotel_mk"></span></strong></td>
+                  </tr>
+				  <tr>
+                    <td>Hotel Madinah</td>
+                    <td>: <strong><span id="hotel_jd"></span></strong></td>
+                  </tr>
+				  <tr>
+                    <td>Transportasi</td>
+                    <td>: <strong><span id="transportasi"></span></strong></td>
+                  </tr>
+				  <tr>
+                    <td valign="top">Kamar</td>
+                    <td>: <span id="info_kamar"></span><span id="info_kamar_2"></span></td>
+                  </tr>
+                </table>
 			</div>
 			<!----->
+			
+			<div class="clear"></div>
 			
 			<div class="title">
 				<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
@@ -140,19 +182,34 @@
 			<div align="center">
 				<p>"Pilih Dahulu Grup Keberangkatan & Kelas Program"</p>
 			</div>
-			
+
 			<!-- On change bagian ini -->
 			<div id='front_informasi' style="display:none">
-				<p>
-					<div>Batas Akhir Uang Muka &nbsp;&nbsp;&nbsp;&nbsp;: <strong><span id="info_dp"></span></strong></div>
-					<div>Batas Akhir Pelunasan &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <strong><span id="info_lunas"></span></strong></div>
-					<div>Upload Data Paspor &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <strong><span id="info_paspor"></span></strong></div>
-					<div>Pengumpulan Berkas Fisik : <strong><span id="info_berkas"></span></strong></div>
-				</p>
+                   <table width="100%" border="0" align="left">
+                      <tr>
+                        <td width="40%">Batas Akhir Uang Muka</td>
+                        <td>: <strong><span id="info_dp"></span></strong></td>
+                      </tr>
+					  <tr>
+                        <td>Batas Akhir Pelunasan</td>
+                        <td>: <strong><span id="info_lunas"></span></strong></td>
+                      </tr>
+					  <tr>
+                        <td>Upload Data Paspor</td>
+                        <td>: <strong><span id="info_paspor"></span></strong></td>
+                      </tr>
+					  <tr>
+                        <td>Pengumpulan Berkas Fisik</td>
+                        <td>: <strong><span id="info_berkas"></span></strong></td>
+                      </tr>
+                    </table>
 			</div>
 			<!----->
 			
+			<div class="clear"></div>
+			
 		</div>
+		<!-- END INFO SHAPE -->
 		
 	</div>
 	<!-- END RIGHT SIDE -->
@@ -201,6 +258,7 @@
 	function get_group() 
 	{	
 		var prp = $("#group").val();
+		var cek_program = document.getElementById('program').value;
 		
                 $.ajax({
                         url: "<?=base_url();?>index.php/check_availability/getGroup/",
@@ -208,7 +266,7 @@
                         type: "POST",
                         async: false,
                         dataType: "html",
-                        data: "id_group="+ prp, //the name of the $_POST variable and its value
+                        data: "id_group="+ prp +"&id_program="+ cek_program, //the name of the $_POST variable and its value
                         success: function (response) {
 							 var bahan = response;
 							 var pecah = bahan.split("#");
@@ -219,12 +277,11 @@
 							 document.getElementById('info_lunas').innerHTML = pecah[3];
 							 document.getElementById('info_dp').innerHTML = pecah[4];
 							 document.getElementById('info_berkas').innerHTML = pecah[5];
-							 document.getElementById('info_kode').innerHTML = pecah[6];
-							 document.getElementById('info_ket').innerHTML = pecah[7];
+							 document.getElementById('info_kamar').innerHTML = pecah[6];
 							 }
                 });
 					 
-			var cek_program = document.getElementById('program').value;
+			
 				if(+prp !=  0 && cek_program != 0)
 					{
 						document.getElementById('front_keterangan').style.display="inline";

@@ -15,7 +15,20 @@
 	
 		<!-- JAVASCRIPT -->
 		<script src="<?php echo base_url();?>js/jquery-1.6.2.min.js" type="text/javascript"></script>
-		
+        <script src="<?php echo base_url();?>js/jquery.js" type="text/javascript"></script>
+		<script>
+        // tooltip
+        $(function() {
+			$("#myform :input[title]").tooltip({
+				position: "center right",
+				offset: [-2, 10],
+				effect: "fade",
+				opacity: 0.8
+			
+			});
+        });
+        </script>
+
 	</head>
 	
 	<body> 
@@ -38,7 +51,7 @@
 			<div class="nav">
 				<a href="<?php echo site_url();?>"><div class="label">Registrasi</div></a>
 				<a href="<?php echo base_url().'index.php/login/';?>"><div class="label">Login</div></a>
-				<a href="http://umrahkamilah.com"><div class="label">Website</div></a>
+				<a href="http://umrahkamilah.com"><div class="label">Informasi</div></a>
 			</div>
 			<div class="line"></div>
 			<!-- END NAVIGATION -->
@@ -57,7 +70,7 @@
 		</script>
 		<!-- FOOTER SECTION -->
 		<div class="footer">
-			<div class="line"></div>Sistem Registrasi Online - Research & Development Team<div class="line"></div>
+			<div class="line"></div>Kamilah Wisata - Membangun Karakter Jamaah Menuju Kehidupan yang Lebih Baik.<div class="line"></div>
 		</div>
 		<!-- END FOOTER SECTION -->
 	</body>
