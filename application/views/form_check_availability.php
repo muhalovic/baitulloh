@@ -54,7 +54,7 @@
 				<? }?>
 				<label class="col1">Jumlah Dewasa</label>
 				<span class="col2">
-					<input type="text" name="jml_adult" value="<?php echo set_value('jml_adult');?>"  title="Harap diisi dengan angka" />
+					<input type="text" name="jml_adult" value="<?php echo set_value('jml_adult');?>" class="input_small"  title="Harap diisi dengan angka" />
 					<label>( di atas 11 tahun )</label>
 				</span>
 			</div>
