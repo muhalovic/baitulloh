@@ -16,7 +16,7 @@ class Province extends CI_Controller {
 		
 		
 			foreach($kota->result() as $row){
-				$options .= '<option value="'.$row->ID_KOTA.'" >'.$row->NAMA_KOTA.'</option>';
+				$options .= '<option value="'.$row->NAMA_KOTA.'" >'.$row->NAMA_KOTA.'</option>';
 			}
 		
 		echo $options;

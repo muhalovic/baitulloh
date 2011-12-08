@@ -1,4 +1,4 @@
-<?php echo form_open('check_availability/do_check'); ?>
+
 <table border="0" width="100%" cellpadding="0" cellspacing="0">
 	<tr valign="top">
 		<td>
@@ -144,53 +144,4 @@
 </table>
 		 
 <div class="clear"></div>
-<? echo form_close(); ?>		 
 
-<script>
-	function _add_more() {
-		var index = document.getElementsByName('kamar[]');
-		var txt = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr valign=\"middle\"><td><select name=\"kamar[]\" id=\"kamar"+index.length+
-					"\" class=\"styledselect-kamar\"><option value=\"0\">-- Pilih Jenis Kamar --</option></select></td>"+
-					"<td>&nbsp; Jumlah :&nbsp;<select name=\"jml_kamar[]\" id=\"jml_kamar"+index.length+"\" class=\"styledselect-day\">"+
-					"<option value=\"1\">1</option><option value=\"2\">2</option><option value=\"3\">3</option></select></td></tr></table>";
-		
-		var txt2 = "<select name=\"kamar[]\" id=\"kamar"+index.length+
-					"\" class=\"styledselect-kamar\"><option value=\"0\">-- Pilih Jenis Kamar --</option></select><br/>";
-					
-		var txt3 = "&nbsp; Jumlah :<select name=\"jml_kamar[]\" id=\"jml_kamar"+index.length+"\" class=\"styledselect-day\">"+
-					"<option value=\"1\">1</option><option value=\"2\">2</option><option value=\"3\">3</option></select><br/>";
-		document.getElementById("dvFile").innerHTML += txt;
-		//document.getElementById("dvFile2").innerHTML += txt2;
-		//document.getElementById("dvFile3").innerHTML += txt3;
-		
-		loadkamar();
-	}
-	
-	function loadkamar() {
-		var count = document.getElementsByName('kamar[]');
-	    $.ajax({
-	           url: "<?=base_url();?>index.php/check_availability/getKamar/",
-	           global: false,
-	           type: "POST",
-	           async: false,
-	           //dataType: "html",
-	           //data: "produsen="+produsen +"&no_serti="+noserti +"&varietas="+varietas +"&kls_benih="+kls_benih, //the name of the $_POST variable and its value
-	           success: function (response) //'response' is the output provided by the controller method prova()
-	                    {
-							//counts the number of dynamically generated options
-							var dynamic_options = $("*").index( $('.dynamic4')[0] );
-							//removes previously dynamically generated options if they exists (not equal to 0)
-							if ( dynamic_options != (-1)) $(".dynamic4").remove();
-								
-							for (i = 0; i < count.length; i++){
-								$("select#kamar"+i).append(response);
-							}
-							
-		                    $(".selected").attr({selected: ' selected'});
-	                   }
-	                   
-	          });
-	    
-	          return false;
-	}
-</script>

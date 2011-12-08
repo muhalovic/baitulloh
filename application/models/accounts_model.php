@@ -40,7 +40,7 @@ class Accounts_model extends CI_Model {
 		$this->db->from("accounts");
 		$this->db->join("province","province.ID_PROPINSI=accounts.ID_PROPINSI");
 		$this->db->where("KODE_REGISTRASI", $kode);
-		$this->db->where("STATUS", 0);
+		$this->db->where("accounts.STATUS", 0);
 
 		return $this->db->get();
 	}

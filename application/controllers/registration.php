@@ -28,7 +28,7 @@ class Registration extends CI_Controller {
 		if(isset($_POST['province'])){
 		$kota = $this->kota_model->get_kota_by_province($this->input->post('province'));
 		foreach($kota->result() as $row){
-			$kota_options[$row->ID_KOTA] = $row->NAMA_KOTA;
+			$kota_options[$row->NAMA_KOTA] = $row->NAMA_KOTA;
 		}
 		}
 		
@@ -144,10 +144,9 @@ class Registration extends CI_Controller {
 				}
 				
 				$keycode = $this->secure($this->data_field['KODE_REGISTRASI']);
-				$this->send_email($keycode, $waiting);
-				//set session notifikasi
-				//$this->session->set_userdata('notification','Data Pengujian Kadar Air Telah Dimasukkan !!!');
-				redirect('notification/show/'.$this->data_field['KODE_REGISTRASI']);
+				$this->send_email($keycode, $waiting); 
+				
+				// redirect('notification/show/'.$this->data_field['KODE_REGISTRASI']);
 			}
 		}
     }
@@ -179,12 +178,11 @@ class Registration extends CI_Controller {
 		$id_card = $this->input->post('id_card');
 		$kode = $this->input->post('recaptcha_challenge_field');
 		
-		$kode_reg = substr(md5('koderegistrasi-'.$nama.'-'.$email.'-'.date("Y m d H:i:s")), 0, 15);
-		$pwd = substr(md5('password-'.$nama.'-'.$email.'-'.date("Y m d")), 0, 5);
-		$this->tmp_pass = $pwd;
-
+		$kode_reg = substr(md5('koderegistrasi-'.$nama.'-'.$email.'-'.date("Y m d H:i:s")), 0, 4);
+		$pwd = $this->input->post('password');
+		
 		$this->data_field = array('KODE_REGISTRASI' => $kode_reg, 'ID_PROPINSI' => $province, 'NAMA_USER' => $nama, 
-								'EMAIL' => $email, 'PASSWORD' =>md5($pwd), 'NO_ID_CARD' => $id_card, 'TELP' => $telp, 
+								'EMAIL' => $email, 'PASSWORD' =>$pwd, 'NO_ID_CARD' => $id_card, 'TELP' => $telp, 
 								'MOBILE' => $mobile, 'KOTA' => $kota, 'ALAMAT' => $alamat, 'TANGGAL_REGISTRASI' =>date("Y-m-d h:i:s"), 'STATUS' => 0);
 		
 		//return $data_field;
@@ -201,6 +199,8 @@ class Registration extends CI_Controller {
 		$this->form_validation->set_rules('alamat', 'Alamat', 'required|max_length[255]');
 		$this->form_validation->set_rules('id_card', 'No ID Card', 'required|min_length[10]');
 		$this->form_validation->set_rules('captcha', 'Captcha', 'required|callback_check_captcha');
+		$this->form_validation->set_rules('password', 'Password', 'required|md5');
+		$this->form_validation->set_rules('password_verification', 'Verifikasi Password', 'required|matches[password]');
 		
 		//$this->form_validation->set_error_delimiters('<li class="error">', '</li>');
 		$this->form_validation->set_message('required', '%s wajib diisi !');
@@ -209,6 +209,7 @@ class Registration extends CI_Controller {
 		$this->form_validation->set_message('max_length', '%s maksimal berisi %s karakter !');
 		$this->form_validation->set_message('email_is_exist', '%s sudah digunakan!');
 		$this->form_validation->set_message('check_captcha', '%s tidak benar');
+		$this->form_validation->set_message('matches', '%s harus sama dengan %s');
 		
 		return $this->form_validation->run();
     }
@@ -252,10 +253,10 @@ class Registration extends CI_Controller {
 		$data['subject'] = 'Aktivasi Akun';
         $data['waiting'] = $waiting;
 		$data['NAMA_USER'] = $this->data_field['NAMA_USER'];
-		$data['PASSWORD'] = $this->tmp_pass;
+		
 		$data['KODE_REGISTRASI'] = $this->data_field['KODE_REGISTRASI'];
 		
-		//$content = $this->load->view('email_activation',$data);
+		$this->load->view('email_activation',$data);
 		$htmlMessage =  $this->parser->parse('email_activation', $data, true);
 		
 		$this->email->from('noreply@umrahkamilah.com', 'Kamilah Wisata Muslim');
