@@ -42,6 +42,28 @@
 			</div>
 			
 			<div class="row">
+				<? if(form_error('password') != '' ) {?>
+					<label class="col1"> &nbsp; </label>
+					<span class="col2"><div class="error_validation"><?php echo form_error('password'); ?></div></span>
+				<? }?>
+				<label class="col1">Password</label>
+				<span class="col2">
+					<input type="password" name="password" title="Isikan password yang akan anda gunakan" value="<?php echo set_value('password');?>"  />
+				</span>
+			</div>			
+			
+			<div class="row">
+				<? if(form_error('password_verification') != '' ) {?>
+					<label class="col1"> &nbsp; </label>
+					<span class="col2"><div class="error_validation"><?php echo form_error('password_verification'); ?></div></span>
+				<? }?>
+				<label class="col1">Verifikasi Password</label>
+				<span class="col2">
+					<input type="password" name="password_verification" title="Isikan kembali password yang telah anda isikan pada field password" value="<?php echo set_value('password_verification');?>"  />
+				</span>
+			</div>
+		
+			<div class="row">
 				<? if(form_error('telp') != '') {?>
 					<label class="col1"> &nbsp; </label>
 					<span class="col2"><div class="error_validation"><?php echo form_error('telp'); ?></div></span>
@@ -109,7 +131,7 @@
 					<input type="text" name="id_card" title="Isikan 10 digit nomor identitas anda (contoh: KTP)" value="<?php echo set_value('id_card');?>"  />
 				</span>
 			</div>
-			
+	
 			<div class="row">
 				<? if(form_error('captcha') != '' ) {?>
 					<label class="col1"> &nbsp; </label>
@@ -150,7 +172,7 @@
 				<label class="col1">&nbsp;</label>
 				<span class="col2">
 					<input type="submit" value="Daftar" class="submit_button" />
-					<input type="reset" value="Reset" class="reset_button" />
+					<input type="reset" value="Reset" class="reset_button" onclick="reload()"/>
 				</span>
 			</div>
 		<? echo form_close(); ?>

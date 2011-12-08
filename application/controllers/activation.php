@@ -13,6 +13,7 @@ class Activation extends CI_Controller {
                 $this->load->model('packet_model');
 		
 		$kode_reg = $this->decode($keycode);
+	
 		$account = $this->accounts_model->get_account_byKode($kode_reg);
 		
 		if ($account->num_rows() < 1)
@@ -32,7 +33,7 @@ class Activation extends CI_Controller {
 					'email' 			=> $account->row()->EMAIL,
 					'nama'				=> $account->row()->NAMA_USER,
 					'kode_registrasi' 	=> $account->row()->KODE_REGISTRASI,
-                                    'order_packet' => $packet->num_rows() > 0 ? 1:0
+                    'order_packet'      => $packet->num_rows() > 0 ? 1:0
 				);	
 				
 				$this->session->set_userdata($newdata);
@@ -68,7 +69,7 @@ class Activation extends CI_Controller {
 				$i += $split+$count-1;
 			}
 		
-			return substr($decrypted, 0, 15);
+			return substr($decrypted, 0, 4);
 		}else echo show_404();
 	}
 }

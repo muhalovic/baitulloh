@@ -399,13 +399,7 @@
                                                               <p>Selamat datang pada Sistem Registrasi Online Umrah Kamilah. Berikut ini kami informasikan bahwa Anda telah berhasil melakukan registrasi pada  dengan,<br />
                                                                 <strong>Nama User: <?php echo $NAMA_USER;?><br />
                                                                 Kode Registrasi: <?php echo $KODE_REGISTRASI;?><br />
-                                                              Password: <?php echo $PASSWORD;?></strong></p>
-                                                              <p>Untuk bisa menggunakan sistem kami, terlebih dulu aktifkan akun Anda dengan cara klik link di bawah ini.<br />
-                                                              </p>
-                                                              <center>
-                                                                  <strong>
-                                               		         <h4>
-                                                                       <a href="<? echo site_url();?>/activation/activate/<? echo $key; ?>">Activate My Account</a></h4></strong></center>
+
                                                               <? if ($waiting == 1) {?>
 															  <strong>Anda masuk dalam daftar tunggu. Silahkan cek email anda untuk mengetahui update terkait status daftar tunggu anda.</strong>
 															  <? }?>
@@ -434,6 +428,15 @@
                                                                   <li>Peserta belum terdaftar jika dana belum efektif masuk ke dalam rekening kamilah.</li>
                                                                 </ul>
                                                                 <p><br />
+																
+                                                              <center>
+															  <p>Untuk bisa menggunakan sistem kami, terlebih dulu aktifkan akun Anda dengan cara klik link di bawah ini.<br />
+                                                              </p>
+                                                              
+                                                                  <strong>
+                                               		         <h4>
+                                                                       <a href="<? echo site_url();?>/activation/activate/<? echo $key; ?>">Activate My Account</a></h4></strong></center>
+																	   <br>
                                                                   <strong>Wassalamualaikum Wr. Wb<br />
                                                                   Umrahkamilah.com
                                                                   </strong>                                                            </p>
