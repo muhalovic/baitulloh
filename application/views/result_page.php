@@ -109,6 +109,25 @@
 				</p>
 			</div>
 			
+			<div class="title">
+				<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
+				<span class="text_title">Hasil Ketersediaan</span>
+			</div>
+
+			<div>
+				<p>
+					<div>
+						<? 
+							if(isset($msg_box1)) { echo $msg_box1; } 
+							if(isset($msg_box2)) { echo $msg_box2; } 
+							if(isset($msg_box3)) { echo $msg_box3; } 
+							if(isset($msg_box4)) { echo $msg_box4; } 
+							if(isset($status_waiting)) { echo $status_waiting; } 
+						?>                        
+                    </div>
+				</p>
+			</div>
+			
 		</div>
 		
 	</div>
@@ -136,6 +155,7 @@
 					<input type="text" name="with_bed" value="'.$with_bed.'" />
 					<input type="text" name="no_bed" value="'.$no_bed.'" />
 					<input type="text" name="infant" value="'.$infant.'" />
+					<input type="text" name="waiting_list" value="'.$waiting_list.'" />
 				</div>
 				<h3 align="center" class="clear">
 				<input name="waiting" id="waiting" type="checkbox" value="1" onchange="enableSubmit(this);" />&nbsp;
