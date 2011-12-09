@@ -48,7 +48,7 @@
 				<? }?>
 				<label class="col1">Password</label>
 				<span class="col2">
-					<input type="password" name="password" title="Isikan password yang akan anda gunakan" value="<?php echo set_value('password');?>"  />
+					<input type="password" name="password" title="Isikan password yang akan anda gunakan"   />
 				</span>
 			</div>			
 			
@@ -59,7 +59,7 @@
 				<? }?>
 				<label class="col1">Verifikasi Password</label>
 				<span class="col2">
-					<input type="password" name="password_verification" title="Isikan kembali password yang telah anda isikan pada field password" value="<?php echo set_value('password_verification');?>"  />
+					<input type="password" name="password_verification" title="Isikan kembali password yang telah anda isikan pada field password"   />
 				</span>
 			</div>
 		
@@ -117,7 +117,7 @@
 				<? }?>
 				<label class="col1">Alamat (*)</label>
 				<span class="col2">
-					<textarea title="Iskan alamat tempat tinggal anda" name="alamat" > <?php echo set_value('alamat');?>  </textarea>
+					<textarea title="Iskan alamat tempat tinggal anda" name="alamat" ><?php echo set_value('alamat');?></textarea>
 				</span>
 			</div>			
 			

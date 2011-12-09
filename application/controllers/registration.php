@@ -146,7 +146,7 @@ class Registration extends CI_Controller {
 				$keycode = $this->secure($this->data_field['KODE_REGISTRASI']);
 				$this->send_email($keycode, $waiting); 
 				
-				// redirect('notification/show/'.$this->data_field['KODE_REGISTRASI']);
+				redirect('notification/show/'.$this->data_field['KODE_REGISTRASI']);
 			}
 		}
     }
@@ -256,7 +256,7 @@ class Registration extends CI_Controller {
 		
 		$data['KODE_REGISTRASI'] = $this->data_field['KODE_REGISTRASI'];
 		
-		$this->load->view('email_activation',$data);
+		// $this->load->view('email_activation',$data);
 		$htmlMessage =  $this->parser->parse('email_activation', $data, true);
 		
 		$this->email->from('noreply@umrahkamilah.com', 'Kamilah Wisata Muslim');
@@ -265,7 +265,7 @@ class Registration extends CI_Controller {
 		$this->email->subject('Aktivasi Akun');
 		$this->email->message($htmlMessage);
 
-		$this->email->send();
+		// $this->email->send();
                 //echo $this->tmp_pass;
 
 		// echo $this->email->print_debugger();

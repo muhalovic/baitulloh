@@ -16,6 +16,15 @@ class Clothes_size_model extends CI_Model {
 		return $this->db->get();
 	}
 	
+	function get_all_active_clothes()
+	{
+		$this->db->select("*");
+		$this->db->from("clothes_size");
+		$this->db->where('STATUS',1);
+		
+		return $this->db->get();
+	}
+	
 	function get_clothes_size($id){
 		$this->db->select("*");
 		$this->db->from("clothes_size");

@@ -414,18 +414,18 @@
                                                                     a.n. PT KAMILAH WISATA MUSLIM<br />
                                                                     USDollar : 101-000-644-5454<br />
                                                                     IDRupiah : 101-000-644-5421</strong></li>
-                                                                  <li> Untuk Konfirmasi Pembayaran melalui Web adalah dengan menuju menu <strong>Pembayaran</strong> yang ada pada halaman dashboard akun anda.</li>
+                                                                  <li> Untuk Konfirmasi Pembayaran melalui Web adalah dengan menuju <strong style="color:green;"> Menu Pembayaran</strong> yang ada pada halaman dashboard akun anda.</li>
                                                                   <li>Isi Form untuk konfirmasi pembayaran Uang Muka maupun Pelunasan.</li>
                                                                 </ul>
                                                               <p><strong>Pembatalan :</strong></p>
                                                               <ul>
-                                                                <li> Untuk melakukan pembatalan, bisa melalui web dengan menuju menu <strong>Pembatalan</strong> yang ada pada halaman dashboard akun anda.</li>
+                                                                <li> Untuk melakukan pembatalan, bisa melalui web dengan menuju  <strong  style="color:green;">Menu Pembatalan</strong> yang ada pada halaman dashboard akun anda.</li>
                                                               </ul>
                                                               <p><strong>Catatan: </strong></p>
                                                                 <ul>
-                                                                  <li> Sebelum Memenuhi Kesepakatan Pendaftaran, komitmen booking seat keberangkatan belum terjadi.</li>
-                                                                  <li>Silakan disegerakan untuk Memenuhi Kesepakatan Pendaftaran dan melakukan konfirmasi pembayaran, sehingga Data anda bisa segera di proses. Dan Status Pendaftaran akan kami Booked.</li>
-                                                                  <li>Peserta belum terdaftar jika dana belum efektif masuk ke dalam rekening kamilah.</li>
+                                                                  <li> Sebelum Memenuhi Kesepakatan Pendaftaran, komitmen booking seat keberangkatan <strong style="color:green;">belum terjadi</strong>.</li>
+                                                                  <li>Silakan <strong style="color:green;">disegerakan</strong> untuk Memenuhi Kesepakatan Pendaftaran dan melakukan konfirmasi pembayaran, sehingga Data anda bisa segera di proses. Dan Status Pendaftaran akan kami Booked.</li>
+                                                                  <li>Peserta <strong style="color:green;">belum terdaftar</strong> jika dana belum efektif masuk ke dalam rekening kamilah.</li>
                                                                 </ul>
                                                                 <p><br />
 																

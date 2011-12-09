@@ -14,6 +14,14 @@ class Province_model extends CI_Model {
 		return $this->db->get();
 	}
 	
+	function get_all_active_province(){
+		$this->db->select('*');
+		$this->db->from('province');
+		$this->db->where('STATUS',1);
+		
+		return $this->db->get();
+	}
+	
 	function get_province($id){
 		$this->db->select('*');
 		$this->db->from('province');

@@ -112,6 +112,17 @@
 								Silakan Cek Email anda untuk melakukan Aktivasi akun dan prosedur selanjutnya.
 						</div>
 						
+						<div class="left"><img src="<?php echo base_url();?>images/forms/icon_plus.gif" width="21" height="21" alt="" /></div>
+						<div class="right">
+							<h5><strong>Catatan: </strong></h5>
+							<p align="justify">
+                                Sebelum Memenuhi Kesepakatan Pendaftaran, komitmen booking seat keberangkatan <strong style="color:green;">belum terjadi</strong>.<br>
+								Silakan <strong style="color:green;">disegerakan</strong> untuk Memenuhi Kesepakatan Pendaftaran dan melakukan konfirmasi pembayaran, sehingga Data anda bisa segera di proses. Dan Status Pendaftaran akan kami Booked.<br>
+								Peserta <strong style="color:green;">belum terdaftar</strong> jika dana belum efektif masuk ke dalam rekening kamilah.
+							</p>	
+							
+						</div>
+						
 						<div class="clear"></div>
 						<div class="lines-dotted-short"></div>
 						

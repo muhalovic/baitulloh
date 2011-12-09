@@ -21,7 +21,7 @@ class Biodata extends CI_Controller {
 	{
 		$this->load->library('form_validation');
 		$data['content'] = $this->load->view('biodata', '', true);
-		$this->load->view('front', $data);
+		$this->load->view('front_backup', $data);
 	}
 	
 	
@@ -120,7 +120,7 @@ class Biodata extends CI_Controller {
 
                 
 		$data['content'] = $this->load->view('biodata_list',$data,true);
-		$this->load->view('front',$data);		
+		$this->load->view('front_backup',$data);		
 	}
 	
 	
@@ -254,33 +254,47 @@ class Biodata extends CI_Controller {
 		$id_account = $this->session->userdata('id_account');
 		$kode_reg = $this->session->userdata('kode_registrasi');
 		
-		$province = $this->province_model->get_all_province();
-		$relation = $this->relation_model->get_all_relation();
-		$chlothes = $this->clothes_size_model->get_all_clothes();
-		$packet = $this->packet_model->get_packet_byAccAll($id_account, $kode_reg);
-		
+		$province = $this->province_model->get_all_active_province();
+		$relation = $this->relation_model->get_all_active_relation();
+		$chlothes = $this->clothes_size_model->get_all_active_clothes();
+		$packet = $this->packet_model->get_packet_byAcc($id_account, $kode_reg);
+		$tipe_jamaah[''] = '-- Pilih Salah Satu Tipe --';
+	
+			
 		foreach($packet->result() as $row)
 		{
 			$id_packet = $row->ID_PACKET;
+			if($row->JUMLAH_ADULT > 0){
+			 $tipe_jamaah['A'] = 'Dewasa';
+			}
+			if($row->CHILD_WITH_BED > 0){
+			 $tipe_jamaah['CWB'] = 'Anak dengan Ranjang';	
+			}
+			if($row->CHILD_NO_BED > 0){
+			 $tipe_jamaah['CNB'] = 'Anak tanpa Ranjang'; 
+			}
+			if($row->INFANT > 0){
+			 $tipe_jamaah['I'] = 'Bayi'; 
+			}
 		}
 
-		$province_options['0'] = '-- Pilih Propinsi --';
+		$province_options[''] = '-- Pilih Propinsi --';
 		foreach($province->result() as $row){
 				$province_options[$row->ID_PROPINSI] = $row->NAMA_PROPINSI;
 		}
 		
-		$relasi_options['0'] = '-- Pilih Relasi --';
+		$relasi_options[''] = '-- Pilih Relasi --';
 		foreach($relation->result() as $row){
 				$relasi_options[$row->ID_RELATION] = $row->JENIS_RELASI;
 		}
 		
-		$chlothes_options['0'] = '-- Pilih Ukuran Baju --';
+		$chlothes_options[''] = '-- Pilih Ukuran Baju --';
 		foreach($chlothes->result() as $row){
 				$chlothes_options[$row->ID_SIZE] = $row->SIZE;
 		}
 		
 		
-		$kamar_options['0'] = '-- Pilih Kamar --';
+		$kamar_options[''] = '-- Pilih Kamar --';
 		$kamar = $this->room_packet_model->get_room_packet_byIDpack($id_packet);
 		if($kamar->result() != NULL)
 		{
@@ -292,7 +306,7 @@ class Biodata extends CI_Controller {
 				if($data_jamaah->num_rows() < $total_kamar)
 				{
 					$sisa_bed = $total_kamar - $data_jamaah->num_rows();
-					$kamar_options[$row->ID_ROOM_PACKET] = $row->JENIS_KAMAR." - sisa ".$sisa_bed." bed";
+					$kamar_options[$row->ID_ROOM_PACKET] = $row->JENIS_KAMAR." - tersedia ".$sisa_bed." bed";
 				}else{
 					
 				}
@@ -303,6 +317,7 @@ class Biodata extends CI_Controller {
 		$data['relasi_options'] = $relasi_options;
 		$data['chlothes_options'] = $chlothes_options;
 		$data['kamar_options'] = $kamar_options;
+		$data['tipe_jamaah_options'] = $tipe_jamaah;
 		
 		$data['error_file'] = '';
 		if($this->session->userdata('upload_file') != '')
@@ -319,7 +334,7 @@ class Biodata extends CI_Controller {
 		}
 		$this->session->unset_userdata('upload_file');
 		$data['content'] = $this->load->view('biodata_input', $data, true);
-		$this->load->view('front', $data);
+		$this->load->view('front_backup', $data);
 	}
 	
 	function do_daftar(){
@@ -479,6 +494,7 @@ class Biodata extends CI_Controller {
 				array('field'=>'relasi','label'=>'Hubungan', 'rules'=>'callback_cek_dropdown'),
 				array('field'=>'baju','label'=>'Baju', 'rules'=>'callback_cek_dropdown'),
 				array('field'=>'kamar','label'=>'Kamar', 'rules'=>'callback_cek_dropdown'),
+				array('field'=>'tipe_jamaah','label'=>'Tipe Jamaah', 'rules'=>'required'),
 			//	array('field'=>'foto','label'=>'Foto', 'rules'=>'required'),
 			);
 		
@@ -659,7 +675,7 @@ class Biodata extends CI_Controller {
 				
 				
 				$data['content'] = $this->load->view('biodata_edit', $data, true);
-				$this->load->view('front', $data);
+				$this->load->view('front_backup', $data);
 			
 			}
 		

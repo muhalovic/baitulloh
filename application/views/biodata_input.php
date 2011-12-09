@@ -205,6 +205,19 @@ echo $error_file;?>
 			<!-- start id-form -->
 			<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
 				<tr>
+					<? form_error('tipe_jamaah') == '' ? $class = 'inp-form2':$class = 'inp-form-error2'; ?>
+					<th valign="top">Tipe Jamaah (*)</th>
+					<td><?  $tipe_jamaah = set_value('tipe_jamaah');
+							echo form_dropdown('tipe_jamaah', $tipe_jamaah_options, $tipe_jamaah,'id="tipe_jamaah" class="styledselect_form_1"'); ?>
+                        </td>
+					<td>
+						<? if(form_error('tipe_jamaah') != '') {?>
+						<div class="error-left"></div>
+						<div class="error-inner"><?php echo form_error('tipe_jamaah'); ?></div>
+						<? }?>
+					</td>
+				</tr>
+				<tr>
 					<? form_error('kamar') == '' ? $class = 'inp-form2':$class = 'inp-form-error2'; ?>
 					<th valign="top">Pilihan Kamar (*)</th>
 					<td><? $kamar = 0; if(set_value('kamar')!='') $kamar = set_value('kamar');
@@ -322,31 +335,11 @@ echo $error_file;?>
                         <? } ?>
 					</td>
 				</tr>
-				<tr>
-					<? form_error('jasa_paspor') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
-					<th valign="top">Jasa Tambahan</th>
-					<td><input type="checkbox" name="jasa_paspor" id="jasa_paspor" value="1" <? echo set_checkbox('jasa_paspor', '1')?>  onchange="jasaPaspor(this)"/> &nbsp;&nbsp;Tambah Nama (3 suku kata) Paspor</td>
-					<td>
-						<? if(form_error('jasa_paspor') != '') {?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('jasa_paspor'); ?></div>
-						<? }?>
-					</td>
-				</tr>
-				<tr>
-					<? form_error('jasa_paspor_nama') == '' ? $class = 'inp-form-text':$class = 'inp-form-error'; ?>
-					<th valign="top"></th>
-					<td><input type="text" name="jasa_paspor_nama" id="jasa_paspor_nama" value="<?php echo set_value('jasa_paspor_nama');?>" class="<? echo $class;?>" disabled="disabled" /></td>
-					<td>
-						<? if(form_error('jasa_paspor_nama') != '') {?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('jasa_paspor_nama'); ?></div>
-						<? }?>
-					</td>
-				</tr>
+			
+			
 				<tr height="50">
 					<? form_error('jasa_maningtis') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
-					<th valign="top"></th>
+					<th valign="top">Jasa Tambahan</th>
 					<td valign="top"><input type="checkbox" name="jasa_maningtis" value="1" <? echo set_checkbox('jasa_maningtis', '1')?> /> &nbsp;&nbsp;Jasa Maningtis</td>
 					<td>
 						<? if(form_error('jasa_maningtis') != '') {?>
