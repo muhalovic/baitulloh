@@ -16,9 +16,14 @@
 		<!-- JAVASCRIPT -->
 		<script src="<?php echo base_url();?>js/jquery-1.6.2.min.js" type="text/javascript"></script>
         <script src="<?php echo base_url();?>js/jquery.js" type="text/javascript"></script>
+        <script src="<?php echo base_url();?>js/jquery.pstrength-min.1.2.js" type="text/javascript"></script>
 		<script>
-        // tooltip
+        
         $(function() {
+			// password strength
+			$('.password').pstrength();
+			
+			// tooltip
 			$("#myform :input[title]").tooltip({
 				position: "center right",
 				offset: [-2, 10],
@@ -33,8 +38,9 @@
 			
 			});
         });
+		
         </script>
-
+        
 	</head>
 	
 	<body> 
