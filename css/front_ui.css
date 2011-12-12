@@ -78,6 +78,15 @@ h3{
 	z-index: -99;
 }
 
+.repeat_hline{
+	width:100%;
+	margin:10px auto;
+	clear:both;
+	position: relative;
+	border-top: 1px solid #DDD;
+	border-bottom: 1px solid #fff;
+	z-index: -99;
+}
 
 /* TOP NAVIGATION ---------------------------- */
 .left_shadow{

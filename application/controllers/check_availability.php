@@ -42,7 +42,7 @@ class Check_availability extends CI_Controller {
 		
 		$room_options = '';
 		foreach($room->result() as $row){
-				$input_room = "<input type='text' name='jml_kamar[]' id='jml_kamar' class='input_small'  value='".set_value('jml_kamar[]')."' title='Harap diisi dengan Angka'><input type='hidden' name='tipe_kamar[]' value='".$row->ID_ROOM_TYPE."'>";
+				$input_room = "<input type='text' name='jml_kamar[]' id='jml_kamar' class='input_small_table'  value='".set_value('jml_kamar[]')."' title='Harap diisi dengan Angka'><input type='hidden' name='tipe_kamar[]' value='".$row->ID_ROOM_TYPE."'>";
 				$room_options .= "<tr><td><strong><img src='".base_url()."images/front/poin.png'/>&nbsp;".$row->JENIS_KAMAR."</strong> untuk</td><td> ".$input_room." &nbsp;Orang</td></tr>";
 		}
 			
@@ -115,9 +115,9 @@ class Check_availability extends CI_Controller {
 			$hitung_pagu = $total_pagu - $total_org;
 			
 			if($hitung_pagu > 0){
-				$sisa_pagu = " - sisa ".$hitung_pagu." Seat <font color='green'>TERSEDIA</font>";
+				$sisa_pagu = " - sisa ".$hitung_pagu." Seat <font color='3B619F'>( TERSEDIA )</font>";
 			}else{
-				$sisa_pagu = " - sisa 0 Seat <font color='red'>TIDAK TERSEDIA</font>";
+				$sisa_pagu = " - sisa 0 Seat <font color='A01040'>( TIDAK TERSEDIA )</font>";
 			}
 			
 			
@@ -146,13 +146,13 @@ class Check_availability extends CI_Controller {
 			// filter waiting list
 			if($total_pagu == 0)
 			{
-				$data['msg_box1'] = '- Pagu Penerbangan '.$maskapai.' <font color="red">TIDAK TERSEDIA</font>.<br>';
+				$data['msg_box1'] = '- Pagu Penerbangan '.$maskapai.' <font color="A01040">( TIDAK TERSEDIA )</font>.<br>';
 				$value_waiting_list = 1;
 			}
 			
 			if($total_candidate > $hitung_pagu)
 			{
-				$data['msg_box2'] = '- Jumlah Calon Jamaah <font color="red">Lebih Besar</font> dari Pagu Pesawat.<br>';
+				$data['msg_box2'] = '- Jumlah Calon Jamaah <font color="A01040">Lebih Besar</font> dari Pagu Pesawat.<br>';
 				$value_waiting_list = 1;
 			}
 			
@@ -165,7 +165,7 @@ class Check_availability extends CI_Controller {
 			
 			if($value_waiting_list == 0)
 			{
-				$data['status_waiting'] = "<font color='green'>TERSEDIA</font> , Silahkan Melakukan Registrasi dengan mengklik tombol Registrasi Online dibawah ini.";
+				$data['status_waiting'] = "<font color='3B619F'>TERSEDIA</font> , Silahkan Melakukan Registrasi dengan mengklik tombol Registrasi Online dibawah ini.";
 			}else{
 				$data['status_waiting'] = "";
 			}
@@ -388,7 +388,7 @@ class Check_availability extends CI_Controller {
 			  
 			  if($jml_kamar[$i] > $tot)
 			  {
-				 $error .= "- Jumlah Konfigurasi Kamar <strong>".$room_type->row()->JENIS_KAMAR."</strong> <font color='red' >Lebih Besar</font> dari Sisa Kamar.<br>";
+				 $error .= "- Jumlah Konfigurasi Kamar <strong>".$room_type->row()->JENIS_KAMAR."</strong> <font color='A01040' >Lebih Besar</font> dari Sisa Kamar.<br>";
 				 $valid = FALSE;
 			  }else{
 				 $valid = TRUE;
@@ -482,9 +482,9 @@ class Check_availability extends CI_Controller {
 			$hitung_pagu = $total_pagu - $total_org;
 			
 			if($hitung_pagu > 0){
-				$sisa_pagu = " - sisa ".$hitung_pagu." Seat <font color='green'>TERSEDIA</font>";
+				$sisa_pagu = " - sisa ".$hitung_pagu." Seat <font color='3B619F'>( TERSEDIA )</font>";
 			}else{
-				$sisa_pagu = " - sisa 0 Seat <font color='red'>TIDAK TERSEDIA</font>";
+				$sisa_pagu = " - sisa 0 Seat <font color='A01040'>( TIDAK TERSEDIA )</font>";
 			}
 			
 			
@@ -546,9 +546,9 @@ class Check_availability extends CI_Controller {
 			
 			if($tot > 0)
 			{
-				$status_kamar = "<font color='green'><strong>TERSEDIA</strong></font>";
+				$status_kamar = "<font color='3B619F'><strong>( TERSEDIA )</strong></font>";
 			}else{
-				$status_kamar = "<font color='red'><strong>TIDAK TERSEDIA</strong></font>";
+				$status_kamar = "<font color='A01040'><strong>( TIDAK TERSEDIA )</strong></font>";
 				$tot = 0;
 			}
 			
