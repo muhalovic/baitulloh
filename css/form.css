@@ -291,3 +291,10 @@ div.row {
 	-webkit-box-shadow:0 0 10px #000;
 	text-shadow:none !important;
 }
+
+form.myform label.error, label.error {
+	color: red;
+	font-style: italic;
+	width:300px;
+	z-index:100;
+}

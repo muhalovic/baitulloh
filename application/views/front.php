@@ -17,7 +17,25 @@
 		<!--<script src="<?php //echo base_url();?>js/jquery-1.6.2.min.js" type="text/javascript"></script>-->
         <script src="<?php echo base_url();?>js/jquery.js" type="text/javascript"></script>
         <script src="<?php echo base_url();?>js/jquery.pstrength-min.1.2.js" type="text/javascript"></script> <!-- password strenght js -->
+        <script src="<?php echo base_url();?>js/jquery.validate.js" type="text/javascript"></script>
 		<script>
+			$().ready(function() {
+				// validation confirmation password			   
+				$("#myform").validate({
+					rules: {
+						password_verification: {
+							equalTo: "#password",
+						}
+					},
+					messages: {
+						password_verification: {
+							equalTo: "tidak sama dengan field Password",
+						}
+					}
+				});
+			});
+		
+		
 			$(function() {
 				// password strength
 				$('.password').pstrength();

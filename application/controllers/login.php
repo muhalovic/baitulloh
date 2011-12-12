@@ -75,7 +75,7 @@ class Login extends CI_Controller {
 				$kode_reg = $this->session->userdata("kode_registrasi");
 				
 				$this->log_model->log($id_user, $kode_reg, NULL, $log);
-				redirect('beranda');
+				redirect('welcome');
 			}
 			//apabila login tidak sesuai dengan email dan password maka user akan masuk halaman login
 			else{

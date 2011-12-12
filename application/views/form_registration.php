@@ -18,7 +18,7 @@
 <div class="center">
 	<!-- LEFT SIDE -->
 	<div class="content_left">
-		<?php echo form_open('registration/do_register',array('id' => 'myform')); ?>
+		<?php echo form_open('registration/do_register',array('id' => 'myform', 'class' => 'myform')); ?>
 			<div class="row">
 				<? if(form_error('nama') != '') {?>
 					<label class="col1"> &nbsp; </label>
@@ -48,21 +48,21 @@
 				<? }?>
 				<label class="col1">Password</label>
 				<span class="col2">
-					<input type="password" class="input_medium password" name="password" title="Isikan password yang akan anda gunakan. minimal 6 karakter"   />
+					<input type="password" class="input_medium password" id="password" name="password" title="Isikan password yang akan anda gunakan. minimal 6 karakter"   />
 				</span>
 			</div>			
-			
+			<br />
 			<div class="row">
 				<? if(form_error('password_verification') != '' ) {?>
 					<label class="col1"> &nbsp; </label>
 					<span class="col2"><div class="error_validation"><?php echo form_error('password_verification'); ?></div></span>
 				<? }?>
-				<label class="col1">Verifikasi Password</label>
+				<label class="col1" >Verifikasi Password</label>
 				<span class="col2">
-					<input type="password" class="input_medium" name="password_verification" title="Isikan kembali password yang telah anda isikan pada field password"   />
+					<input type="password" class="input_medium" id="password_verification" name="password_verification" title="Isikan kembali password yang telah anda isikan pada field password"   /><label id="password_verification"></label>
 				</span>
 			</div>
-		
+			
 			<div class="row">
 				<? if(form_error('telp') != '') {?>
 					<label class="col1"> &nbsp; </label>
