@@ -137,45 +137,52 @@
 				<p><i>"Calon Jamaah harus memiliki Paspor asli minimal <strong class="bold">6 bulan</strong> masa berlaku dengan nama <strong class="bold">3 suku kata.</strong>"</i></p>
 			</div>
 			
+			<div class="repeat_hline"></div>
+			
 			<div class="title">
-				<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
-				<span class="text_title">Keterangan Grup & Kelas Keberangkatan <label style="color:#3b619f;">( Real Time )</label></span>
+				<p>
+					<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
+					<span class="text_title">Keterangan Grup & Kelas Keberangkatan <label style="color:#3b619f;">( Real Time )</label></span>
+				</p>
 			</div>
 			
 			<div align="center">
-				<p>"Pilih Dahulu Grup Keberangkatan & Kelas Program"</p>
+				<p><i>"Pilih Dahulu Grup Keberangkatan & Kelas Program"</i></p>
 			</div>
 			
 			<!-- On change bagian ini -->
 			<div id='front_keterangan' class="front_keterangan" style="display:none">
                <table width="100%" border="0" align="left" cellpadding="0" cellspacing="0">
                   <tr>
-                    <td width="20%">Keberangkatan</td>
+                    <td width="25%"><img src="<?php echo base_url();?>images/front/calendar.png"/>&nbsp;Keberangkatan</td>
                     <td>: <strong><span id="info_mk"></span></strong></td>
                   </tr>
 				  <tr>
-                    <td>Maskapai</td>
+                    <td><img src="<?php echo base_url();?>images/front/plane.png"/>&nbsp;Maskapai</td>
                     <td>: <strong><span id="maskapai"></span></strong></td>
                   </tr>
 				  <tr>
-                    <td>Hotel Makkah</td>
+                    <td><img src="<?php echo base_url();?>images/front/building.png"/>&nbsp;Hotel Makkah</td>
                     <td>: <strong><span id="hotel_mk"></span></strong></td>
                   </tr>
 				  <tr>
-                    <td>Hotel Madinah</td>
+                    <td><img src="<?php echo base_url();?>images/front/building.png"/>&nbsp;Hotel Madinah</td>
                     <td>: <strong><span id="hotel_jd"></span></strong></td>
                   </tr>
 				  <tr>
-                    <td>Transportasi</td>
+                    <td><img src="<?php echo base_url();?>images/front/car.png"/>&nbsp;Transportasi</td>
                     <td>: <strong><span id="transportasi"></span></strong></td>
                   </tr>
 				  <tr>
-                    <td valign="top">Kamar</td>
+                    <td valign="top"><img src="<?php echo base_url();?>images/front/poin.png"/>&nbsp;Kamar</td>
                     <td>: <span id="info_kamar"></span><span id="info_kamar_2"></span></td>
                   </tr>
                 </table>
+				<div class="clear"></div>
 			</div>
 			<!----->
+			
+			<div class="repeat_hline"></div>
 			
 			<div class="clear"></div>
 			
@@ -187,31 +194,34 @@
 			</div>
 			
 			<div align="center">
-				<p>"Pilih Dahulu Grup Keberangkatan & Kelas Program"</p>
+				<p><i>"Pilih Dahulu Grup Keberangkatan & Kelas Program"</i></p>
 			</div>
 
 			<!-- On change bagian ini -->
 			<div id='front_informasi' style="display:none">
                    <table width="100%" border="0" align="left" cellpadding="0" cellspacing="0">
                       <tr>
-                        <td width="40%">Batas Akhir Uang Muka</td>
+                        <td width="40%"><img src="<?php echo base_url();?>images/front/calendar.png"/>&nbsp;Batas Akhir Uang Muka</td>
                         <td>: <strong><span id="info_dp"></span></strong></td>
                       </tr>
 					  <tr>
-                        <td>Batas Akhir Pelunasan</td>
+                        <td><img src="<?php echo base_url();?>images/front/calendar.png"/>&nbsp;Batas Akhir Pelunasan</td>
                         <td>: <strong><span id="info_lunas"></span></strong></td>
                       </tr>
 					  <tr>
-                        <td>Upload Data Paspor</td>
+                        <td><img src="<?php echo base_url();?>images/front/calendar.png"/>&nbsp;Upload Data Paspor</td>
                         <td>: <strong><span id="info_paspor"></span></strong></td>
                       </tr>
 					  <tr>
-                        <td>Pengumpulan Berkas Fisik</td>
+                        <td><img src="<?php echo base_url();?>images/front/calendar.png"/>&nbsp;Pengumpulan Berkas Fisik</td>
                         <td>: <strong><span id="info_berkas"></span></strong></td>
                       </tr>
                     </table>
+					<div class="clear"></div>
 			</div>
 			<!----->
+			
+			<div class="repeat_hline"></div>
 			
 			<div class="clear"></div>
 			
