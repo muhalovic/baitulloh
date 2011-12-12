@@ -37,7 +37,7 @@
 				<? }?>
 				<label class="col1">Email (*)</label>
 				<span class="col2">
-					<input type="text" name="email" title="Isikan email anda" value="<?php echo set_value('email');?>"  />
+					<input type="text" class="input_medium" name="email" title="Isikan email anda" value="<?php echo set_value('email');?>"  />
 				</span>
 			</div>
 			
@@ -48,7 +48,7 @@
 				<? }?>
 				<label class="col1">Password</label>
 				<span class="col2">
-					<input type="password" name="password" title="Isikan password yang akan anda gunakan"   />
+					<input type="password" class="input_medium password" name="password" title="Isikan password yang akan anda gunakan. minimal 6 karakter"   />
 				</span>
 			</div>			
 			
@@ -59,7 +59,7 @@
 				<? }?>
 				<label class="col1">Verifikasi Password</label>
 				<span class="col2">
-					<input type="password" name="password_verification" title="Isikan kembali password yang telah anda isikan pada field password"   />
+					<input type="password" class="input_medium" name="password_verification" title="Isikan kembali password yang telah anda isikan pada field password"   />
 				</span>
 			</div>
 		
@@ -70,7 +70,7 @@
 				<? }?>
 				<label class="col1">Telepon</label>
 				<span class="col2">
-					<input type="text" name="telp" title="Isikan nomor telepon anda" value="<?php echo set_value('telp');?>"  />
+					<input type="text" class="input_medium" name="telp" title="Isikan nomor telepon anda" value="<?php echo set_value('telp');?>"  />
 				</span>
 			</div>
 
@@ -81,7 +81,7 @@
 				<? }?>
 				<label class="col1">Mobile</label>
 				<span class="col2">
-					<input type="text" name="mobile" title="Isikan nomor handphone anda" value="<?php echo set_value('mobile');?>"  />
+					<input type="text" class="input_medium" name="mobile" title="Isikan nomor handphone anda" value="<?php echo set_value('mobile');?>"  />
 				</span>
 			</div>
 			
@@ -128,7 +128,7 @@
 				<? }?>
 				<label class="col1">No Identitas (*)</label>
 				<span class="col2">
-					<input type="text" name="id_card" title="Isikan 10 digit nomor identitas anda (contoh: KTP)" value="<?php echo set_value('id_card');?>"  />
+					<input type="text" class="input_medium" name="id_card" title="Isikan 10 digit nomor identitas anda (contoh: KTP)" value="<?php echo set_value('id_card');?>"  />
 				</span>
 			</div>
 	
@@ -140,14 +140,14 @@
 				<label class="col1">Verifikasi</label>
 			
 				<span class="col2">
-					<?php echo $captcha; ?>
+					<p><?php echo $captcha; ?></p>
 				</span>
 			</div>
 			<div class="row">
 			
 				<label class="col1"></label>
 				<span class="col2">
-					<input type="text" name="captcha"  title="Isikan angka yang tertera pada gambar"  />
+					<input type="text" class="input_medium" name="captcha"  title="Isikan angka yang tertera pada gambar"  />
 				</span>
 			</div>
 
