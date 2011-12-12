@@ -43,7 +43,7 @@ class Check_availability extends CI_Controller {
 		$room_options = '';
 		foreach($room->result() as $row){
 				$input_room = "<input type='text' name='jml_kamar[]' id='jml_kamar' class='input_small'  value='".set_value('jml_kamar[]')."' title='Harap diisi dengan Angka'><input type='hidden' name='tipe_kamar[]' value='".$row->ID_ROOM_TYPE."'>";
-				$room_options .= "<tr><td><strong>".$row->JENIS_KAMAR."</strong> Untuk</td><td> ".$input_room." Orang</td></tr>";
+				$room_options .= "<tr><td><strong><img src='".base_url()."images/front/poin.png'/>&nbsp;".$row->JENIS_KAMAR."</strong> untuk</td><td> ".$input_room." &nbsp;Orang</td></tr>";
 		}
 			
 		$data['group_options'] = $group_options;

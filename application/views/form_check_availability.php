@@ -15,6 +15,7 @@
 	<div class="clear"></div>
 </div>
 <!--  end step-holder -->
+
 <div class="center">
 	<!-- LEFT SIDE -->
 	<div class="content_left">
@@ -55,7 +56,7 @@
 				<label class="col1">Jumlah Dewasa</label>
 				<span class="col2">
 					<input type="text" name="jml_adult" value="<?php echo set_value('jml_adult');?>" class="input_small"  title="Harap diisi dengan angka" />
-					<label>( di atas 11 tahun )</label>
+					<label><img src="<?php echo base_url();?>images/front/dewasa.png"/>&nbsp;( di atas 11 tahun )</label>
 				</span>
 			</div>
 			
@@ -67,7 +68,7 @@
 				<label class="col1">Anak Dengan Ranjang</label>
 				<span class="col2">
 					<input type="text" name="with_bed" value="<?php echo set_value('with_bed');?>" class="input_small" title="Harap diisi dengan angka" />
-					<label>( 23 Bulan - 11 Tahun )</label>
+					<label><img src="<?php echo base_url();?>images/front/anak.png"/>&nbsp;( 23 bulan - 11 tahun )</label>
 				</span>
 			</div>
 			
@@ -79,7 +80,7 @@
 				<label class="col1">Anak Tanpa Ranjang</label>
 				<span class="col2">
 					<input type="text" name="no_bed" value="<?php echo set_value('no_bed');?>" class="input_small" title="Harap diisi dengan angka" />
-					<label>( 23 Bulan - 11 Tahun )</label>
+					<label><img src="<?php echo base_url();?>images/front/anak.png"/>&nbsp;( 23 bulan - 11 tahun )</label>
 				</span>
 			</div>
 			
@@ -91,7 +92,7 @@
 				<label class="col1">Bayi</label>
 				<span class="col2">
 					<input type="text" name="infant" value="<?php echo set_value('infant');?>" class="input_small" title="Harap diisi dengan angka" />
-					<label>( 0 - 23 Bulan )</label>
+					<label><img src="<?php echo base_url();?>images/front/bayi.png"/>&nbsp;( 0 - 23 bulan )</label>
 				</span>
 			</div>
 			
@@ -102,7 +103,7 @@
 				<? }?>
 				<label class="col1">Konfigurasi Kamar</label>
 				<span class="col2">
-				<table width="70%">
+				<table width="100%">
 				<?php echo $room_options; ?>
 				</table>
                 <br />
@@ -112,7 +113,7 @@
 			<div class="row">
 				<label class="col1">&nbsp;</label>
 				<span class="col2">
-					<input type="submit" value="Periksa" class="submit_button" />
+					<input type="submit" value="Lanjut >>" class="submit_button" />
 					<input type="reset" value="Reset" class="reset_button" />
 				</span>
 			</div>
@@ -123,18 +124,22 @@
 	<!-- RIGHT SIDE -->
 	<div class="content_right">
 		<div class="info_shape">
+			<div align="right">
+				<p><img src="<?php echo base_url();?>images/front/promo.png"/></p>
+			</div>
+		
 			<div class="title">
 				<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
 				<span class="text_title">Informasi Registrasi</span>
 			</div>
 			
 			<div align="center">
-				<p>"Calon Jamaah harus memiliki Paspor asli minimal <strong class="bold">6 bulan</strong> masa berlaku dengan nama <strong class="bold">3 suku kata.</strong>"</p>
+				<p><i>"Calon Jamaah harus memiliki Paspor asli minimal <strong class="bold">6 bulan</strong> masa berlaku dengan nama <strong class="bold">3 suku kata.</strong>"</i></p>
 			</div>
 			
 			<div class="title">
 				<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
-				<span class="text_title">Keterangan Grup & Kelas Keberangkatan (Real Time)</span>
+				<span class="text_title">Keterangan Grup & Kelas Keberangkatan <label style="color:#3b619f;">( Real Time )</label></span>
 			</div>
 			
 			<div align="center">
