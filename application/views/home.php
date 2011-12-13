@@ -1,254 +1,237 @@
-<?php echo form_open('beranda/choose_packet'); ?>
-<table border="0" width="100%" cellpadding="0" cellspacing="0">
-	<tr valign="top">
-		<td>
-			<!-- start id-form -->
-			<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
-				<tr>
-					<th valign="top">Grup</th>
-					<td>	
-						<? $group = 0; if(set_value('group')!='') $group = set_value('group');
-							echo form_dropdown('group', $group_options, $group,'id="group" class="styledselect-group" onChange="get_group();"'); ?>
-					</td>
-					<td>
-						<? if(form_error('group') != '') {?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('group'); ?></div>
-						<? }?>
-					</td>
-				</tr>
-				<tr>
-					<th valign="top">Kelas Program</th>
-					<td>	
-						<? $program = 0; if(set_value('program')!='') $program = set_value('program');
-							echo form_dropdown('program', $program_options, $program,'id="program" class="styledselect-group"'); ?>
-					</td>
-					<td>
-						<? if(form_error('program') != '') {?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('program'); ?></div>
-						<? }?>
-					</td>
-				</tr>
-				<tr>
-					<? form_error('jml_adult') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
-					<th valign="top">Jumlah Dewasa (*)</th>
-					<td><input type="text" name="jml_adult" value="<?php echo set_value('jml_adult');?>" class="<? echo $class;?>" /></td>
-					<td>
-						<? if(form_error('jml_adult') != '') {?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('jml_adult'); ?></div>
-						<? }?>
-					</td>
-				</tr>
-				<tr>
-					<? form_error('with_bed') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
-					<th valign="top">Anak Dengan Ranjang</th>
-					<td><input type="text" name="with_bed" value="<?php echo set_value('with_bed');?>" class="<? echo $class;?>" /></td>
-					<td>
-						<? if(form_error('with_bed') != '') {?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('with_bed'); ?></div>
-						<? }?>
-					</td>
-				</tr> 
-				<tr>
-					<? form_error('no_bed') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
-					<th valign="top">Anak Tanpa Ranjang</th>
-					<td><input type="text" name="no_bed" value="<?php echo set_value('no_bed');?>" class="<? echo $class;?>" /></td>
-					<td>
-						<? if(form_error('no_bed') != '') {?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('no_bed'); ?></div>
-						<? }?>
-					</td>
-				</tr>
-				<tr>
-					<? form_error('infant') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
-					<th valign="top">Bayi</th>
-					<td><input type="text" name="infant" value="<?php echo set_value('infant');?>" class="<? echo $class;?>" /></td>
-					<td>
-						<? if(form_error('infant') != '') {?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('infant'); ?></div>
-						<? }?>
-					</td>
-				</tr>
-				<tr>
-					<th valign="top">Kamar</th>
-					<td class="noheight">
-						<div id="dvFile">
-							<table border="0" cellpadding="0" cellspacing="0">
-								<tr valign="middle">
-									<td>
-									<? $kamar = 0; if(set_value('kamar')!='') $kamar = set_value('kamar');
-										//echo form_dropdown('kamar', $room_options, $kamar,'id="kamar" class="styledselect_form_1"'); ?>
-										<select name="kamar[]" id="kamar" class="styledselect-kamar">
-											<?php foreach ($room_options as $key=>$value){ ?>
-												<option value="<?=$key?>"><?=$value?></option>
-											<? } ?>
-										</select>
-										<div id="dvFile2"></div>
-									</td>
-									<td>
-										&nbsp; Jumlah :
-										<select name="jml_kamar[]" id="jml_kamar" class="styledselect-day">
-											<option value="1">1</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
-										</select>&nbsp;										
-										<a href="javascript:_add_more();" id="add-more"><img src="<?php echo base_url();?>images/forms/icon_plus.gif" alt="" /></a>										
-										<div id="dvFile3"></div>
-									</td>
-								</tr>
-							</table>
-						</div>
-					</td>
-					<td>
-						<? if(form_error('kamar') != '') {?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('kamar'); ?></div>
-						<? }?>
-					</td>
-				</tr>
-				<tr height="50">
-					<th valign="top"></th>
-					<td>
-                    <input type="checkbox" name="cek_setuju" value="1"  class="<? echo $class;?>" <? echo set_checkbox('cek_setuju', '1'); ?> /> 
-                    <? $text_cek = "Ya, Saya Setuju"; form_error('cek_setuju') == '' ? $msg = $text_cek:$msg = '<label>'.$text_cek.'</label>'; ?>
-                    	&nbsp;&nbsp;<strong><? echo $msg; ?></strong></td>
-					<td>
-						<? if(form_error('cek_setuju') != '') {?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('cek_setuju'); ?></div>
-						<? }?>
-					</td>
-				</tr>
-				<tr>
-					<th></th>
-					<td valign="top">
-						<input type="submit" value="" class="form-submit" />
-					</td>
-					<td></td>
-				</tr>
-			</table>
-			<!-- end id-form  -->
-		</td>
-		
-		<td>
-			<!--  start related-activities -->
-			<div id="related-activities">
-
-				<!--  start related-act-top -->
-				<div id="related-act-top">
-					<img src="<?php echo base_url();?>images/forms/header_related_act.gif" width="271" height="43" alt="" />
-				</div>
-				<!-- end related-act-top -->
-
-				<!--  start related-act-bottom -->
-				<div id="related-act-bottom">
-					<!--  start related-act-inner -->
-					<div id="related-act-inner">
-						<div class="left"><a href=""><img src="<?php echo base_url();?>images/forms/icon_edit.gif" width="21" height="21" alt="" /></a></div>
-						<div class="right">
-							<h5>Keterangan Group <a id="info_kode"></a></h5>
-                            <br /><i><div id="info_ket"></div></i>
-                              <br />  Keberangkatan :
-							<ul class="greyarrow">
-								<li><a id="info_mk"></a>&nbsp;</li>
-							</ul>
-                              <div class="lines-dotted-short"></div>
-                               Sisa Seat Garuda Indonesia:
-							<ul class="greyarrow">
-								<li><a id="info_ga"></a>&nbsp;</li>
-							</ul>
-
-                               Sisa Seat Saudi Airlines:
-							<ul class="greyarrow">
-								<li><a id="info_sv"></a>&nbsp;</li>
-							</ul>
-                            <div class="lines-dotted-short"></div>
-                               Batas Akhir Pembayaran Uang Muka:
-							<ul class="greyarrow">
-								<li><a id="info_dp"></a>&nbsp;</li>
-							</ul>
-
-                               Batas Akhir Pelunasan:
-							<ul class="greyarrow">
-								<li><a id="info_lunas"></a>&nbsp;</li>
-							</ul>
-                            <div class="lines-dotted-short"></div>
-                                Batas Akhir Upload Data Passport:
-							<ul class="greyarrow">
-								<li><a id="info_paspor"></a>&nbsp;</li>
-							</ul>
-
-                                Batas Akhir Pengumpulan Berkas Fisik:
-							<ul class="greyarrow">
-								<li><a id="info_berkas"></a>&nbsp;</li>
-							</ul>
-						</div>
-
-						<div class="clear"></div>
-					</div>
-                    <div id="related-act-inner">
-						<div class="left"><a href=""><img src="<?php echo base_url();?>images/forms/icon_plus.gif" width="21" height="21" alt="" /></a></div>
-						<div class="right">
-							<h5>Perysaratan Umum<a id="info_kode"></a></h5>
-							<ul class="greyarrow">
-								<li>Calon Jamaah harus memiliki Passport asli minimal 6 bulan masa berlaku dengan 3 suku kata.</li>
-							</ul>
-						</div>
-
-						<div class="clear"></div>
-					</div>
-					<!-- end related-act-inner -->
-
-					<div class="clear"></div>
-				</div>
-				<!-- end related-act-bottom -->
+<div class="center">
+	<!-- LEFT SIDE -->
+	<div class="content_left">
+		<?php $attr = array('name' => 'check', 'id' => 'myform'); echo form_open('beranda/do_check', $attr); ?>
+			<div class="row">
+				<? if(form_error('group') != '') {?>
+					<label class="col1"> &nbsp; </label>
+					<span class="col2"><div class="error_validation"><?php echo form_error('group'); ?></div></span>
+				<? }?>
+				<label class="col1">Grup Keberangkatan</label>
+				<span class="col2">
+					<?php 
+						$group = 0; if(set_value('group')!='') $group = set_value('group');
+						echo form_dropdown('group', $group_options, $group,'id="group" class="dropdown_medium" onChange="get_group();" title="Nama Group dan Tanggal Keberangkatan"'); 
+					?>
+				</span>
 			</div>
-			<!-- end related-activities -->
-		</td>
-	</tr>
-	<tr>
-		<td><img src="<?php echo base_url();?>images/shared/blank.gif" width="695" height="1" alt="blank" /></td>
-		<td></td>
-	</tr>
-</table>
-		 
-<div class="clear"></div>
-<? echo form_close(); ?>		 
+
+			<div class="row">
+				<? if(form_error('program') != '') {?>
+					<label class="col1"> &nbsp; </label>
+					<span class="col2"><div class="error_validation"><?php echo form_error('program'); ?></div></span>
+				<? }?>
+				<label class="col1">Kelas Program</label>
+				<span class="col2">
+					<?php 
+						$program = 0; if(set_value('program')!='') $program = set_value('program');
+						echo form_dropdown('program', $program_options, $program,'id="program" class="dropdown_medium"  onChange="get_program();" title="Nama Kelas Program"'); 
+					?>
+				</span>
+			</div>
+			
+			<div class="row">
+				<? if(form_error('jml_adult') != '') {?>
+					<label class="col1"> &nbsp; </label>
+					<span class="col2"><div class="error_validation"><?php echo form_error('jml_adult'); ?></div></span>
+				<? }?>
+				<label class="col1">Jumlah Dewasa</label>
+				<span class="col2">
+					<input type="text" name="jml_adult" value="<?php echo set_value('jml_adult');?>" class="input_small"  title="Harap diisi dengan angka" />
+					<label><img src="<?php echo base_url();?>images/front/dewasa.png"/>&nbsp;( di atas 11 tahun )</label>
+				</span>
+			</div>
+			
+			<div class="row">
+				<? if(form_error('with_bed') != '') {?>
+					<label class="col1"> &nbsp; </label>
+					<span class="col2"><div class="error_validation"><?php echo form_error('with_bed'); ?></div></span>
+				<? }?>
+				<label class="col1">Anak Dengan Ranjang</label>
+				<span class="col2">
+					<input type="text" name="with_bed" value="<?php echo set_value('with_bed');?>" class="input_small" title="Harap diisi dengan angka" />
+					<label><img src="<?php echo base_url();?>images/front/anak.png"/>&nbsp;( 23 bulan - 11 tahun )</label>
+				</span>
+			</div>
+			
+			<div class="row">
+				<? if(form_error('no_bed') != '') {?>
+					<label class="col1"> &nbsp; </label>
+					<span class="col2"><div class="error_validation"><?php echo form_error('no_bed'); ?></div></span>
+				<? }?>
+				<label class="col1">Anak Tanpa Ranjang</label>
+				<span class="col2">
+					<input type="text" name="no_bed" value="<?php echo set_value('no_bed');?>" class="input_small" title="Harap diisi dengan angka" />
+					<label><img src="<?php echo base_url();?>images/front/anak.png"/>&nbsp;( 23 bulan - 11 tahun )</label>
+				</span>
+			</div>
+			
+			<div class="row">
+				<? if(form_error('infant') != '') {?>
+					<label class="col1"> &nbsp; </label>
+					<span class="col2"><div class="error_validation"><?php echo form_error('infant'); ?></div></span>
+				<? }?>
+				<label class="col1">Bayi</label>
+				<span class="col2">
+					<input type="text" name="infant" value="<?php echo set_value('infant');?>" class="input_small" title="Harap diisi dengan angka" />
+					<label><img src="<?php echo base_url();?>images/front/bayi.png"/>&nbsp;( 0 - 23 bulan )</label>
+				</span>
+			</div>
+			
+			<div class="row">
+            	<? if(form_error('jml_kamar[]') != '') {?>
+					<label class="col1"> &nbsp; </label>
+					<span class="col2"><div class="error_validation"><?php echo form_error('jml_kamar[]'); ?></div></span>
+				<? }?>
+				<label class="col1">Konfigurasi Kamar</label>
+				<span class="col2">
+				<table width="100%">
+				<?php echo $room_options; ?>
+				</table>
+                <br />
+				</span>
+			</div>
+			
+			<div class="row">
+				<label class="col1">&nbsp;</label>
+				<span class="col2">
+					<input type="submit" value="Lanjut >>" class="submit_button" />
+					<input type="reset" value="Reset" class="reset_button" />
+				</span>
+			</div>
+		<? echo form_close(); ?>
+	</div>
+	<!-- END LEFT SIDE -->
+	
+	<!-- RIGHT SIDE -->
+	<div class="content_right">
+		<div class="info_shape">
+			<div class="title">
+				<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
+				<span class="text_title">Informasi Registrasi</span>
+			</div>
+			
+			<div align="center">
+				<p><i>"Calon Jamaah harus memiliki Paspor asli minimal <strong class="bold">6 bulan</strong> masa berlaku dengan nama <strong class="bold">3 suku kata.</strong>"</i></p>
+			</div>
+			
+			<div class="repeat_hline"></div>
+			
+			<div class="title">
+				<p>
+					<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
+					<span class="text_title">Keterangan Grup & Kelas Keberangkatan <label style="color:#3b619f;">( Real Time )</label></span>
+				</p>
+			</div>
+			
+			<div align="center">
+				<p><i>"Pilih Dahulu Grup Keberangkatan & Kelas Program"</i></p>
+			</div>
+			
+			<!-- On change bagian ini -->
+			<div id='front_keterangan' class="front_keterangan" style="display:none">
+               <table width="100%" border="0" align="left" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td width="25%"><img src="<?php echo base_url();?>images/front/calendar.png"/>&nbsp;Keberangkatan</td>
+                    <td>: <strong><span id="info_mk"></span></strong></td>
+                  </tr>
+				  <tr>
+                    <td><img src="<?php echo base_url();?>images/front/plane.png"/>&nbsp;Maskapai</td>
+                    <td>: <strong><span id="maskapai"></span></strong></td>
+                  </tr>
+				  <tr>
+                    <td><img src="<?php echo base_url();?>images/front/building.png"/>&nbsp;Hotel Makkah</td>
+                    <td>: <strong><span id="hotel_mk"></span></strong></td>
+                  </tr>
+				  <tr>
+                    <td><img src="<?php echo base_url();?>images/front/building.png"/>&nbsp;Hotel Madinah</td>
+                    <td>: <strong><span id="hotel_jd"></span></strong></td>
+                  </tr>
+				  <tr>
+                    <td><img src="<?php echo base_url();?>images/front/car.png"/>&nbsp;Transportasi</td>
+                    <td>: <strong><span id="transportasi"></span></strong></td>
+                  </tr>
+				  <tr>
+                    <td valign="top"><img src="<?php echo base_url();?>images/front/poin.png"/>&nbsp;Kamar</td>
+                    <td>: <span id="info_kamar"></span><span id="info_kamar_2"></span></td>
+                  </tr>
+                </table>
+				<div class="clear"></div>
+			</div>
+			<!----->
+			
+			<div class="repeat_hline"></div>
+			
+			<div class="clear"></div>
+			
+			<div class="title">
+				<p>
+					<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
+					<span class="text_title">Informasi Batas Akhir</span>
+				</p>
+			</div>
+			
+			<div align="center">
+				<p><i>"Pilih Dahulu Grup Keberangkatan & Kelas Program"</i></p>
+			</div>
+
+			<!-- On change bagian ini -->
+			<div id='front_informasi' style="display:none">
+                   <table width="100%" border="0" align="left" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td width="40%"><img src="<?php echo base_url();?>images/front/calendar.png"/>&nbsp;Batas Akhir Uang Muka</td>
+                        <td>: <strong><span id="info_dp"></span></strong></td>
+                      </tr>
+					  <tr>
+                        <td><img src="<?php echo base_url();?>images/front/calendar.png"/>&nbsp;Batas Akhir Pelunasan</td>
+                        <td>: <strong><span id="info_lunas"></span></strong></td>
+                      </tr>
+					  <tr>
+                        <td><img src="<?php echo base_url();?>images/front/calendar.png"/>&nbsp;Upload Data Paspor</td>
+                        <td>: <strong><span id="info_paspor"></span></strong></td>
+                      </tr>
+					  <tr>
+                        <td><img src="<?php echo base_url();?>images/front/calendar.png"/>&nbsp;Pengumpulan Berkas Fisik</td>
+                        <td>: <strong><span id="info_berkas"></span></strong></td>
+                      </tr>
+                    </table>
+					<div class="clear"></div>
+			</div>
+			<!----->
+			
+			<div class="repeat_hline"></div>
+			
+			<div class="clear"></div>
+			
+		</div>
+		<!-- END INFO SHAPE -->
+		
+	</div>
+	<!-- END RIGHT SIDE -->
+</div>
 
 <script>
-	function _add_more() {
+	function _add_more() 
+	{
 		var index = document.getElementsByName('kamar[]');
-		var txt = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr valign=\"middle\"><td><select name=\"kamar[]\" id=\"kamar"+index.length+
-					"\" class=\"styledselect-kamar\"><option value=\"0\">-- Pilih Jenis Kamar --</option></select></td>"+
-					"<td>&nbsp; Jumlah :&nbsp;<select name=\"jml_kamar[]\" id=\"jml_kamar"+index.length+"\" class=\"styledselect-day\">"+
-					"<option value=\"1\">1</option><option value=\"2\">2</option><option value=\"3\">3</option></select></td></tr></table>";
-		
-		var txt2 = "<select name=\"kamar[]\" id=\"kamar"+index.length+
-					"\" class=\"styledselect-kamar\"><option value=\"0\">-- Pilih Jenis Kamar --</option></select><br/>";
+		if (index.length < 5){
+		var txt = "<select name=\"kamar[]\" id=\"kamar"+index.length+"\" class=\"dropdown_small\"><option value=\"0\">-- Pilih Kamar --</option></select>"+
+					"<label>&nbsp;Jumlah</label> <select name=\"jml_kamar[]\" id=\"jml_kamar"+index.length+"\" class=\"dropdown\">"+
+					"<option value=\"1\">1</option><option value=\"2\">2</option><option value=\"3\">3</option></select>";
 					
-		var txt3 = "&nbsp; Jumlah :<select name=\"jml_kamar[]\" id=\"jml_kamar"+index.length+"\" class=\"styledselect-day\">"+
-					"<option value=\"1\">1</option><option value=\"2\">2</option><option value=\"3\">3</option></select><br/>";
-		document.getElementById("dvFile").innerHTML += txt;
-		//document.getElementById("dvFile2").innerHTML += txt2;
-		//document.getElementById("dvFile3").innerHTML += txt3;
-		
+		document.getElementById("dvFile").innerHTML += txt;		
 		loadkamar();
+		}
 	}
 	
-	function loadkamar() {
+	function loadkamar() 
+	{
 		var count = document.getElementsByName('kamar[]');
 	    $.ajax({
 	           url: "<?=base_url();?>index.php/check_availability/getKamar/",
 	           global: false,
 	           type: "POST",
 	           async: false,
-	           //dataType: "html",
-	           //data: "produsen="+produsen +"&no_serti="+noserti +"&varietas="+varietas +"&kls_benih="+kls_benih, //the name of the $_POST variable and its value
 	           success: function (response) //'response' is the output provided by the controller method prova()
 	                    {
 							//counts the number of dynamically generated options
@@ -264,20 +247,21 @@
 	                   }
 	                   
 	          });
-	    
 	          return false;
 	}
 	
-	function get_group() {
-		
+	function get_group() 
+	{	
 		var prp = $("#group").val();
+		var cek_program = document.getElementById('program').value;
+		
                 $.ajax({
-                        url: "<?=base_url();?>index.php/beranda/getGroup/",
+                        url: "<?=base_url();?>index.php/check_availability/getGroup/",
                         global: false,
                         type: "POST",
                         async: false,
                         dataType: "html",
-                        data: "id_group="+ prp, //the name of the $_POST variable and its value
+                        data: "id_group="+ prp +"&id_program="+ cek_program, //the name of the $_POST variable and its value
                         success: function (response) {
 							 var bahan = response;
 							 var pecah = bahan.split("#");
@@ -288,14 +272,56 @@
 							 document.getElementById('info_lunas').innerHTML = pecah[3];
 							 document.getElementById('info_dp').innerHTML = pecah[4];
 							 document.getElementById('info_berkas').innerHTML = pecah[5];
-							 document.getElementById('info_kode').innerHTML = pecah[6];
-							 document.getElementById('info_ket').innerHTML = pecah[7];
-                                                         document.getElementById('info_ga').innerHTML = pecah[8]+" Seat(s)";
-                                                         document.getElementById('info_sv').innerHTML = pecah[9]+" Seat(s)";
-                        }
+							 document.getElementById('info_kamar').innerHTML = pecah[6];
+							 }
                 });
-              return false;
-		
+					 
+				document.getElementById('program').value=0;
+				document.getElementById('front_keterangan').style.display="none";
+				document.getElementById('front_informasi').style.display="none";
+				/*if(+prp !=  0 && cek_program != 0)
+					{
+						document.getElementById('front_keterangan').style.display="inline";
+						document.getElementById('front_informasi').style.display="inline";
+					}else{
+						document.getElementById('front_keterangan').style.display="none";
+						document.getElementById('front_informasi').style.display="none";
+					}
+				return false;*/
 	}
 	
+	function get_program() 
+	{	
+		var prp = $("#program").val();
+		var cek_group = document.getElementById('group').value;
+		
+                $.ajax({
+                        url: "<?=base_url();?>index.php/check_availability/getProgram/",
+                        global: false,
+                        type: "POST",
+                        async: false,
+                        dataType: "html",
+                        data: "id_program="+ prp +"&id_group="+ cek_group, //the name of the $_POST variable and its value
+                        success: function (response) {
+							 var bahan = response;
+							 var pecah = bahan.split("#");
+							 
+                           document.getElementById('maskapai').innerHTML = pecah[0];
+                           document.getElementById('hotel_mk').innerHTML = pecah[1];
+                           document.getElementById('hotel_jd').innerHTML = pecah[2];
+                           document.getElementById('transportasi').innerHTML = pecah[3];
+                           document.getElementById('info_kamar').innerHTML = pecah[4];
+									
+									if(+prp != 0 && cek_group !=  0)
+									{
+										document.getElementById('front_keterangan').style.display="inline";
+										document.getElementById('front_informasi').style.display="inline";
+									}else{
+										document.getElementById('front_keterangan').style.display="none";
+										document.getElementById('front_informasi').style.display="none";
+									}
+                        }
+                });
+				return false;
+	}
 </script>

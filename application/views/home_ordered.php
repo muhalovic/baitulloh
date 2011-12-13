@@ -52,8 +52,8 @@
 							<table border="0" cellpadding="0" cellspacing="0">
 								<?php foreach ($room as $row) {?>
 								<tr valign="middle">
-									<td><? echo $row->JENIS_KAMAR." - "; ?></td>
-									<td>Jumlah : <? echo $row->JUMLAH; ?></td>
+									<td><strong><? echo $row->JENIS_KAMAR." &nbsp; "; ?></strong></td>
+									<td>untuk <? echo $row->JUMLAH; ?> Orang</td>
 								</tr>
 								<? }?>
 							</table>
@@ -88,16 +88,16 @@
 			<div id="related-activities">
 				
 				<!--  start related-act-top -->
-				<div id="related-act-top">
+				<!--<div id="related-act-top">
                 	<img src="<?php echo base_url();?>images/forms/header_related_act.gif" width="271" height="43" alt="" />
-				</div>
+				</div>-->
 				<!-- end related-act-top -->
 					
 				<!--  start related-act-bottom -->
 				<div id="related-act-bottom">
 					<!--  start related-act-inner -->
 					<div id="related-act-inner">
-						<div class="left"><a href=""><img src="<?php echo base_url();?>images/forms/icon_edit.gif" width="21" height="21" alt="" /></a></div>
+						<div class="left"><!--<a href=""><img src="<?php echo base_url();?>images/forms/icon_edit.gif" width="21" height="21" alt="" /></a>--></div>
 						<div class="right">
 							<? if (isset($waiting) && $waiting){?>
 							<h5>Info Waiting List</h5>
@@ -108,10 +108,10 @@
 							</ul>
 							<br />Terima kasih.
 							<? } else {?>
-							<h5>Keterangan Group <a id="info_kode"></a></h5>
+							<!--<h5>Keterangan Group <a id="info_kode"></a></h5>
                             <br /><i><? echo $keterangan_group; ?></i>
 								                                
-                              <br />  Keberangkatan :
+                              <br />  -->Keberangkatan :
 							<ul class="greyarrow">
 								<li><? if (isset($mk)) echo $mk; ?></li> 
 							</ul>

@@ -14,7 +14,7 @@ class Biodata extends CI_Controller {
 	}
 	function index()
 	{
-		$this->front();
+		$this->list_jamaah();
 	}
 	
 	function front()	
