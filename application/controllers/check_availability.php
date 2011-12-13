@@ -268,7 +268,7 @@ class Check_availability extends CI_Controller {
 			return FALSE;
 		}else{
 			if($value > $max){
-				$this->form_validation->set_message('check_jml', "Jumlah maksimum untuk %s adalah $max !");
+				$this->form_validation->set_message('check_jml', "Kami tidak menganjurkan jumlah %s untuk lebih besar dari orang dewasa !");
 				return FALSE;
 			}else
 				return TRUE;
