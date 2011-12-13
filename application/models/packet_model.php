@@ -136,6 +136,20 @@ class Packet_model extends CI_Model {
 		
 		return $this->db->get();
 	}
+	
+	function sum_jumlah_orang_by_id_account($id_account,$kode_registrasi)
+	{
+		$status = array(1,3);
+		
+		$this->db->select('JUMLAH_ADULT+CHILD_WITH_BED+CHILD_NO_BED+INFANT as JUMLAH_ORANG',false);
+		$this->db->from('packet');
+	//	$this->db->where('ID_GROUP', $id_group);
+		$this->db->where('ID_ACCOUNT', $id_account);
+		$this->db->where('KODE_REGISTRASI', $kode_registrasi);
+		$this->db->where_in($status);
+		
+		return $this->db->get();
+	}
 }
 
 ?>

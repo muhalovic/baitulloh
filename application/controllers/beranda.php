@@ -93,7 +93,7 @@ class Beranda extends CI_Controller {
                     $data['content'] = $this->load->view('home',$data,true);
                 }
 		
-		$this->load->view('front',$data);
+		$this->load->view('front_backup',$data);
 	}
 
         function choose_packet(){
@@ -244,8 +244,8 @@ class Beranda extends CI_Controller {
 
                 $group_info = $this->group_departure_model->get_group($group);
                 $kode_group = $group_info->row()->KODE_GROUP;
-                $pagu_sv = $group_info->row()->PAGU_SV;
-                $pagu_ga = $group_info->row()->PAGU_GA;
+                // $pagu_sv = $group_info->row()->PAGU_SV;
+                // $pagu_ga = $group_info->row()->PAGU_GA;
                 $depart_jd = $group_info->row()->TANGGAL_KEBERANGKATAN_JD;
                 $depart_mk = $group_info->row()->TANGGAL_KEBERANGKATAN_MK;
 
@@ -442,8 +442,8 @@ class Beranda extends CI_Controller {
 				$lunas = $this->konversi_tanggal($row->JATUH_TEMPO_PELUNASAN);
 				$dp = $this->konversi_tanggal($row->JATUH_TEMPO_UANG_MUKA);
 				$berkas = $this->konversi_tanggal($row->JATUH_TEMPO_BERKAS );
-				$pagu_ga = $row->PAGU_GA;
-                                $pagu_sv = $row->PAGU_SV;
+				// $pagu_ga = $row->PAGU_GA;
+                                // $pagu_sv = $row->PAGU_SV;
 
 				$data = $jd."#".$mk."#".$paspor."#".$lunas."#".$dp."#".$berkas."#".$kode."#".$ket."#".$pagu_ga."#".$pagu_sv;
 			}

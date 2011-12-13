@@ -33,6 +33,9 @@ class Data_jamaah extends CI_Controller {
 		$total_data		= ''.$total_data ;
 		
 		$colModel['no'] 					= array('No',40,TRUE,'center',0);
+		$colModel['DATA_PASPOR']			= array('Paspor',40,FALSE,'center',0);
+		$colModel['UBAH_PASPOR']			= array('Ubah Paspor',75,FALSE,'center',0);
+		$colModel['UBAH_JAMAAH']			= array('Ubah Jamaah',75,FALSE,'center',0);
 		$colModel['KODE_REGISTRASI'] 		= array('Kode Registrasi',100,TRUE,'center',0);
 		$colModel['NAMA_USER'] 				= array('Nama Registrasi',100,TRUE,'center',1);
 		$colModel['GROUP'] 					= array('Group',60,FALSE,'center',0);
@@ -44,9 +47,6 @@ class Data_jamaah extends CI_Controller {
 		$colModel['MOBILE'] 				= array('Handphone',90,TRUE,'center',1);
 		$colModel['TANGGAL_ENTRI']			= array('Tanggal Entri',75,TRUE,'center',0);
 		$colModel['STATUS_JAMAAH']			= array('Status',75,TRUE,'center',1);
-		$colModel['DATA_PASPOR']			= array('Paspor',40,FALSE,'center',0);
-		$colModel['UBAH_PASPOR']			= array('Ubah Paspor',75,FALSE,'center',0);
-		$colModel['UBAH_JAMAAH']			= array('Ubah Jamaah',75,FALSE,'center',0);
 		
 		$gridParams = array(
 		'width' => '1190',
@@ -60,8 +60,6 @@ class Data_jamaah extends CI_Controller {
 		);
 		
 		$buttons[] = array('separator');
-		$buttons[] = array('Tambah','add','js');
-		$buttons[] = array('separator');
 		$buttons[] = array('Hapus','delete','js');
         $buttons[] = array('separator');
 				
@@ -71,11 +69,7 @@ class Data_jamaah extends CI_Controller {
 		$data['added_js'] = "<script type='text/javascript'>
 			function js(com,grid)
 			{
-				if(com=='Tambah')
-				{
-					location.href='".site_url('/admin/data_akun/')."';
-				}
-
+				
     			if (com=='Hapus'){
 				   if($('.trSelected',grid).length>0){
 					   if(confirm('Anda yakin ingin menghapus ' + $('.trSelected',grid).length + ' buah data?')){
@@ -147,7 +141,7 @@ class Data_jamaah extends CI_Controller {
 		$this->load->view('admin/front',$data);		
 	}
 
-	function grid_calon_jamaah() 
+	function grid_calon_jamaah($param=null) 
 	{
 		
 		//call library or helper
@@ -161,9 +155,9 @@ class Data_jamaah extends CI_Controller {
 		$this->load->model('group_departure_model');
 		
 		$valid_fields = array('KODE_REGISTRASI','NAMA_USER','NAMA_LENGKAP','JENIS_KELAMIN','KOTA','ALAMAT','TELP','MOBILE','TANGGAL_ENTRI','STATUS_JAMAAH');
-		$this->flexigrid->validate_post('ID_ACCOUNT','desc',$valid_fields);
+		$this->flexigrid->validate_post('jamaah_candidate.ID_ACCOUNT','desc',$valid_fields);
 		
-		$records = $this->jamaah_candidate_model->get_grid_allover_jamaah2();
+		$records = $this->jamaah_candidate_model->get_grid_allover_jamaah_grouped($param);
 		$this->output->set_header($this->config->item('json_header'));
 		
 		$no = 0;
@@ -202,24 +196,65 @@ class Data_jamaah extends CI_Controller {
 			
 			$url_nama_calon = '<a style="cursor:pointer; text-decoration:underline; color:#000;" onClick="window.open(\''.site_url().'/admin/data_jamaah/profile_jamaah/'.$row->ID_CANDIDATE.'/'.$row->KODE_REGISTRASI.'\',\'profil\',\'width=500,height=500,left=400,top=100,screenX=400,screenY=100\')">'.$row->NAMA_LENGKAP.'</a>';
 			
+			if($row->GENDER == 1){
+				$jenis_kelamin = 'Laki - laki';
+			}
+			else{
+				$jenis_kelamin = 'Perempuan';
+			}
+			
+			if($row->STATUS_KANDIDAT == 0){
+				$status_jamaah = 'Disabled';
+			}
+			else if($row->STATUS_KANDIDAT == 1){
+				$status_jamaah = 'Registered';
+			}
+			else if($row->STATUS_KANDIDAT == 2){
+				$status_jamaah = 'Booked';
+			}
+			else if($row->STATUS_KANDIDAT == 3){
+				$status_jamaah = 'Lunas';
+			}
+			
+			if(is_null($param)){	
 			$record_items[] = array(
 				$row->ID_CANDIDATE,
-				$no = $no+1,
+				$no = $no+1,	
+				$url_paspor,
+				$url_edit_paspor,
+				$url_edit_jamaah,
 				$row->KODE_REGISTRASI,
 				$row->NAMA_USER,	
 				$kode_group,
 				$url_nama_calon,
-				$row->JENIS_KELAMIN,
+				$jenis_kelamin,
 				$row->KOTA,
 				$row->ALAMAT,
 				$row->TELP,
 				$row->MOBILE,
 				date("d M Y", strtotime($row->TANGGAL_ENTRI)),
-				$row->STATUS_JAMAAH,
+				$status_jamaah,	
+			);
+			}
+			else{
+			$record_items[] = array(
+				$row->ID_CANDIDATE,
+				$no = $no+1,	
 				$url_paspor,
 				$url_edit_paspor,
-				$url_edit_jamaah
+				$row->KODE_REGISTRASI,
+				$row->NAMA_USER,	
+				$kode_group,
+				$url_nama_calon,
+				$jenis_kelamin,
+				$row->KOTA,
+				$row->ALAMAT,
+				$row->TELP,
+				$row->MOBILE,
+				date("d M Y", strtotime($row->TANGGAL_ENTRI)),
+				$status_jamaah,	
 			);
+			}
 		}
 		
 		if(isset($record_items))
@@ -347,6 +382,7 @@ class Data_jamaah extends CI_Controller {
 		$this->load->model('room_packet_model');
 		$this->load->model('packet_model');
 		$this->load->model('accounts_model');
+		$this->load->model('kota_model');
 		
 		$id_account = $id_user;
 		$kode_reg = $kode_registrasi;
@@ -354,7 +390,7 @@ class Data_jamaah extends CI_Controller {
 		$province = $this->province_model->get_all_province();
 		$relation = $this->relation_model->get_all_relation();
 		$chlothes = $this->clothes_size_model->get_all_clothes();
-		$paket = $this->packet_model->get_packet_byAcc($id_account, $kode_reg);
+		$paket = $this->packet_model->get_packet_byAcc($id_account, $kode_reg)->row();
 		$account = $this->accounts_model->get_data_account($id_account)->row(); 
 		
 		
@@ -374,30 +410,41 @@ class Data_jamaah extends CI_Controller {
 				$chlothes_options[$row->ID_SIZE] = $row->SIZE;
 		}
 		
+		$kota_options[''] = '-- Pilih Kota --';
+		if(isset($_POST['province'])){
+		$cities = $this->kota_model->get_kota_by_province($this->input->post('province'));
+		foreach($cities->result() as $kota){
+			$kota_options[$kota->NAMA_KOTA] = $kota->NAMA_KOTA;
+		}
+		}
+		
 		
 		$kamar_options[''] = '-- Pilih Kamar --';
-		$kamar = $this->room_packet_model->get_room_packet_byIDpack($this->input->post('paket'));
+		$kamar = $this->room_packet_model->get_room_packet_byIDpack($paket->ID_PACKET);
 		if($kamar->result() != NULL)
 		{
 			foreach($kamar->result() as $row){
-				$kamar_options[$row->ID_ROOM_PACKET] = $row->JENIS_KAMAR;
+				
+				$total_kamar = $row->JUMLAH;
+				
+				$data_jamaah = $this->jamaah_candidate_model->get_jamaah_byRoomPacket($id_account, $kode_reg, $row->ID_ROOM_PACKET);
+				if($data_jamaah->num_rows() < $total_kamar)
+				{
+					$sisa_bed = $total_kamar - $data_jamaah->num_rows();
+					$kamar_options[$row->ID_ROOM_PACKET] = $row->JENIS_KAMAR." - tersedia ".$sisa_bed." bed";
+				}else{
+					
+				}
 			}
 		}
 		
-		$paket_options[''] = '-- Pilih Paket --';
 		
-		if($paket->result() != NULL)
-		{
-			foreach($paket->result() as $row){
-				$paket_options[$row->ID_PACKET] = $row->KODE_GROUP.' - '.$row->NAMA_PROGRAM;
-			}
-		}
 		
+		$data['kota_options'] = $kota_options;
 		$data['province_options'] = $province_options;
 		$data['relasi_options'] = $relasi_options;
 		$data['chlothes_options'] = $chlothes_options;
 		$data['kamar_options'] = $kamar_options;
-		$data['paket_options'] = $paket_options;
 		$data['nama_user'] = $account->NAMA_USER;
 		$data['email_user'] = $account->EMAIL;
 		$data['telp_user'] = $account->TELP;
@@ -434,6 +481,13 @@ class Data_jamaah extends CI_Controller {
 		
 		if(is_null($id_user) || is_null($kode_registrasi)){
 			redirect('/admin/data_jamaah/');
+		}
+		
+		if($this->_is_add_jamaah_available($id_user,$kode_registrasi) == false){
+			$error = 'Jumlah jamaah yang didaftakan telah melebihi kuota paket';
+			$this->session->set_userdata('error',$error);
+			 redirect('admin/data_jamaah/daftar_jamaah_akun/'.$id_user.'/'.$kode_registrasi);
+			
 		}
 		
 		if ($this->cek_validasi() == FALSE){
@@ -539,7 +593,6 @@ class Data_jamaah extends CI_Controller {
 				'PERIHAL_PRIBADI' => $perihal_pribadi,
 				'FOTO' => $file_foto,
 				'JASA_TAMBAHAN' => $this->input->post('jasa_maningtis'),
-				'REQUESTED_NAMA' => $this->input->post('jasa_paspor_nama'),
 				'MAHRAM' => $mahram_s,
 				'TANGGAL_ENTRI' => date("Y-m-d H:i:s"),
 				'TANGGAL_UPDATE' => date("Y-m-d H:i:s"),
@@ -627,8 +680,6 @@ class Data_jamaah extends CI_Controller {
 			foreach($data_jamaah->result() as $row)
 			{
 
-						if($row->REQUESTED_NAMA != "0") { $req_nama = $row->REQUESTED_NAMA; }
-				  else{ $req_nama = NULL; }
 				
 				$data['e_id_candidate'] = $row->ID_CANDIDATE;
 				$data['e_id_account'] = $row->ID_ACCOUNT;
@@ -639,7 +690,7 @@ class Data_jamaah extends CI_Controller {
 				$data['e_warga_negara'] = $row->WARGA_NEGARA;
 				$data['e_tempat_lahir'] = $row->TEMPAT_LAHIR;
 				$data['e_tgl_lahir'] = $row->TANGGAL_LAHIR;
-				$data['e_id_propinsi'] = $row->ID_PROPINSI;
+				$data['e_province'] = $row->ID_PROPINSI;
 				$data['e_kota'] = $row->KOTA;
 				$data['e_alamat'] = $row->ALAMAT;
 				$data['e_mahram'] = $row->MAHRAM;
@@ -652,7 +703,6 @@ class Data_jamaah extends CI_Controller {
 				$data['e_pas_foto'] = $row->FOTO;
 				$data['e_jasa_tambahan'] = $row->JASA_TAMBAHAN;
 				$data['e_kamar'] = $row->ID_ROOM_PACKET;
-				$data['e_request_nama'] = $req_nama;
 				$data['nama_user'] = $account->NAMA_USER;
 				$data['email_user'] = $account->EMAIL;
 				$data['telp_user'] = $account->TELP;
@@ -686,43 +736,61 @@ class Data_jamaah extends CI_Controller {
 				$this->load->model('relation_model');
 				$this->load->model('room_packet_model');
 				$this->load->model('packet_model');
+				$this->load->model('kota_model');
 				
 				
 				$province = $this->province_model->get_all_province();
 				$relation = $this->relation_model->get_all_relation();
 				$chlothes = $this->clothes_size_model->get_all_clothes();
-				$packet = $this->packet_model->get_packet_byAcc($id_account, $account->KODE_REGISTRASI);
+				$packet = $this->packet_model->get_packet_byAcc($id_account, $account->KODE_REGISTRASI)->row();
 				
-				foreach($packet->result() as $row)
-				{
-					$id_packet = $row->ID_PACKET;
-				}
+				
 		
 				$province_options[''] = '-- Pilih Propinsi --';
-				foreach($province->result() as $row){
-						$province_options[$row->ID_PROPINSI] = $row->NAMA_PROPINSI;
+				foreach($province->result() as $provinsi){
+						$province_options[$provinsi->ID_PROPINSI] = $provinsi->NAMA_PROPINSI;
 				}
 				
 				$relasi_options[''] = '-- Pilih Relasi --';
-				foreach($relation->result() as $row){
-						$relasi_options[$row->ID_RELATION] = $row->JENIS_RELASI;
+				foreach($relation->result() as $relation){
+						$relasi_options[$relation->ID_RELATION] = $relation->JENIS_RELASI;
 				}
 				
 				$chlothes_options[''] = '-- Pilih Ukuran Baju --';
-				foreach($chlothes->result() as $row){
-						$chlothes_options[$row->ID_SIZE] = $row->SIZE;
+				foreach($chlothes->result() as $cloth){
+						$chlothes_options[$cloth->ID_SIZE] = $cloth->SIZE;
 				}
 				
 				$kamar_options[''] = '-- Pilih Kamar --';
-				$kamar = $this->room_packet_model->get_room_packet_byIDpack($id_packet);
+				$kamar = $this->room_packet_model->get_room_packet_byIDpack($packet->ID_PACKET);
 				if($kamar->result() != NULL)
 				{
-					foreach($kamar->result() as $row){
-						$kamar_options[$row->ID_ROOM_PACKET] = $row->JENIS_KAMAR;
+					foreach($kamar->result() as $kamar){
+						
+						
+						$total_kamar = $kamar->JUMLAH;
+				
+						$data_jamaah = $this->jamaah_candidate_model->get_jamaah_byRoomPacket($id_account, $account->KODE_REGISTRASI, $kamar->ID_ROOM_PACKET);
+						if($data_jamaah->num_rows() < $total_kamar || $row->ID_ROOM_PACKET == $kamar->ID_ROOM_PACKET )
+						{
+							$sisa_bed = $total_kamar - $data_jamaah->num_rows();
+							$kamar_options[$kamar->ID_ROOM_PACKET] = $kamar->JENIS_KAMAR." - tersedia ".$sisa_bed." bed";
+						}
+						
+						
 					}
 				}
 				
+				$kota_options[''] = '-- Pilih Kota --';
+					
+						$cities = $this->kota_model->get_kota_by_province($data['e_province']);
+					foreach($cities->result() as $kota){
+					$kota_options[$kota->NAMA_KOTA] = $kota->NAMA_KOTA;
+					}
+				
+		
 				$data['province_options'] = $province_options;
+				$data['kota_options'] = $kota_options;
 				$data['relasi_options'] = $relasi_options;
 				$data['chlothes_options'] = $chlothes_options;
 				$data['kamar_options'] = $kamar_options;
@@ -821,22 +889,6 @@ class Data_jamaah extends CI_Controller {
 			$perihal_pribadi = $darah_tinggi.";".$takut_ketinggian.";".$smooking_room.";".$jantung.";".$asma.";".$mendengkur;
 			
 			
-			// cek requuest jasa nama paspor
-			if($this->input->post('jasa_paspor_nama_edit') != NULL)
-			{
-				if($this->input->post('jasa_paspor_nama') != NULL)
-				{
-					$request_nama = $this->input->post('jasa_paspor_nama');
-				
-				} else {
-					
-					$request_nama = $this->input->post('jasa_paspor_nama_edit');
-				}
-			
-			} else {
-				
-				$request_nama = $this->input->post('jasa_paspor_nama');
-			}
 			
 			if(!is_dir('./images/upload/foto'))
 			{
@@ -899,7 +951,6 @@ class Data_jamaah extends CI_Controller {
 				'LAYANAN_KHUSUS' => $pelayanan_khusus,
 				'PERIHAL_PRIBADI' => $perihal_pribadi,
 				'JASA_TAMBAHAN' => $this->input->post('jasa_maningtis'),
-				'REQUESTED_NAMA' => $request_nama,
 				'MAHRAM' => $mahram_s,
 				'ID_ROOM_PACKET' => $this->input->post('kamar'),
 				'TANGGAL_UPDATE' => date("Y-m-d H:i:s"),
@@ -1110,9 +1161,10 @@ class Data_jamaah extends CI_Controller {
 				$data['e_tgl_lahir'] = $row->TANGGAL_LAHIR;
 				$data['e_kota'] = $row->KOTA;
 				$data['e_pas_foto'] = $row->FOTO;
-				$data['e_request_nama'] = $row->REQUESTED_NAMA;
+				
 				
 				// DATA PASPOR
+				$data['e_nama_paspor'] = $row->NAMA_PASPOR;
 				$data['e_no_paspor'] = $row->NO_PASPOR;
 				$data['e_tgl_keluar'] = $row->TANGGAL_DIKELUARKAN;
 				$data['e_tgl_habis'] = $row->TANGGAL_HABIS;
@@ -1196,6 +1248,7 @@ class Data_jamaah extends CI_Controller {
 				array('field'=>'b_bln_lahir','label'=>'Tgl. Berakhir', 'rules'=>'callback_cek_dropdown'),
 				array('field'=>'b_thn_lahir','label'=>'Tgl. Berakhir', 'rules'=>'callback_cek_dropdown'),
 				array('field'=>'kantor','label'=>'Kantor', 'rules'=>'required'),
+				array('field'=>'nama_paspor','label'=>'Nama pada Paspor', 'rules'=>'required'),
 		//		array('field'=>'foto','label'=>'Scan Paspor', 'rules'=>'required'),
 			);
 		
@@ -1277,6 +1330,7 @@ class Data_jamaah extends CI_Controller {
 			// update table
 			$data = array(
 				'NO_PASPOR' => $this->input->post('no_paspor'),
+				'NAMA_PASPOR' => $this->input->post('nama_paspor'),
 				'TANGGAL_DIKELUARKAN' => $k_dates,
 				'TANGGAL_HABIS' => $b_dates,
 				'KANTOR_PEMBUATAN' => $this->input->post('kantor'),
@@ -1307,7 +1361,157 @@ class Data_jamaah extends CI_Controller {
 			}
 		}
 	}
+	
+	
+/**
+------------------------------- Data Jamaah Per Akun -----------------------------------------------------------------
+*/	
 
+function daftar_jamaah_akun($kode_akun,$kode_registrasi)
+	{
+		//call library or helper
+		$this->load->library('flexigrid');	
+		$this->load->helper('flexigrid');
+		$this->load->library('form_validation');		
+		
+		//call model here	
+		$this->load->model('jamaah_candidate_model');
+		$this->load->model('accounts_model');
+		
+		$akun = $this->accounts_model->get_data_account($kode_akun)->row();
+		
+		if(empty($akun)){
+			redirect('admin/data_akun');
+		}
+		
+		$colModel['no'] 					= array('No',40,TRUE,'center',0);
+		$colModel['DATA_PASPOR']			= array('Paspor',40,FALSE,'center',0);
+	
+		$colModel['UBAH_PASPOR']			= array('Upload Paspor',75,FALSE,'center',0);
+		// $colModel['UBAH_JAMAAH']			= array('Ubah Jamaah',75,FALSE,'center',0);
+		$colModel['KODE_REGISTRASI'] 		= array('Kode Registrasi',100,TRUE,'center',0);
+		$colModel['NAMA_USER'] 				= array('Nama Registrasi',100,TRUE,'center',1);
+		$colModel['GROUP'] 					= array('Group',60,FALSE,'center',0);
+		$colModel['NAMA_LENGKAP'] 			= array('Nama Calon',100,TRUE,'center',1);
+		$colModel['JENIS_KELAMIN'] 			= array('Gender',80,TRUE,'center',1);
+		$colModel['KOTA'] 					= array('Kota',80,TRUE,'center',1);
+		$colModel['ALAMAT'] 				= array('Alamat',110,TRUE,'center',1);
+		$colModel['TELP'] 					= array('Telepon',90,TRUE,'center',1);
+		$colModel['MOBILE'] 				= array('Handphone',90,TRUE,'center',1);
+		$colModel['TANGGAL_ENTRI']			= array('Tanggal Entri',75,TRUE,'center',0);
+		$colModel['STATUS_JAMAAH']			= array('Status',75,TRUE,'center',1);
+		
+		$gridParams = array(
+		'width' => '1190',
+		'height' => 300,
+		'rp' => 10,
+		'rpOptions' => '[5,10,15,20,25,30]',
+		'pagestat' => 'Menampilkan: {from} sampai {to} dari {total} hasil.',
+		'blockOpacity' => 0.5,
+		'title' => 'Data calon jamaah akun '.$kode_akun,
+		'showTableToggleBtn' => false
+		);
+		
+		$buttons[] = array('separator');
+		$buttons[] = array('Tambah','add','js');
+		$buttons[] = array('separator');
+		// $buttons[] = array('Hapus','delete','js');
+        // $buttons[] = array('separator');
+				
+		$grid_js = build_grid_js('flex1',site_url("/admin/data_jamaah/grid_calon_jamaah/".$kode_akun),$colModel,'no','asc',$gridParams,$buttons);
+		$data['js_grid'] = $grid_js;
+		
+		$data['added_js'] = "<script type='text/javascript'>
+			function js(com,grid)
+			{
+				if(com=='Tambah')
+				{
+					location.href='".site_url('/admin/data_jamaah/do_daftar/'.$akun->ID_ACCOUNT.'/'.$akun->KODE_REGISTRASI)."';
+				}
+
+    			if (com=='Hapus'){
+				   if($('.trSelected',grid).length>0){
+					   if(confirm('Anda yakin ingin menghapus ' + $('.trSelected',grid).length + ' buah data?')){
+							var items = $('.trSelected',grid);
+							var itemlist ='';
+							for(i=0;i<items.length;i++){
+								itemlist+= items[i].id.substr(3)+',';
+							}
+							$.ajax({
+							   type: 'POST',
+							   url: '".site_url('/admin/data_jamaah/hapus_data_calon_jamaah/')."',
+							   data: 'items='+itemlist,
+							   success: function(data){
+								$('#flex1').flexReload();
+								alert(data);
+							   }
+							});
+						}
+					} else {
+						return false;
+					} 
+				}
+
+             
+			}
+
+
+			function edit(hash){
+				if(confirm('Anda yakin ingin merubah data ini?')){
+					location.href='".site_url()."/admin/master_group_departure/edit_group_departure/'+hash;
+				}
+			}
+			
+			function edit_paspor(hash,hash1,hash2){
+				if(confirm('Anda yakin ingin merubah data ini?')){
+					location.href='".site_url()."/admin/data_jamaah/paspor_edit/'+hash+'/'+hash1+'/'+hash2;
+				}
+			}
+			
+			function edit_jamaah(hash,hash1){
+				if(confirm('Anda yakin ingin merubah data ini?')){
+					location.href='".site_url()."/admin/data_jamaah/edit/'+hash+'/'+hash1;
+				}
+			}
+
+			function hapus(hash){
+				if(confirm('Anda yakin ingin menghapus data ini?')){
+					location.href='".site_url()."/admin/master_group_departure/delete_group_departure/'+hash;
+				}
+			}
+             
+			</script>
+			";
+		
+		if($this->session->userdata('notifikasi') != ''){
+		$data['notifikasi'] = $this->session->userdata('notifikasi');
+		$this->session->unset_userdata('notifikasi');
+		}
+		if($this->session->userdata('error') != ''){
+		$data['error'] = $this->session->userdata('error');
+		$this->session->unset_userdata('error');
+		}
+		
+		$data['content'] = $this->load->view('admin/grid',$data,true);
+		$this->load->view('admin/front',$data);		
+	}
+
+
+function _is_add_jamaah_available($id_akun,$kode_registrasi){
+	$this->load->model('packet_model');
+	$this->load->model('jamaah_candidate_model');
+	
+	if(count($this->jamaah_candidate_model->get_sum_jamaah_by_id_account($id_akun,$kode_registrasi)->result()) >= $this->packet_model->sum_jumlah_orang_by_id_account($id_akun,$kode_registrasi)->row()->JUMLAH_ORANG)
+	{
+		return false;
+	}
+		return true;
+}
+
+
+/**
+------------------------------ end of Data Jamaah Per Akun -----------------------------------------------------------
+*/
 }//end class
 
 /* End of file /admin/data_jamaah.php */

@@ -10,6 +10,7 @@
 		<link rel="stylesheet" href="<?php echo base_url();?>css/screen.css" type="text/css" media="screen" title="default" />
         <link rel="stylesheet" href="<?php echo base_url();?>css/flexigrid.css" type="text/css" />
         <link rel="stylesheet" href="<?php echo base_url();?>css/jquery-ui-1.8.16.custom.css" type="text/css" />
+			<link rel="stylesheet" href="<?php echo base_url();?>css/chosen.css" type="text/css" media="screen" title="default" /> <!-- searchable combobox css -->
 		<!--[if IE]>
 		<link rel="stylesheet" media="all" type="text/css" href="css/pro_dropline_ie.css" />
 		<![endif]-->
@@ -278,5 +279,10 @@
 			<div class="clear">&nbsp;</div>
 		</div>
 		<!-- end footer -->
+				<!-- Script for searchable combobox -->
+		<script src="<?php echo base_url();?>js/chosen.jquery.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			$(".chzn-select").chosen({no_results_text: "Data yang dicari tidak ditemukan"});
+		</script>
 	</body>
 </html> 

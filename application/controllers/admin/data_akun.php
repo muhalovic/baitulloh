@@ -141,7 +141,7 @@ class data_akun extends CI_Controller{
 			}			
 			
 			function add_jamaah(hash,hash1){
-					location.href='".site_url()."/admin/data_jamaah/do_daftar/'+hash+'/'+hash1;
+					location.href='".site_url()."/admin/data_jamaah/daftar_jamaah_akun/'+hash+'/'+hash1;
 			}
 			
 			function paket(hash,hash1){
