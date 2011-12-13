@@ -11,7 +11,7 @@ class Registration extends CI_Controller {
 	}
 
 	function index()
-	{
+	{	
 		$this->front();
 	}
 	

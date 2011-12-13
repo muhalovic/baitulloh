@@ -138,7 +138,7 @@ class Check_availability extends CI_Controller {
 			{
 				$room_type = $this->room_type_model->get_roomType($id_tipe_kamar[$i]);
 				if($jml_kamar[$i] == 0) { $jml_kamar[$i] = 0; }
-				$konfig_kamar .= "<strong>".$room_type->row()->JENIS_KAMAR."</strong> : <strong>".$jml_kamar[$i]."</strong> Orang<br>";
+				$konfig_kamar .= "<tr><td><img src='".base_url()."images/front/poin.png'/>&nbsp;<strong>".$room_type->row()->JENIS_KAMAR."</strong></td><td>:</td><td><strong>".$jml_kamar[$i]."</strong> Orang</td></tr>";
 				$total_candidate += $jml_kamar[$i];
 			}
 			
@@ -146,13 +146,13 @@ class Check_availability extends CI_Controller {
 			// filter waiting list
 			if($total_pagu == 0)
 			{
-				$data['msg_box1'] = '- Pagu Penerbangan '.$maskapai.' <font color="A01040">( TIDAK TERSEDIA )</font>.<br>';
+				$data['msg_box1'] = "<img src='".base_url()."images/front/warning.png'/>&nbsp;Pagu Penerbangan ".$maskapai." <font color='A01040' class='bold_red'>( TIDAK TERSEDIA )</font>.<br>";
 				$value_waiting_list = 1;
 			}
 			
 			if($total_candidate > $hitung_pagu)
 			{
-				$data['msg_box2'] = '- Jumlah Calon Jamaah <font color="A01040">Lebih Besar</font> dari Pagu Pesawat.<br>';
+				$data['msg_box2'] = "<img src='".base_url()."images/front/warning.png'/>&nbsp;Jumlah Calon Jamaah <font color='A01040' class='bold_red'>Lebih Besar</font> dari Pagu Pesawat.<br>";
 				$value_waiting_list = 1;
 			}
 			
@@ -165,7 +165,7 @@ class Check_availability extends CI_Controller {
 			
 			if($value_waiting_list == 0)
 			{
-				$data['status_waiting'] = "<font color='3B619F'>TERSEDIA</font> , Silahkan Melakukan Registrasi dengan mengklik tombol Registrasi Online dibawah ini.";
+				$data['status_waiting'] = "<img src='".base_url()."images/front/tersedia.png'/>&nbsp;<font color='3B619F' class='bold'>TERSEDIA</font> , Silahkan Melakukan Registrasi dengan mengklik tombol <font color='#A01040' class='bold_red'>Lanjut</font> dibawah ini.";
 			}else{
 				$data['status_waiting'] = "";
 			}
@@ -388,7 +388,7 @@ class Check_availability extends CI_Controller {
 			  
 			  if($jml_kamar[$i] > $tot)
 			  {
-				 $error .= "- Jumlah Konfigurasi Kamar <strong>".$room_type->row()->JENIS_KAMAR."</strong> <font color='A01040' >Lebih Besar</font> dari Sisa Kamar.<br>";
+				 $error .= "<img src='".base_url()."images/front/warning.png'/>&nbsp;Jumlah Konfigurasi Kamar <strong>".$room_type->row()->JENIS_KAMAR."</strong> <font color='A01040' class='bold_red'>Lebih Besar</font> dari Sisa Kamar.<br>";
 				 $valid = FALSE;
 			  }else{
 				 $valid = TRUE;
@@ -559,7 +559,7 @@ class Check_availability extends CI_Controller {
 				$spasi = NULL;
 			}
 			
-			$views .= "<strong>".$spasi.$nama_tipe."</strong> tersedia untuk ".$tot." Orang ".$status_kamar."<br>";
+			$views .= "<li><strong>".$nama_tipe."</strong> tersedia untuk ".$tot." Orang ".$status_kamar."</li>";
 			$no +=1;
 		}
 		

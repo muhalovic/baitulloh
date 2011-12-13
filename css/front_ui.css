@@ -6,19 +6,28 @@ body{
 	color: #333;
 }
 
+ul{
+	padding-left:15px;
+	margin:0;
+}
+
+li{
+	margin:0 0 5px 0;
+}
+
 a{
 	text-decoration:none;
 	color:#333;
 }
 
 a:hover{
-	text-decoration:underline;
+	text-decoration:none;
 }
 
 h3{
 	font-family: 'Oswald', Arial, sans-serif;
 	font-size:13px;
-	color:#7D7D7D;
+	color:#333;
 	font-weight:normal;
 }
 
@@ -87,6 +96,15 @@ h3{
 	border-bottom: 1px solid #fff;
 	z-index: -99;
 }
+
+
+
+
+
+
+
+
+
 
 /* TOP NAVIGATION ---------------------------- */
 .left_shadow{
@@ -351,6 +369,12 @@ h3{
 
 .bold{
 	color:#3b619f;
+	font-weight:bold;
+	text-shadow: 1px 1px 1px #;
+}
+
+.bold_red{
+	color:#A01040;
 	font-weight:bold;
 	text-shadow: 1px 1px 1px #;
 }
