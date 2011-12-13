@@ -190,18 +190,26 @@ class jamaah_candidate_model extends CI_Model {
 	}
 	
 	
-	function get_grid_allover_jamaah2()
+	function get_grid_allover_jamaah_grouped($kode_akun=null)
 	{
-		$status = array(1,2,3);
+		$status = array(1,3);
 		
 		$this->db->select('*');
-		$this->db->from('jamaah_candidate_view');	
+		$this->db->from('jamaah_candidate');	
+		$this->db->join('accounts','jamaah_candidate.ID_ACCOUNT = accounts.ID_ACCOUNT');	
+		if(!is_null($kode_akun)){
+		$this->db->where('jamaah_candidate.ID_ACCOUNT', $kode_akun);
+		}
 		$this->db->where_in('STATUS_KANDIDAT', $status);
 		
 		$this->CI->flexigrid->build_query();
 		
 		$return['records'] = $this->db->get();
-		$this->db->select('count(ID_CANDIDATE) as record_count')->from('jamaah_candidate_view')->where_in('STATUS_KANDIDAT', $status);
+		$this->db->select('count(ID_CANDIDATE) as record_count')->from('jamaah_candidate')->join('accounts','jamaah_candidate.ID_ACCOUNT = accounts.ID_ACCOUNT')->where_in('STATUS_KANDIDAT', $status);
+		if(!is_null($kode_akun)){
+		$this->db->where('jamaah_candidate.ID_ACCOUNT', $kode_akun);
+		}
+		
 		$this->CI->flexigrid->build_query(FALSE);
 		$record_count = $this->db->get();
 		$row = $record_count->row();
@@ -241,6 +249,18 @@ class jamaah_candidate_model extends CI_Model {
 		return $this->db->get();
 	}
 	
+	function get_sum_jamaah_by_id_account($id_akun,$kode_registrasi){
+		$status = array(1,2,3);
+	
+		
+		$this->db->from("jamaah_candidate");
+		$this->db->where('KODE_REGISTRASI', $kode_registrasi);
+		$this->db->where('ID_ACCOUNT', $id_akun);
+        $this->db->where_in('STATUS_KANDIDAT', $status);
+		
+		return $this->db->get();
+    
+	}
 }
 
 ?>

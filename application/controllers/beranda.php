@@ -103,7 +103,7 @@ class Beranda extends CI_Controller {
 			$data['content'] = $this->load->view('home',$data,true);
 		}
 		
-		$this->load->view('front',$data);
+		$this->load->view('front_backup',$data);
 	}
 	
 	function do_check(){
@@ -129,6 +129,7 @@ class Beranda extends CI_Controller {
             $jml_adult = $this->input->post('jml_adult');
             $with_bed = $this->input->post('with_bed')=='' ? 0:$this->input->post('with_bed');
             $no_bed = $this->input->post('no_bed')=='' ? 0:$this->input->post('no_bed');
+
 			$infant = $this->input->post('infant')=='' ? 0:$this->input->post('infant');			
 									
 			$group_info = $this->group_departure_model->get_group($group);
@@ -256,6 +257,161 @@ class Beranda extends CI_Controller {
 			$data['content'] = $this->load->view('home_result',$data,true);
 			$this->load->view('front',$data);
 		}
+
+            $infant = $this->input->post('infant')=='' ? 0:$this->input->post('infant');
+
+            $id_user = $this->session->userdata("id_account");
+            $kode_reg = $this->session->userdata("kode_registrasi");
+
+            // if waiting list
+            if ($this->input->post('waiting') == 1){
+                    $this->load->model('waiting_list_model');
+                    
+                    $data_waiting = array('KODE_REGISTRASI'=>$kode_reg, 'ID_ACCOUNT'=>$id_user);
+
+                    $this->waiting_list_model->insert_waiting_list($data_waiting);
+                    $this->log_model->log($id_user, $kode_reg, null, 'INSERT data WAITING_LIST dengan KODE_REGISTRASI = '.$kode_reg);
+            }
+            $data = array(
+                'ID_GROUP'=>$group, 'ID_ACCOUNT'=>$id_user, 'KODE_REGISTRASI' =>$kode_reg, 'ID_PROGRAM'=>$kelas_program,
+                'JUMLAH_ADULT'=>$jml_adult, 'CHILD_WITH_BED'=>$with_bed, 'CHILD_NO_BED'=>$no_bed, 'INFANT'=>$infant,
+                'TANGGAL_PESAN'=>date("Y-m-d h:i:s"), 'STATUS_PESANAN'=>2
+            );
+
+            // insert into packet            
+            $this->packet_model->insert_packet($data);
+            $this->log_model->log($id_user, $kode_reg, null, 'INSERT data PACKET untuk akun dengan KODE_REGISTRASI = '.$kode_reg);
+
+            // insert into room packet
+            $id_pack = $this->packet_model->get_packet_byAcc_waiting($id_user, $kode_reg);
+            if ($id_pack->num_rows() > 0){
+                $this->load->model('room_packet_model');
+                $kamar = $this->input->post('kamar');
+                $jml_kamar = $this->input->post('jml_kamar');
+
+                for($i=0; $i<count($kamar); $i++){
+                    $this->room_packet_model->insert_room_packet(array('ID_ROOM_TYPE'=>$kamar[$i],
+                        'ID_PACKET'=>$id_pack->row()->ID_PACKET, 'JUMLAH'=>$jml_kamar[$i]));
+                }
+
+                $this->log_model->log($id_user, $kode_reg, null, 'INSERT data ROOM_PACKET untuk packet dengan ID_PACKET = '.$id_pack->row()->ID_PACKET);
+            }
+           
+            redirect('beranda');
+        }        
+        
+	function check_availability(){
+                $this->load->model('group_departure_model');
+                $this->load->model('program_class_model');
+
+                $group = $this->input->post('group');
+                $kelas_program = $this->input->post('program');
+                $jml_adult = $this->input->post('jml_adult');
+                $with_bed = $this->input->post('with_bed')=='' ? 0:$this->input->post('with_bed');
+                $no_bed = $this->input->post('no_bed')=='' ? 0:$this->input->post('no_bed');
+                $infant = $this->input->post('infant')=='' ? 0:$this->input->post('infant');
+
+                $group_info = $this->group_departure_model->get_group($group);
+                $kode_group = $group_info->row()->KODE_GROUP;
+                // $pagu_sv = $group_info->row()->PAGU_SV;
+                // $pagu_ga = $group_info->row()->PAGU_GA;
+                $depart_jd = $group_info->row()->TANGGAL_KEBERANGKATAN_JD;
+                $depart_mk = $group_info->row()->TANGGAL_KEBERANGKATAN_MK;
+
+                $program_info = $this->program_class_model->get_program($kelas_program);
+                $nama_program = $program_info->row()->NAMA_PROGRAM;
+
+                $total_candidate = $jml_adult + $with_bed + $no_bed + $infant;
+                $message = "";
+
+                // check pagu pesawat
+                $plane_flag = FALSE;
+                if ($pagu_sv > $total_candidate){
+                        $plane_flag = TRUE;
+                }
+                if ($pagu_ga > $total_candidate){
+                        $plane_flag = TRUE;
+                }
+                else if (($pagu_sv+$pagu_ga) > $total_candidate){
+                        $plane_flag = TRUE;
+                }else
+                       $this->message = "Paket yang anda inginkan saat ini sedang tak tersedia.";
+
+                // check room avilability
+                $this->load->model('room_model');
+                $this->load->model('room_type_model');
+
+                $kamar = $this->input->post('kamar');
+                $jml_kamar = $this->input->post('jml_kamar');
+                $total_candidate -= ($no_bed + $infant);
+                $flag_room = TRUE;
+                $room_capacity = 0;
+                $tmp_candidate = $total_candidate;
+                $available_beds = $this->room_model->count_available_beds($group)->row()->JML_BEDS;
+
+                for($i=0; $i<count($kamar); $i++){
+                        if($kamar[$i]!='0'  && $kamar[$i] != ''){
+                                $room_type = $this->room_type_model->get_roomType($kamar[$i]);
+                                $this->room_choice[$i] = "<pre>".$room_type->row()->JENIS_KAMAR." jumlah ".$jml_kamar[$i]." Kamar</pre>";
+                                $tmp_capacity = $room_type->row()->CAPACITY * $jml_kamar[$i];
+                                $room_capacity += $tmp_capacity;
+
+                                $tmp_candidate -= $tmp_capacity;
+                                if ($tmp_candidate >= 0){
+                                        $counter = $this->room_model->check_available_room($group, $kelas_program, $kamar[$i], $room_type->row()->CAPACITY)->num_rows();
+                                }else {
+                                        $counter = $this->room_model->check_available_room($group, $kelas_program, $kamar[$i], 0)->num_rows();
+                                }
+
+                                if ($counter < $jml_kamar[$i]){
+                                        $flag_room = FALSE;
+                                }
+                        }
+                }
+
+                //reverse order
+                if (! $flag_room){
+                    $tmp_candidate = $total_candidate;
+                    $room_capacity = 0;
+                    $flag_room = TRUE;
+                    for($i=count($kamar)-1; $i >= 0; $i--){
+                            if($kamar[$i]!='0'  && $kamar[$i] != ''){
+                                    $room_type = $this->room_type_model->get_roomType($kamar[$i]);
+                                    $tmp_capacity = $room_type->row()->CAPACITY * $jml_kamar[$i];
+                                    $room_capacity += $tmp_capacity;
+
+                                    $tmp_candidate -= $tmp_capacity;
+                                    if ($tmp_candidate >= 0){
+                                            $counter = $this->room_model->check_available_room($group, $kelas_program, $kamar[$i], $room_type->row()->CAPACITY)->num_rows();
+                                    }else {
+                                            $counter = $this->room_model->check_available_room($group, $kelas_program, $kamar[$i], 0)->num_rows();
+                                    }
+
+                                    if ($counter < $jml_kamar[$i]){
+                                            $flag_room = FALSE;
+                                    }
+                            }
+                    }
+                }
+
+                $this->load->library('form_validation');
+                if ($room_capacity >= $total_candidate && $available_beds >= $total_candidate){
+                        if ($flag_room && $plane_flag){
+                                return TRUE;
+                        }else if ($flag_room==FALSE){
+                                $this->message .= "Maaf, Jumlah kamar tidak tersedia untuk pilihan paket anda !!! Silahkan memilih konfigurasi yang lain.";
+                                $this->available_room = $this->room_model->count_available_room($group);
+                                return FALSE;
+                        }else if ($plane_flag==FALSE){
+                                return FALSE;
+                        }
+                } else {
+                        $this->message = "Maaf, Jumlah pilihan kamar tidak mencukupi pilihan paket anda !!! Silahkan memilih konfigurasi yang lain.";
+                        $this->available_room = $this->room_model->count_available_room($group);
+                        return FALSE;
+                }
+                
+
 	}
 	
 	function choose_packet()
@@ -546,6 +702,7 @@ class Beranda extends CI_Controller {
 				$lunas = $this->konversi_tanggal($row->JATUH_TEMPO_PELUNASAN);
 				$dp = $this->konversi_tanggal($row->JATUH_TEMPO_UANG_MUKA);
 				$berkas = $this->konversi_tanggal($row->JATUH_TEMPO_BERKAS );
+
 				
 				$data = $jd."#".$mk."#".$paspor."#".$lunas."#".$dp."#".$berkas."#".$info_jumlah_kamar;
 			}
@@ -555,6 +712,10 @@ class Beranda extends CI_Controller {
 			
 			echo " # # # # # # ";
 		}
+
+				// $pagu_ga = $row->PAGU_GA;
+                                // $pagu_sv = $row->PAGU_SV;
+
 
 	}
 	

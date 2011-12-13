@@ -163,11 +163,11 @@ echo $error_file;
 						<? }?>
 					</td>
 				</tr>
-				<tr>
+							<tr>
 					<th valign="top">Propinsi (*)</th>
 					<td>	
-						<? $province = $e_id_propinsi; if(set_value('province')!='') $province = set_value('province');
-							echo form_dropdown('province', $province_options, $province,'id="province" class="styledselect_form_1"'); ?>
+						<? $e_province; if(set_value('province')!='') $e_province = set_value('province');
+							echo form_dropdown('province', $province_options, $e_province,'id="province" class="chzn-select"'); ?>
 					</td>
 					<td>
 						<? if(form_error('province') != '') {?>
@@ -179,7 +179,8 @@ echo $error_file;
 				<tr>
 					<? form_error('kota') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
 					<th valign="top">Kota (*)</th>
-					<td><input type="text" name="kota" value="<?php echo $e_kota;?>" class="<? echo $class;?>" /></td>
+					<td><?  $e_kota; if(set_value('kota')!='') $e_kota = set_value('kota');
+							echo form_dropdown('kota', $kota_options, $e_kota,'id="kota" class="chzn-select" data-allows-new-values="true"'); ?></td>
 					<td>
 						<? if(form_error('kota') != '') {?>
 						<div class="error-left"></div>
@@ -386,37 +387,11 @@ echo $error_file;
                        </table>
                      </td>
 				</tr>
-				<tr>
-					<? form_error('jasa_paspor') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
-					<th valign="top">Jasa Tambahan</th>
-					<td>
-                    <? if($e_request_nama == "") { $e_jasa_paspor = 0; }
-					   else { $e_jasa_paspor = 1;}
-					?>
-                    <input type="checkbox" name="jasa_paspor" id="jasa_paspor" value="1" <?=($e_jasa_paspor==1)?'checked="checked"':''?>  onchange="jasaPaspor(this)"/> &nbsp;&nbsp;Tambah Nama (3 suku kata) Paspor</td>
-					<td>
-						<? if(form_error('jasa_paspor') != '') {?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('jasa_paspor'); ?></div>
-						<? }?>
-					</td>
-				</tr>
-				<tr>
-					<? form_error('jasa_paspor_nama') == '' ? $class = 'inp-form-text':$class = 'inp-form-error'; ?>
-					<th valign="top"></th>
-					<td>
-                    <input type="hidden" name="jasa_paspor_nama_edit" value="<?php echo $e_request_nama;?>" />
-                    <input type="text" name="jasa_paspor_nama" id="jasa_paspor_nama" value="<?php echo $e_request_nama;?>" class="<? echo $class;?>" disabled="disabled" /></td>
-					<td>
-						<? if(form_error('jasa_paspor_nama') != '') {?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('jasa_paspor_nama'); ?></div>
-						<? }?>
-					</td>
-				</tr>
+				
+			
 				<tr height="50">
 					<? form_error('jasa_maningtis') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
-					<th valign="top"></th>
+					<th valign="top">Jasa Tambahan</th>
 					<td valign="top"><input type="checkbox" name="jasa_maningtis" value="1" <?=($e_jasa_tambahan==1)?'checked="checked"':''?> /> &nbsp;&nbsp;Jasa Maningtis</td>
 					<td>
 						<? if(form_error('jasa_maningtis') != '') {?>
@@ -446,17 +421,6 @@ echo $error_file;
 
 <script type="text/javascript">
 
-function jasaPaspor(input)
-{
-	if(input.checked)
-	{
-		document.getElementById('jasa_paspor_nama').value='<?php echo $e_request_nama ?>';
-		document.getElementById('jasa_paspor_nama').disabled=false;
-	} else {
-		document.getElementById('jasa_paspor_nama').value='<?php echo $e_request_nama ?>';
-		document.getElementById('jasa_paspor_nama').disabled=true;
-	}
-}
 
 function SetMahram(input)
 {
@@ -476,5 +440,28 @@ function SetMahram(input)
 		document.getElementById('cek_rifqah').style.display="none"
 	}
 }
+
+$("#province").bind('change',function get_group() 
+	{	
+		var prp = $("#province").val();
+		
+                $.ajax({
+                        url: "<?=base_url();?>index.php/province/get_ajax_kota/",
+                        global: false,
+                        type: "POST",
+                        async: false,
+                        dataType: "html",
+                        data: "id_province="+ prp, //the name of the $_POST variable and its value
+                        success: function (response) {
+							 var bahan = response;
+							 
+                             //document.getElementById('info_jd').innerHTML = pecah[0];
+							 document.getElementById('kota').innerHTML = response;
+							 }
+                });
+				$("#kota").trigger("liszt:updated");
+				return false;
+	}
+	);
 
 </script>
