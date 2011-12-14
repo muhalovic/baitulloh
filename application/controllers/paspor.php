@@ -82,7 +82,7 @@ class Paspor extends CI_Controller {
 
                 
 		$data['content'] = $this->load->view('paspor_list',$data,true);
-		$this->load->view('front',$data);		
+		$this->load->view('front_backup',$data);		
 	}
 	
 	
@@ -162,17 +162,11 @@ class Paspor extends CI_Controller {
 			{
 				$data['e_id_candidate'] = $row->ID_CANDIDATE;
 				$data['e_id_account'] = $row->ID_ACCOUNT;
-				$data['e_nama_lengkap'] = $row->NAMA_LENGKAP;
-				$data['e_gender'] = $row->GENDER;
-				$data['e_warga_negara'] = $row->WARGA_NEGARA;
-				$data['e_tempat_lahir'] = $row->TEMPAT_LAHIR;
 				$data['e_tgl_lahir'] = $row->TANGGAL_LAHIR;
-				$data['e_kota'] = $row->KOTA;
-				$data['e_pas_foto'] = $row->FOTO;
-				$data['e_request_nama'] = $row->REQUESTED_NAMA;
 				
 				// DATA PASPOR
 				$data['e_no_paspor'] = $row->NO_PASPOR;
+				$data['e_nama_paspor'] = $row->NAMA_PASPOR;
 				$data['e_tgl_keluar'] = $row->TANGGAL_DIKELUARKAN;
 				$data['e_tgl_habis'] = $row->TANGGAL_HABIS;
 				$data['e_kantor'] = $row->KANTOR_PEMBUATAN;
@@ -232,7 +226,7 @@ class Paspor extends CI_Controller {
 				}
 				
 				$data['content'] = $this->load->view('paspor_edit', $data, true);
-				$this->load->view('front', $data);
+				$this->load->view('front_backup', $data);
 			
 			}
 		
@@ -245,15 +239,22 @@ class Paspor extends CI_Controller {
 	
 	function cek_validasi() {
 		$this->load->library('form_validation');
+		
+		$tgl_b = $this->input->post('b_tgl_lahir');
+		$bln_b = $this->input->post('b_bln_lahir');
+		$thn_b = $this->input->post('b_thn_lahir');
+		$tgl_berakhir = $thn_b."-".$bln_b."-".$tgl_b;
+		
 		//setting rules
 		$config = array(
+				array('field'=>'nama_paspor','label'=>'Nama Paspor', 'rules'=>'required'),
 				array('field'=>'no_paspor','label'=>'Nomor Paspor', 'rules'=>'required'),
 				array('field'=>'k_tgl_lahir','label'=>'Tgl. Dikeluarkan', 'rules'=>'callback_cek_dropdown'),
 				array('field'=>'k_bln_lahir','label'=>'Tgl. Dikeluarkan', 'rules'=>'callback_cek_dropdown'),
 				array('field'=>'k_thn_lahir','label'=>'Tgl. Dikeluarkan', 'rules'=>'callback_cek_dropdown'),
 				array('field'=>'b_tgl_lahir','label'=>'Tgl. Berakhir', 'rules'=>'callback_cek_dropdown'),
 				array('field'=>'b_bln_lahir','label'=>'Tgl. Berakhir', 'rules'=>'callback_cek_dropdown'),
-				array('field'=>'b_thn_lahir','label'=>'Tgl. Berakhir', 'rules'=>'callback_cek_dropdown'),
+				array('field'=>'b_thn_lahir','label'=>'Tgl. Berakhir', 'rules'=>'callback_cek_dropdown|callback_cek_masa_berlaku[$tgl_berakhir]'),
 				array('field'=>'kantor','label'=>'Kantor', 'rules'=>'required'),
 		//		array('field'=>'foto','label'=>'Scan Paspor', 'rules'=>'required'),
 			);
@@ -276,6 +277,32 @@ class Paspor extends CI_Controller {
 		}else
 				return TRUE;
     }
+	
+	function cek_masa_berlaku($value)
+	{
+		$this->load->model('packet_model');
+		
+		$id_user = $this->session->userdata("id_account");
+		$kode_reg = $this->session->userdata("kode_registrasi");
+		
+		$data_packet = $this->packet_model->get_packet_byAcc($id_user, $kode_reg);
+		$tgl_berangkat = $data_packet->row()->TANGGAL_KEBERANGKATAN_MK;
+		$pecah_tgl = explode("-", $tgl_berangkat);
+		
+		$pengurangan_bulan = date("Y-m-d", mktime(0,0,0,$pecah_tgl[1]-6,$pecah_tgl[2],$pecah_tgl[0]));
+		
+		$total_tgl_berangkat = strtotime($pengurangan_bulan);
+		$total_tgl_berakhir_paspor = strtotime($value);
+		
+		if($total_tgl_berakhir_paspor > $total_tgl_berangkat)
+		{
+			$this->form_validation->set_message('cek_masa_berlaku', ''.$total_tgl_berakhir_paspor.' - '.$total_tgl_berangkat.' !');
+				return FALSE;
+		}else{
+			return TRUE;
+		}
+		
+	}
 	
 	function do_edit(){
 		
@@ -345,6 +372,7 @@ class Paspor extends CI_Controller {
 			
 			// update table
 			$data = array(
+				'NAMA_PASPOR' => $this->input->post('nama_paspor'),
 				'NO_PASPOR' => $this->input->post('no_paspor'),
 				'TANGGAL_DIKELUARKAN' => $k_dates,
 				'TANGGAL_HABIS' => $b_dates,
@@ -370,6 +398,7 @@ class Paspor extends CI_Controller {
 				$this->session->set_userdata('sukses','true');
 				$this->log_model->log($id_user, $kode_reg, NULL, $log);
 				$update = $this->jamaah_candidate_model->update_jamaah($data, $id_candidate);
+				
 				redirect('/paspor/edit/'.$id_candidate.'/'.$id_account.'/'.$tipe.'/');
 			}else{
 				$this->edit($id_candidate, $id_account, $tipe);

@@ -43,25 +43,29 @@
 						<div class="nav-divider">&nbsp;</div>
                         
 						<? if($this->session->userdata('email') != NULL){ ?>
+                        <?php if($this->session->userdata('order_packet') != 1){ ?>
 						<ul class="<?=($this->uri->segment(1)==='beranda')?'current':'select'?>">
                           <li>
                         	<a href="<? echo site_url().'/beranda' ?>"><b>Konfirmasi Paket</b><!--[if IE 7]><!--></a><!--<![endif]-->
                           </li>
                         </ul>                                                
 						<div class="nav-divider">&nbsp;</div>
-                                                <?php if($this->session->userdata('order_packet') == 1){ ?>
-						
+						<? } else { ?>
+						<ul class="<?=($this->uri->segment(1)==='beranda')?'current':'select'?>">
+                          <li>
+                        	<a href="<? echo site_url().'/beranda' ?>"><b>Paket</b><!--[if IE 7]><!--></a><!--<![endif]-->
+                          	<div class="select_sub show">
+                                <ul class="sub">
+                                    <li class="<?=($this->uri->segment(2)==='info')?'sub_current':''?>"><a href="<? echo site_url() ?>/paket/info">Info Paket</a></li>
+                                    <li class="<?=($this->uri->segment(2)==='edit')?'sub_current':''?>"><a href="<? echo site_url() ?>/paket/edit">Edit Paket</a></li>
+                                    <li class="<?=($this->uri->segment(2)==='batal')?'sub_current':''?>"><a href="<? echo site_url() ?>/paket/batal">Pembatalan Paket</a></li>
+                                </ul>
+                            </div>
+                          </li>
+                        </ul>                                                
+						<div class="nav-divider">&nbsp;</div>	
 						<ul class="<?=($this->uri->segment(1)==='biodata')?'current':'select'?>">
-							<li><a href="<? echo site_url() ?>/biodata"><b>Biodata</b><!--[if IE 7]><!--></a><!--<![endif]-->
-								<!--[if lte IE 6]><table><tr><td><![endif]-->
-								<div class="select_sub show">
-									<ul class="sub">
-										<li class="<?=($this->uri->segment(2)==='list_jamaah')?'sub_current':''?>"><a href="<? echo site_url() ?>/biodata/list_jamaah">Daftar Calon Jamaah</a></li>
-										<li class="<?=($this->uri->segment(2)==='input')?'sub_current':''?>"><a href="<? echo site_url() ?>/biodata/input">Form Tambah Calon Jamaah</a></li>
-									</ul>
-								</div>
-								<!--[if lte IE 6]></td></tr></table></a><![endif]-->
-							</li>
+							<li><a href="<? echo site_url() ?>/biodata"><b>Data Jamaah</b></a></li>
 						</ul>
 						<div class="nav-divider">&nbsp;</div>
 					

@@ -9,93 +9,18 @@ echo $error_file;
 		<td>
 			<!-- start id-form -->
 			<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
-				<tr height="40">
-					<td colspan="2" valign="top">
-                    <? if($e_request_nama == "") { $e_jasa_paspor = 0; }
-					   else { $e_jasa_paspor = 1;}
-					?>
-                    <input type="checkbox" name="jasa_paspor" id="jasa_paspor" value="1" <?=($e_jasa_paspor==1)?'checked="checked"':''?>  onchange="jasaPaspor(this)" readonly="readonly"/> &nbsp;&nbsp;<strong>Status Jasa Tambah Nama</strong></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td></td>
-                    <td colspan="2">
-                       <?
-					   $file_gambar = './images/upload/foto/'.$e_pas_foto;
-					   if(is_file($file_gambar))
-                       { 
-					   		$url_gambar = base_url().'images/upload/foto/'.$e_pas_foto;
-							$url_gambar2 = $url_gambar;
-					   }else{
-							$url_gambar = base_url().'images/shared/user_x.png'; 
-							$url_gambar2 = "#";
-					   }
-					   
-					   ?>
-                      <div class="thumb">
-                       <a href="<? echo $url_gambar2; ?>" title="Klik untuk memperbesar foto">
-                        <img src="<? echo $url_gambar; ?>" height="120" width="100" border="2" />
-                       </a>
-                       </div>
-                       <?					   
-					   $file_paspor = './images/upload/paspor/'.$e_scan_paspor;
-					   if(is_file($file_paspor))
-                       { 
-					   		$url_paspor = base_url().'images/upload/paspor/'.$e_scan_paspor;
-							$url_paspor2 = $url_paspor;
-					   }else{
-							$url_paspor = base_url().'images/shared/book_x.png'; 
-							$url_paspor2 = "#";
-					   }
-					   
-					   ?>
-                       <div class="thumb">
-                       <a href="<? echo $url_paspor2; ?>" title="Klik untuk memperbesar paspor">
-                        <img src="<? echo $url_paspor; ?>" height="120" width="100" border="2" />
-                       </a>
-                      </div>
-                   <input type="hidden" name="foto_edit" value="<? echo $e_pas_foto; ?>" />
-				</tr>
-				<tr>
-					<th valign="top">Nama Lengkap</th>
-					<td>: <?php echo $e_nama_lengkap; ?></td>
-					<td></td>
-                </tr>
-				<tr>
-					<th valign="top">Jenis Kelamin</th>
-					<td>: <?php echo $e_gender;?></td>
-					<td></td>
-				</tr>
-				<tr>
-					<th valign="top">Tanggal Lahir</th>
-					<td>: <? echo $e_tempat_lahir.", ".$tgl_lahir; ?> </td>
-					<td></td>
-                <tr>
-                    <td colspan="3"><img src="<?=base_url()?>images/shared/blank.gif" width="480" height="1" alt="blank" /></td>
-                </tr>
-                <tr height="40">
-					<td colspan="3">
-                    <div class="div_info_1"><strong>INFORMASI PENGUMPULAN BERKAS FISIK / DOKUMEN ASLI KE KANTOR KAMILAH</strong></div>
-                     <div class="div_info_2">- Dokumen Asli harus diserahkan 3 minggu sebelum keberangkatan</div> 
-                     <div class="div_info_1">- Pasport asli minimal 6 bulan masa berlaku dengan 3 suku kata. (contoh: Toni Budi bin Ahmad)</div> 
-                     <div class="div_info_2">- Buku Nikah asli bagi Suami / Istri</div> 
-                     <div class="div_info_1">- Kartu Keluarga asli bagi Keluarga dengan Istri dan Anak-Anaknya</div> 
-                     <div class="div_info_2">- Akte Lahir asli bagi yang membawa Anak-Anak</div> 
-                     <div class="div_info_1">- KTP/KK/Buku Nikah asli bagi yang sudah berusia 45th ke atas</div> 
-                     <div class="div_info_2">- copy KTP, copy Akte Lahir, copy Kartu Keluarga</div> 
-                     <div class="div_info_1">- Akte Lahir Asli, copy KTP, copy KK bagi Wanita yang berangkat tanpa Muhrimnya</div> 
-                     <div class="div_info_2">- Buku Kuning / Buku Maningtis</div> 
-                     <div class="div_info_1">- Foto Ukuran 3x4 (10 lembar) , 4x6 (5 lembar)</div> 
-                     </td>
-				</tr>
-			</table>
-			<!-- end id-form  -->
-		</td>
-		
-		<td>
-			<!-- start id-form -->
-			<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
             	<? if($tipe == 0) { ?>
+				<tr>
+					<? form_error('nama_paspor') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
+					<th valign="top">Nama Sesuai <br />Passpor (*)</th>
+					<td><input type="text" name="nama_paspor" value="<?php echo set_value('nama_paspor');?>" class="<? echo $class;?>" /></td>
+					<td>
+						<? if(form_error('nama_paspor') != '') {?>
+						<div class="error-left"></div>
+						<div class="error-inner"><?php echo form_error('nama_paspor'); ?></div>
+						<? }?>
+					</td>
+				</tr>
 				<tr>
 					<? form_error('no_paspor') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
 					<th valign="top">No Paspor (*)</th>
@@ -231,6 +156,17 @@ echo $error_file;
                 <? } elseif($tipe == 1) { ?>
                 
                 <tr>
+					<? form_error('nama_paspor') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
+					<th valign="top">Nama Sesuai <br /> Passpor (*)</th>
+					<td><input type="text" name="nama_paspor" value="<?php echo $e_nama_paspor; ?>" class="<? echo $class;?>" /></td>
+					<td>
+						<? if(form_error('nama_paspor') != '') {?>
+						<div class="error-left"></div>
+						<div class="error-inner"><?php echo form_error('nama_paspor'); ?></div>
+						<? }?>
+					</td>
+				</tr>
+                <tr>
 					<? form_error('no_paspor') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
 					<th valign="top">No Paspor (*)</th>
 					<td><input type="text" name="no_paspor" value="<?php echo $e_no_paspor; ?>" class="<? echo $class;?>" /></td>
@@ -268,7 +204,7 @@ echo $error_file;
 							$k_thn_lahirs = $e_k_thn; if(set_value('k_thn_lahir')!='') $k_thn_lahirs = set_value('k_thn_lahir');
 							
 							$k_list_thn['0'] = "Thn";
-							for($i=2009;$i<=2017;$i++)
+							for($i=2006;$i<=2013;$i++)
 							{
 								$k_list_thn[$i] = $i;
 							}
@@ -376,6 +312,31 @@ echo $error_file;
 						<input type="reset" value="" class="form-reset"  />
 					</td>
 					<td></td>
+				</tr>
+                <tr>
+                    <td colspan="3"><img src="<?=base_url()?>images/shared/blank.gif" width="480" height="1" alt="blank" /></td>
+                </tr>
+			</table>
+			<!-- end id-form  -->
+		</td>
+		
+		<td>
+			<!-- start id-form -->
+			<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
+                <tr height="40">
+					<td colspan="3">
+                    <div class="div_info_1"><strong>INFORMASI PENGUMPULAN BERKAS FISIK / DOKUMEN ASLI KE KANTOR KAMILAH</strong></div>
+                     <div class="div_info_2">- Dokumen Asli harus diserahkan 3 minggu sebelum keberangkatan</div> 
+                     <div class="div_info_1">- Pasport asli minimal 6 bulan masa berlaku dengan 3 suku kata. (contoh: Toni Budi bin Ahmad)</div> 
+                     <div class="div_info_2">- Buku Nikah asli bagi Suami / Istri</div> 
+                     <div class="div_info_1">- Kartu Keluarga asli bagi Keluarga dengan Istri dan Anak-Anaknya</div> 
+                     <div class="div_info_2">- Akte Lahir asli bagi yang membawa Anak-Anak</div> 
+                     <div class="div_info_1">- KTP/KK/Buku Nikah asli bagi yang sudah berusia 45th ke atas</div> 
+                     <div class="div_info_2">- copy KTP, copy Akte Lahir, copy Kartu Keluarga</div> 
+                     <div class="div_info_1">- Akte Lahir Asli, copy KTP, copy KK bagi Wanita yang berangkat tanpa Muhrimnya</div> 
+                     <div class="div_info_2">- Buku Kuning / Buku Maningtis</div> 
+                     <div class="div_info_1">- Foto Ukuran 3x4 (10 lembar) , 4x6 (5 lembar)</div> 
+                     </td>
 				</tr>
 			</table>
 			<!-- end id-form  -->

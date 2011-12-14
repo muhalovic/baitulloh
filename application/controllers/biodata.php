@@ -17,14 +17,6 @@ class Biodata extends CI_Controller {
 		$this->list_jamaah();
 	}
 	
-	function front()	
-	{
-		$this->load->library('form_validation');
-		$data['content'] = $this->load->view('biodata', '', true);
-		$this->load->view('front_backup', $data);
-	}
-	
-	
 	// HALAMAN LIST CALON JAMAAH
 	
 	function list_jamaah(){
@@ -55,20 +47,46 @@ class Biodata extends CI_Controller {
 		
 		//call model here	
 		$this->load->model('jamaah_candidate_model');
+		$this->load->model('packet_model');
 		
+		// call session
+		$id_account = $this->session->userdata('id_account');
+		$kode_reg = $this->session->userdata('kode_registrasi');
+		
+		// validasi tambah jamaah
+		// - hitung jumlah jamaah di packet
+		$data_packet = $this->packet_model->get_packet_byAcc($id_account, $kode_reg);
+		$total_calon_di_packet = $data_packet->row()->JUMLAH_ADULT
+							   + $data_packet->row()->CHILD_WITH_BED
+							   + $data_packet->row()->CHILD_NO_BED
+							   + $data_packet->row()->INFANT;
+		
+		// - hitung jumlah jamaah di jamaah_candidate
+		$total_calon_di_jamaah_candidate = $this->jamaah_candidate_model->get_total_data_sortir($id_account, $kode_reg);
+		
+		// - cek validasi
+		if($total_calon_di_jamaah_candidate > $total_calon_di_packet)
+		{
+			$link_tambah = "alert('Maaf, jumlah calon jamaah melebihi kuota yg ditentukan di konfigurasi packet');";
+		}else{
+			$link_tambah = "location.href='".site_url()."/biodata/input';";
+		}
+		
+							   
 		$colModel['no'] = array('No',40,TRUE,'center',0);
 		$colModel['edit'] = array('Edit',40,FALSE,'center',0);
+		$colModel['detail'] = array('Detail',40,FALSE,'center',0);
+		$colModel['isi_dok'] = array('Isi Dokumen',60,FALSE,'center',0);
+		$colModel['lihat_dok'] = array('Lihat Dokumen',70,FALSE,'center',0);
 		$colModel['KODE_REGISTRASI'] = array('Kode Reg.',80,TRUE,'center',0);
 		$colModel['NAMA_LENGKAP'] = array('Nama Lengkap',200,TRUE,'center',1);
 		$colModel['NAMA_PANGGILAN'] = array('Nama Panggilan',150,TRUE,'center',1);
 		$colModel['AYAH_KANDUNG'] = array('Ayah Kandung',150,TRUE,'center',1);
-		$colModel['UKURAN_BAJU'] = array('Ukuran Baju',80,FALSE,'center',0);
 		$colModel['GENDER'] = array('Jenis Kelamin',80,FALSE,'center',0);
 		$colModel['MAHRAM'] = array('Hubungan Mahram',100,TRUE,'center',0);
-		$colModel['MOBILE'] = array('Handphone',100,TRUE,'center',1);
 		
 		$gridParams = array(
-		'width' => 'auto',
+		'width' => '1190',
 		'height' => 300,
 		'rp' => 10,
 		'rpOptions' => '[5,10,20,25,30,50,'.$total_data.']',
@@ -76,10 +94,11 @@ class Biodata extends CI_Controller {
 		'blockOpacity' => 0.5,
 		'title' => 'Biodata Calon Jamaah',
 		'showTableToggleBtn' => false
-		);
+		);						   
 		
 		$buttons[] = array('separator');
 		$buttons[] = array('Tambah','add','spt_js');
+		$buttons[] = array('separator');
 		$buttons[] = array('Hapus','delete','spt_js');
 		$buttons[] = array('separator');
 		
@@ -90,7 +109,7 @@ class Biodata extends CI_Controller {
 		"<script type='text/javascript'>
 		function spt_js(com,grid){
 			if (com=='Tambah'){
-				location.href='".site_url()."/biodata/input'; 
+				".$link_tambah." 
 			}
 			if (com=='Hapus'){
 			   if($('.trSelected',grid).length>0){
@@ -150,19 +169,23 @@ class Biodata extends CI_Controller {
 			if($row->MAHRAM == 0) $mahram = "Ada";
 			elseif($row->MAHRAM == 1) $mahram = "Tidak Ada";
 			
+			if($row->NO_PASPOR != NULL && $row->TANGGAL_DIKELUARKAN != NULL) { $gos = 1; } 
+			else{ $gos = 0; }
+			
 			$record_items[] = array(
 			
 				$row->ID_CANDIDATE,
 				$no = $no+1,
 				'<a href=\''.site_url().'/biodata/edit/'.$row->ID_CANDIDATE.'/'.$row->ID_ACCOUNT.'/\'><img border=\'0\' src=\''.base_url().'images/flexigrid/book.png\'></a> ',
+				'<a style="cursor:pointer; text-decoration:underline; color:#000;" onClick="window.open(\''.site_url().'/biodata/profile_jamaah/'.$row->ID_CANDIDATE.'/'.$row->KODE_REGISTRASI.'\',\'profil\',\'width=500,height=500,left=400,top=100,screenX=400,screenY=100\')"><img border=\'0\' src=\''.base_url().'images/flexigrid/book.png\'></a>',
+				'<a href=\''.site_url().'/paspor/edit/'.$row->ID_CANDIDATE.'/'.$row->ID_ACCOUNT.'/'.$gos.'\'><img border=\'0\' src=\''.base_url().'images/flexigrid/book.png\'></a>',
+				'<a style="cursor:pointer" onClick="window.open(\''.site_url().'/biodata/paspor_view/'.$row->ID_CANDIDATE.'/'.$row->KODE_REGISTRASI.'\',\'paspor\',\'width=600,height=210,left=400,top=100,screenX=400,screenY=100\')"><img src="'.base_url().'/images/flexigrid/book.png"></a>',
 				$row->KODE_REGISTRASI,	
 				$row->NAMA_LENGKAP,
 				$row->NAMA_PANGGILAN,
 				$row->AYAH_KANDUNG,
-				$row->UKURAN_BAJU,
 				$gender,
-				$mahram,
-				$row->MOBILE
+				$mahram,	
 			);
 		}
 		
@@ -283,6 +306,14 @@ class Biodata extends CI_Controller {
 				$province_options[$row->ID_PROPINSI] = $row->NAMA_PROPINSI;
 		}
 		
+		$kota_options[''] = '-- Pilih Kota --';
+		if(isset($_POST['province'])){
+			$kota = $this->kota_model->get_kota_by_province($this->input->post('province'));
+			foreach($kota->result() as $row){
+				$kota_options[$row->NAMA_KOTA] = $row->NAMA_KOTA;
+			}
+		}
+		
 		$relasi_options[''] = '-- Pilih Relasi --';
 		foreach($relation->result() as $row){
 				$relasi_options[$row->ID_RELATION] = $row->JENIS_RELASI;
@@ -300,7 +331,7 @@ class Biodata extends CI_Controller {
 		{
 			foreach($kamar->result() as $row){
 				
-				$total_kamar = $row->CAPACITY * $row->JUMLAH;
+				$total_kamar = $row->JUMLAH;
 				
 				$data_jamaah = $this->jamaah_candidate_model->get_jamaah_byRoomPacket($id_account, $kode_reg, $row->ID_ROOM_PACKET);
 				if($data_jamaah->num_rows() < $total_kamar)
@@ -314,6 +345,7 @@ class Biodata extends CI_Controller {
 		}
 		
 		$data['province_options'] = $province_options;
+		$data['kota_options'] = $kota_options;
 		$data['relasi_options'] = $relasi_options;
 		$data['chlothes_options'] = $chlothes_options;
 		$data['kamar_options'] = $kamar_options;
@@ -451,12 +483,13 @@ class Biodata extends CI_Controller {
 				'PERIHAL_PRIBADI' => $perihal_pribadi,
 				'FOTO' => $file_foto,
 				'JASA_TAMBAHAN' => $this->input->post('jasa_maningtis'),
-				'REQUESTED_NAMA' => $this->input->post('jasa_paspor_nama'),
 				'MAHRAM' => $mahram_s,
+				'TIPE_JAMAAH' => $this->input->post('tipe_jamaah'),
 				'TANGGAL_ENTRI' => date("Y-m-d H:i:s"),
 				'TANGGAL_UPDATE' => date("Y-m-d H:i:s"),
 				'ID_ROOM_PACKET' => $this->input->post('kamar'),
 				'VIA' => 'Dashboard',
+				'STATUS_KIRIM_TOOLKIT' => 0,
 				'STATUS_KANDIDAT' => 1);
 			
 			if($valid_file)
@@ -494,7 +527,7 @@ class Biodata extends CI_Controller {
 				array('field'=>'relasi','label'=>'Hubungan', 'rules'=>'callback_cek_dropdown'),
 				array('field'=>'baju','label'=>'Baju', 'rules'=>'callback_cek_dropdown'),
 				array('field'=>'kamar','label'=>'Kamar', 'rules'=>'callback_cek_dropdown'),
-				array('field'=>'tipe_jamaah','label'=>'Tipe Jamaah', 'rules'=>'required'),
+				array('field'=>'tipe_jamaah','label'=>'Tipe Jamaah', 'rules'=>'callback_cek_dropdown'),
 			//	array('field'=>'foto','label'=>'Foto', 'rules'=>'required'),
 			);
 		
@@ -532,10 +565,7 @@ class Biodata extends CI_Controller {
 		if($data_jamaah->result() != NULL)
 		{
 			foreach($data_jamaah->result() as $row)
-			{
-				if($row->REQUESTED_NAMA != "0") { $req_nama = $row->REQUESTED_NAMA; }
-				  else{ $req_nama = NULL; }
-				
+			{				
 				$data['e_id_candidate'] = $row->ID_CANDIDATE;
 				$data['e_id_account'] = $row->ID_ACCOUNT;
 				$data['e_nama_lengkap'] = $row->NAMA_LENGKAP;
@@ -556,9 +586,10 @@ class Biodata extends CI_Controller {
 				$data['e_layanan_khusus'] = $row->LAYANAN_KHUSUS;
 				$data['e_perihal_pribadi'] = $row->PERIHAL_PRIBADI;
 				$data['e_pas_foto'] = $row->FOTO;
+				$data['e_tipe_jamaah'] = $row->TIPE_JAMAAH;
 				$data['e_jasa_tambahan'] = $row->JASA_TAMBAHAN;
 				$data['e_kamar'] = $row->ID_ROOM_PACKET;
-				$data['e_request_nama'] = $req_nama;
+				$data['e_tipe_jamaah'] = $row->TIPE_JAMAAH;
 				
 				// PECAH TANGGAL LAHIR
 				$pecah_tgl = explode("-", $data['e_tgl_lahir']);
@@ -583,6 +614,7 @@ class Biodata extends CI_Controller {
 				
 				// LOAD DATA DROPDOWN
 				$this->load->model('province_model');
+				$this->load->model('kota_model');
 				$this->load->model('clothes_size_model');
 				$this->load->model('relation_model');
 				$this->load->model('room_packet_model');
@@ -595,16 +627,41 @@ class Biodata extends CI_Controller {
 				$province = $this->province_model->get_all_province();
 				$relation = $this->relation_model->get_all_relation();
 				$chlothes = $this->clothes_size_model->get_all_clothes();
-				$packet = $this->packet_model->get_packet_byAccAll($id_account, $kode_reg);
+				$packet = $this->packet_model->get_packet_byAcc($id_account, $kode_reg);
+				$tipe_jamaah[''] = '-- Pilih Salah Satu Tipe --';
 				
 				foreach($packet->result() as $row)
 				{
 					$id_packet = $row->ID_PACKET;
+					if($row->JUMLAH_ADULT > 0){
+					 $tipe_jamaah['A'] = 'Dewasa';
+					}
+					if($row->CHILD_WITH_BED > 0){
+					 $tipe_jamaah['CWB'] = 'Anak dengan Ranjang';	
+					}
+					if($row->CHILD_NO_BED > 0){
+					 $tipe_jamaah['CNB'] = 'Anak tanpa Ranjang'; 
+					}
+					if($row->INFANT > 0){
+					 $tipe_jamaah['I'] = 'Bayi'; 
+					}
 				}
 		
 				$province_options['0'] = '-- Pilih Propinsi --';
 				foreach($province->result() as $row){
 						$province_options[$row->ID_PROPINSI] = $row->NAMA_PROPINSI;
+				}
+		
+				$kota_options[''] = '-- Pilih Kota --';
+				if(isset($_POST['province'])){
+					$id_prop = $this->input->post('province');
+				}else{
+					$id_prop = $data['e_id_propinsi'];
+				}
+				
+				$kota = $this->kota_model->get_kota_by_province($id_prop);
+				foreach($kota->result() as $row){
+					$kota_options[$row->NAMA_KOTA] = $row->NAMA_KOTA;
 				}
 				
 				$relasi_options['0'] = '-- Pilih Relasi --';
@@ -640,9 +697,11 @@ class Biodata extends CI_Controller {
 				}
 				
 				$data['province_options'] = $province_options;
+				$data['kota_options'] = $kota_options;
 				$data['relasi_options'] = $relasi_options;
 				$data['chlothes_options'] = $chlothes_options;
 				$data['kamar_options'] = $kamar_options;
+				$data['tipe_jamaah_options'] = $tipe_jamaah;
 				
 				$data['notifikasi'] = null;
 				if($this->session->userdata('sukses') == 'true'){
@@ -738,23 +797,6 @@ class Biodata extends CI_Controller {
 			$perihal_pribadi = $darah_tinggi.";".$takut_ketinggian.";".$smooking_room.";".$jantung.";".$asma.";".$mendengkur;
 			
 			
-			// cek requuest jasa nama paspor
-			if($this->input->post('jasa_paspor_nama_edit') != NULL)
-			{
-				if($this->input->post('jasa_paspor_nama') != NULL)
-				{
-					$request_nama = $this->input->post('jasa_paspor_nama');
-				
-				} else {
-					
-					$request_nama = $this->input->post('jasa_paspor_nama_edit');
-				}
-			
-			} else {
-				
-				$request_nama = $this->input->post('jasa_paspor_nama');
-			}
-			
 			if(!is_dir('./images/upload/foto'))
 			{
 				mkdir('./images/upload/foto',0777);
@@ -816,7 +858,7 @@ class Biodata extends CI_Controller {
 				'LAYANAN_KHUSUS' => $pelayanan_khusus,
 				'PERIHAL_PRIBADI' => $perihal_pribadi,
 				'JASA_TAMBAHAN' => $this->input->post('jasa_maningtis'),
-				'REQUESTED_NAMA' => $request_nama,
+				'TIPE_JAMAAH' => $this->input->post('tipe_jamaah'),
 				'MAHRAM' => $mahram_s,
 				'ID_ROOM_PACKET' => $this->input->post('kamar'),
 				'VIA' => 'Dashboard',
@@ -847,7 +889,181 @@ class Biodata extends CI_Controller {
 			}
 		}
 	}
+	
+	function paspor_view($id_candidate, $kode_reg)
+	{
+		$this->load->model('jamaah_candidate_model');
+		$this->load->model('packet_model');
+		$this->load->model('group_departure_model');
+		
+		$data_jamaah = $this->jamaah_candidate_model->get_profile_view($id_candidate, $kode_reg);
+		if($data_jamaah->result() != NULL)
+		{
+			foreach($data_jamaah->result() as $row)
+			{
+				$data_packet = $this->packet_model->get_packet_byAccAll($row->ID_ACCOUNT, $row->KODE_REGISTRASI);
+				if($data_packet->result() != NULL)
+				{
+					foreach($data_packet->result() as $rows)
+					{
+						$id_group = $rows->ID_GROUP;
+					}
+				}else{
+					$id_group = NULL;
+				}
+				
+				$data_group = $this->group_departure_model->get_group_berdasarkan_id($id_group);
+				if($data_packet->result() != NULL)
+				{
+					foreach($data_group->result() as $rows)
+					{
+						$data['kode_group'] = $rows->KODE_GROUP;
+					}
+				}else{
+					$data['kode_group'] = NULL;
+				}	
+				
+				$data['nama_jamaah'] = $row->NAMA_LENGKAP;
+				$data['tempat_lahir'] = $row->TEMPAT_LAHIR;
+				$data['tgl_lahir'] = $row->TANGGAL_LAHIR;
+				$data['jenkel'] = $row->JENIS_KELAMIN;
+				$data['no_paspor'] = $row->NO_PASPOR;
+				$data['tgl_dikeluarkan'] = $row->TANGGAL_DIKELUARKAN;
+				$data['tgl_habis'] = $row->TANGGAL_HABIS;
+				$data['kantor'] = $row->KANTOR_PEMBUATAN;
+				$data['scan_paspor'] = $row->SCAN_PASPOR;
+			}
+		}
+		
+		$this->load->view('window_paspor', $data, '');
+	}
+	
+	function profile_jamaah($id_candidate, $kode_reg)
+	{
+		$this->load->model('jamaah_candidate_model');
+		$this->load->model('packet_model');
+		$this->load->model('group_departure_model');
+		$this->load->model('relation_model');
+		
+		$data[''] = '';
+		$data_jamaah = $this->jamaah_candidate_model->get_profile_view($id_candidate, $kode_reg);
 
+		if($data_jamaah->result() != NULL)
+		{
+			foreach($data_jamaah->result() as $row)
+			{
+
+				$data_packet = $this->packet_model->get_packet_byAcc($row->ID_ACCOUNT, $row->KODE_REGISTRASI);
+				if($data_packet->result() != NULL)
+				{
+					foreach($data_packet->result() as $rows)
+					{
+						$id_group = $rows->ID_GROUP;
+					}
+				}else{
+					$id_group = NULL;
+				}
+				
+				$data_group = $this->group_departure_model->get_group_berdasarkan_id($id_group);
+				if($data_packet->result() != NULL)
+				{
+					foreach($data_group->result() as $rows)
+					{
+						$data['kode_group'] = $rows->KODE_GROUP;
+					}
+				}else{
+					$data['kode_group'] = NULL;
+				}	
+				
+				$data['nama_jamaah'] = $row->NAMA_LENGKAP;
+				$data['tempat_lahir'] = $row->TEMPAT_LAHIR;
+				$data['tgl_lahir'] = $this->konversi_tanggal($row->TANGGAL_LAHIR);
+				$data['jenkel'] = $row->JENIS_KELAMIN;
+				$data['ayah_kandung'] = $row->AYAH_KANDUNG;
+				$data['alamat'] = $row->ALAMAT;
+				$data['kota'] = $row->KOTA;
+				$data['warga_negara'] = $row->WARGA_NEGARA;
+				$data['tlp'] = $row->TELP;
+				$data['hp'] = $row->MOBILE;
+				$data['status'] = $row->STATUS_JAMAAH;
+				$data['ukuran_baju'] = $row->UKURAN_BAJU;
+				$data['foto'] = $row->FOTO;
+				$data['id_candidate'] = $id_candidate;
+				$data['kode_reg'] = $kode_reg;
+				
+				// pecah layanan khusus
+				$pecah_khusus = explode(";", $row->LAYANAN_KHUSUS);
+				$data['khusus_kursi'] = $pecah_khusus[0];
+				$data['khusus_asisten'] = $pecah_khusus[1];
+				
+				// pecah perihal pribadi
+				$pecah_pribadi = explode(";", $row->PERIHAL_PRIBADI);
+				$data['perihal_darah'] = $pecah_pribadi[0];
+				$data['perihal_tinggi'] = $pecah_pribadi[1];
+				$data['perihal_smooking'] = $pecah_pribadi[2];
+				$data['perihal_jantung'] = $pecah_pribadi[3];
+				$data['perihal_asma'] = $pecah_pribadi[4];
+				$data['perihal_mendengkur'] = $pecah_pribadi[5];
+				
+				// filter relasi
+				$data_relation = $this->relation_model->get_relation($row->ID_RELATION);
+				foreach($data_relation->result() as $rows)
+				{
+					$data['nama_relasi'] = $rows->JENIS_RELASI;
+				}
+			}
+		}
+		
+		$this->load->view('profile_jamaah', $data);
+	}
+	
+	function konversi_tanggal($tgl){
+      $tanggal = substr($tgl,8,2);
+      $bln    = substr($tgl,5,2);
+	  $bulan = ""; $strHari = "";
+      $tahun    = substr($tgl,0,4);
+
+      switch ($bln){
+        case 1:
+          $bulan =  "Januari";
+          break;
+        case 2:
+          $bulan =  "Februari";
+          break;
+        case 3:
+          $bulan = "Maret";
+          break;
+        case 4:
+          $bulan =  "April";
+          break;
+        case 5:
+          $bulan =  "Mei";
+          break;
+        case 6:
+          $bulan =  "Juni";
+          break;
+        case 7:
+          $bulan =  "Juli";
+          break;
+        case 8:
+          $bulan =  "Agustus";
+          break;
+        case 9:
+          $bulan =  "September";
+          break;
+        case 10:
+          $bulan =  "Oktober";
+          break;
+        case 11:
+          $bulan =  "November";
+          break;
+        case 12:
+          $bulan =  "Desember";
+          break;
+	   }
+	   return $tanggal.' '.$bulan.' '.$tahun;
+    }
+	
         // cek order packet
         function cekOrder(){
             $this->load->model('packet_model');
