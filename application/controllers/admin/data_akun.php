@@ -97,7 +97,7 @@ class data_akun extends CI_Controller{
 		$colModel['delete'] = array('Delete',50,FALSE,'center',0);
 		$colModel['paket'] = array('Paket',50,FALSE,'center',0);
 		$colModel['paket'] = array('Paket',50,FALSE,'center',0);
-		$colModel['jamaah'] = array('Tambah Jamaah',100,FALSE,'center',0);
+		$colModel['jamaah'] = array('Lihat Jamaah',100,FALSE,'center',0);
 		
 		$colModel['NAMA_USER'] = array('Nama User',100,TRUE,'center',2);
 		$colModel['EMAIL'] = array('Email',150,TRUE,'center',2);

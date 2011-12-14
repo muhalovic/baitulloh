@@ -24,12 +24,7 @@ echo $error_file;
 		<td align="center"><h4><? if(isset($hitung_jasa_maningtis)) { echo $hitung_jasa_maningtis; } ?> x 20.00 $</h4></td>
 		<td align="center"><h4><? if(isset($hitung_total_maningtis)) { echo $hitung_total_maningtis; } ?> $</h4></td>
     </tr>		
-	<tr height="30">
-		<td align="center"><h4>Jasa Tambah Nama</h4></td>
-		<td align="center"</td>
-		<td align="center"><h4><? if(isset($hitung_jasa_nama)) { echo $hitung_jasa_nama; } ?> x 20.00 $</h4></td>
-		<td align="center"><h4><? if(isset($hitung_total)) { echo $hitung_total; } ?> $</h4></td>
-    </tr>
+
 	<tr height="30" valign="bottom">
 		<td class="bg_kolom"></td>
 		<td class="bg_kolom"></td>
@@ -89,7 +84,7 @@ echo $error_file;
 <!-- ------- form konfirmasi --------->
 
 
-<? echo form_open_multipart('/payment/do_send'); ?>
+<? echo form_open_multipart('/admin/payment/do_send'); ?>
 
 <br />
 <table border="0" width="100%" cellpadding="0" cellspacing="0">
@@ -97,9 +92,30 @@ echo $error_file;
 		<td>
 			<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
 				<tr>
-					<? form_error('nama_rekening') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
+					<? form_error('tipe_pembayaran') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
+					<th valign="top">Tipe Pembayaran</th>
+					<td>
+					<? $tipe_pembayaran = ''; if(set_value('tipe_pembayaran')!='') $tipe_pembayaran = set_value('tipe_pembayaran');
+							$tipe_pembayaran_options = array(
+							  ''  => '-- Tipe Pembayaran --',
+							  '0'  => 'Cash',
+							  '1'  => 'Transfer',
+							  
+							);
+							
+							echo form_dropdown('tipe_pembayaran', $tipe_pembayaran_options, $tipe_pembayaran,'id="tipe_pembayaran" '); ?>
+					</td>
+					<td>
+						<? if(form_error('tipe_pembayaran') != '') {?>
+						<div class="error-left"></div>
+						<div class="error-inner"><?php echo form_error('tipe_pembayaran'); ?></div>
+						<? }?>
+					</td>
+				</tr>
+				<tr>
+					<? form_error('nama_rekening') == '' ? $class = 'inp-form-disable':$class = 'inp-form-error'; ?>
 					<th valign="top">Rek. Atas Nama (*)</th>
-					<td><input type="text" name="nama_rekening" value="<?php echo set_value('nama_rekening');?>" class="<? echo $class;?>" /></td>
+					<td><input type="text" disabled="disabled" id="nama_rekening" name="nama_rekening" value="<?php echo set_value('nama_rekening');?>" class="<? echo $class;?>" /></td>
 					<td>
 						<? if(form_error('nama_rekening') != '') {?>
 						<div class="error-left"></div>
@@ -121,9 +137,9 @@ echo $error_file;
 					</td>
 				</tr>
 				<tr>
-					<? form_error('bank') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
+					<? form_error('bank') == '' ? $class = 'inp-form-disable':$class = 'inp-form-error'; ?>
 					<th valign="top">Nama Bank (*)</th>
-					<td><input type="text" name="bank" value="<?php echo set_value('bank');?>" class="<? echo $class;?>" /></td>
+					<td><input type="text" id="bank" disabled="disabled" name="bank" value="<?php echo set_value('bank');?>" class="<? echo $class;?>" /></td>
 					<td>
 						<? if(form_error('bank') != '') {?>
 						<div class="error-left"></div>
@@ -218,3 +234,24 @@ echo $error_file;
 </table>
 <? echo form_close(); ?>		 
 <div class="clear"></div>
+
+<script type="text/javascript">
+	$('#tipe_pembayaran').bind('change',
+		function(){
+			if($('#tipe_pembayaran').val() == 1){
+				$('#nama_rekening').removeAttr('disabled');
+				$('#bank').removeAttr('disabled');
+				$('#nama_rekening').removeAttr('class');
+				$('#bank').removeAttr('class');
+				$('#nama_rekening').attr('class', 'inp-form');
+				$('#bank').attr('class', 'inp-form');
+			}
+			else{
+				$('#nama_rekening').attr('disabled', 'disabled');
+				$('#bank').attr('disabled', 'disabled');
+				$('#nama_rekening').attr('class', 'inp-form-disable');
+				$('#bank').attr('class', 'inp-form-disable');
+				}
+		}
+	)
+</script>
