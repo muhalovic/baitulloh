@@ -21,6 +21,94 @@
 
 <div class="center">
 	<!-- RESULT TABLE -->
+	<table border="0" width="100%" class="info_shape" cellpadding="10">
+		<tr>
+			<td valign="top" width="56%">
+				<div class="title">
+					<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
+					<span class="text_title">Keterangan Grup & Kelas Keberangkatan</span>
+				</div>
+				
+				<div class="repeat_hline"></div>
+				
+				<div>
+					<p>
+						<table>
+							<tr>
+								<td><img src="<?php echo base_url();?>images/front/calendar.png"/>&nbsp;Keberangkatan</td>
+								<td>:</td>
+								<td><strong><? if(isset($info_berangkat)) { echo $info_berangkat; } ?></strong></td>
+							</tr>
+							<tr>
+								<td><img src="<?php echo base_url();?>images/front/plane.png"/>&nbsp;Maskapai</td>
+								<td>:</td>
+								<td><strong><? if(isset($maskapai)) { echo $maskapai; } ?></strong></td>
+							</tr>
+							<tr>
+								<td><img src="<?php echo base_url();?>images/front/building.png"/>&nbsp;Hotel Makkah</td>
+								<td>:</td>
+								<td><strong><? if(isset($hotel_mk)) { echo $hotel_mk; } ?></strong></td>
+							</tr>
+							<tr>
+								<td><img src="<?php echo base_url();?>images/front/building.png"/>&nbsp;Hotel Madinah</td>
+								<td>:</td>
+								<td><strong><? if(isset($hotel_md)) { echo $hotel_md; } ?></strong></td>
+							</tr>
+							<tr>
+								<td><img src="<?php echo base_url();?>images/front/car.png"/>&nbsp;Transportasi</td>
+								<td>:</td>
+								<td><strong><? if(isset($transportasi)) { echo $transportasi; } ?></strong></td>
+							</tr>
+							<tr>
+								<td valign="top"><img src="<?php echo base_url();?>images/front/poin.png"/>&nbsp;Kamar</td>
+								<td valign="top">:</td>
+								<td><ul><? if(isset($info_jumlah_kamar)) { echo $info_jumlah_kamar; } ?></ul></td>
+							</tr>
+						</table>
+					</p>
+				</div>
+			</td>
+				
+			<td valign="top">
+				<div class="title">
+					<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
+					<span class="text_title">Informasi Batas Akhir</span>
+				</div>
+				
+				<div class="repeat_hline"></div>
+				
+				<div>
+					<p>
+						<table>
+							<tr>
+								<td><img src="<?php echo base_url();?>images/front/calendar.png"/>&nbsp;Batas Akhir Uang Muka</td>
+								<td>:</td>
+								<td><strong><? if(isset($uang_muka)) { echo $uang_muka; } ?></strong></td>
+							</tr>
+							<tr>
+								<td><img src="<?php echo base_url();?>images/front/calendar.png"/>&nbsp;Batas Akhir Pelunasan</td>
+								<td>:</td>
+								<td><strong><? if(isset($pelunasan)) { echo $pelunasan; } ?></strong></td>
+							</tr>
+							<tr>
+								<td><img src="<?php echo base_url();?>images/front/calendar.png"/>&nbsp;Upload Data Paspor</td>
+								<td>:</td>
+								<td><strong><? if(isset($jatu_tempo)) { echo $jatu_tempo; } ?></strong></td>
+							</tr>
+							<tr>
+								<td><img src="<?php echo base_url();?>images/front/calendar.png"/>&nbsp;Pengumpulan Berkas Fisik</td>
+								<td>:</td>
+								<td><strong><? if(isset($kirim_berkas)) { echo $kirim_berkas; } ?></strong></td>
+							</tr>
+						</table>
+					</p>
+				</div>
+			</td>
+		</tr>
+	</table>
+	
+	<br/>
+	
 	<table border="0" width="100%" class="info_shape" cellpadding="20">
 		<tr>
 			<td valign="top">
@@ -106,93 +194,9 @@
 	
 	<br/>
 	
-	<table border="0" width="100%" class="info_shape" cellpadding="10">
+	<table border="0" width="100%" class="info_shape" cellpadding="20">
 		<tr>
-			<td valign="top" width="56%">
-				<div class="title">
-					<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
-					<span class="text_title">Keterangan Grup & Kelas Keberangkatan</span>
-				</div>
-				
-				<div class="repeat_hline"></div>
-				
-				<div>
-					<p>
-						<table>
-							<tr>
-								<td><img src="<?php echo base_url();?>images/front/calendar.png"/>&nbsp;Keberangkatan</td>
-								<td>:</td>
-								<td><strong><? if(isset($info_berangkat)) { echo $info_berangkat; } ?></strong></td>
-							</tr>
-							<tr>
-								<td><img src="<?php echo base_url();?>images/front/plane.png"/>&nbsp;Maskapai</td>
-								<td>:</td>
-								<td><strong><? if(isset($maskapai)) { echo $maskapai; } ?></strong></td>
-							</tr>
-							<tr>
-								<td><img src="<?php echo base_url();?>images/front/building.png"/>&nbsp;Hotel Makkah</td>
-								<td>:</td>
-								<td><strong><? if(isset($hotel_mk)) { echo $hotel_mk; } ?></strong></td>
-							</tr>
-							<tr>
-								<td><img src="<?php echo base_url();?>images/front/building.png"/>&nbsp;Hotel Madinah</td>
-								<td>:</td>
-								<td><strong><? if(isset($hotel_md)) { echo $hotel_md; } ?></strong></td>
-							</tr>
-							<tr>
-								<td><img src="<?php echo base_url();?>images/front/car.png"/>&nbsp;Transportasi</td>
-								<td>:</td>
-								<td><strong><? if(isset($transportasi)) { echo $transportasi; } ?></strong></td>
-							</tr>
-							<tr>
-								<td valign="top"><img src="<?php echo base_url();?>images/front/poin.png"/>&nbsp;Kamar</td>
-								<td valign="top">:</td>
-								<td><ul><? if(isset($info_jumlah_kamar)) { echo $info_jumlah_kamar; } ?></ul></td>
-							</tr>
-						</table>
-					</p>
-				</div>
-			</td>
-				
-			<td valign="top">
-				<div class="title">
-					<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
-					<span class="text_title">Informasi Batas Akhir</span>
-				</div>
-				
-				<div class="repeat_hline"></div>
-				
-				<div>
-					<p>
-						<table>
-							<tr>
-								<td><img src="<?php echo base_url();?>images/front/calendar.png"/>&nbsp;Batas Akhir Uang Muka</td>
-								<td>:</td>
-								<td><strong><? if(isset($uang_muka)) { echo $uang_muka; } ?></strong></td>
-							</tr>
-							<tr>
-								<td><img src="<?php echo base_url();?>images/front/calendar.png"/>&nbsp;Batas Akhir Pelunasan</td>
-								<td>:</td>
-								<td><strong><? if(isset($pelunasan)) { echo $pelunasan; } ?></strong></td>
-							</tr>
-							<tr>
-								<td><img src="<?php echo base_url();?>images/front/calendar.png"/>&nbsp;Upload Data Paspor</td>
-								<td>:</td>
-								<td><strong><? if(isset($jatu_tempo)) { echo $jatu_tempo; } ?></strong></td>
-							</tr>
-							<tr>
-								<td><img src="<?php echo base_url();?>images/front/calendar.png"/>&nbsp;Pengumpulan Berkas Fisik</td>
-								<td>:</td>
-								<td><strong><? if(isset($kirim_berkas)) { echo $kirim_berkas; } ?></strong></td>
-							</tr>
-						</table>
-					</p>
-				</div>
-			</td>
-		</tr>
-		
-		<tr>
-			<td colspan="2">
+			<td>
 				<div class="title" style="text-align:center;">
 					<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
 					<span class="text_title">Resume Hasil Ketersediaan</span>
@@ -217,127 +221,12 @@
 		</tr>
 	</table>
 	
-	
-	
-	
-	<!-- RIGHT SIDE --><!--
-	<div class="content_left">
-		<div class="info_shape_t">
-			<div class="title">
-				<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
-				<span class="text_title">Informasi Registrasi</span>
-			</div>
-			
-			<div align="center">
-				<p>"Calon Jamaah harus memiliki Paspor asli minimal <strong class="bold">6 bulan</strong> masa berlaku dengan nama <strong class="bold">3 suku kata.</strong>"</p>
-			</div>
-		
-			<div class="title">
-				<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
-				<span class="text_title">Berdasarkan Paket Pilihan</span>
-			</div>
-			
-			<div>
-				<p>
-					<div>Grup Keberangkatan : <strong><? if(isset($kode_group)) { echo $kode_group; } ?></strong></div>
-					<div>Kelas Program : <strong><? if(isset($nama_program)) { echo $nama_program; } ?></strong></div>
-				</p>
-			</div>
-			
-			<div class="title">
-				<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
-				<span class="text_title">Calon Jamaah</span>
-			</div>
-			
-			<div>
-				<p>
-					<div>Jumlah Dewasa : <strong><? if(isset($jml_adult)) { echo $jml_adult; } ?></strong></div>
-					<div>Anak Dengan Ranjang : <strong><? if(isset($with_bed)) { echo $with_bed; } ?></strong></div>
-					<div>Anak Tanpa Ranjang : <strong><? if(isset($no_bed)) { echo $no_bed; } ?></strong></div>
-					<div>Bayi : <strong><? if(isset($infant)) { echo $infant; } ?></strong></div>
-				</p>
-			</div>
-			
-			<div class="title">
-				<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
-				<span class="text_title">Permintaan Konfigurasi Kamar</span>
-			</div>
-			
-			<div>
-				<p>
-					<span><? if(isset($konfig_kamar)) { echo $konfig_kamar; } ?></span>
-				</p>
-			</div>
-			
-		</div>
-		
-	</div>-->
-	<!-- END RIGHT SIDE -->
-	
-	<!-- RIGHT SIDE --><!--
-	<div class="content_right" >
-		<div class="info_shape_t">
-			
-			<div class="title">
-				<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
-				<span class="text_title">Keterangan Grup & Kelas Keberangkatan</span>
-			</div>
-			
-			<div>
-				<p>
-					<div>Keberangkatan : <strong><? if(isset($info_berangkat)) { echo $info_berangkat; } ?></strong></div>
-					<div>Maskapai : <strong><? if(isset($maskapai)) { echo $maskapai; } ?></strong></div>
-					<div>Hotel Makkah : <strong><? if(isset($hotel_mk)) { echo $hotel_mk; } ?></strong></div>
-					<div>Hotel Madinah : <strong><? if(isset($hotel_md)) { echo $hotel_md; } ?></strong></div>
-					<div>Transportasi : <strong><? if(isset($transportasi)) { echo $transportasi; } ?></strong></div>
-					<div>Kamar : <strong><? if(isset($info_jumlah_kamar)) { echo $info_jumlah_kamar; } ?></strong></div>
-				</p>
-			</div>
-			
-			<div class="title">
-				<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
-				<span class="text_title">Informasi Batas Akhir</span>
-			</div>
-
-			<div>
-				<p>
-					<div>Batas Akhir Uang Muka : <strong><? if(isset($uang_muka)) { echo $uang_muka; } ?></strong></div>
-					<div>Batas Akhir Pelunasan : <strong><? if(isset($pelunasan)) { echo $pelunasan; } ?></strong></div>
-					<div>Upload Data Paspor : <strong><? if(isset($jatu_tempo)) { echo $jatu_tempo; } ?></strong></div>
-					<div>Pengumpulan Berkas Fisik : <strong><? if(isset($kirim_berkas)) { echo $kirim_berkas; } ?></strong></div>
-				</p>
-			</div>
-			
-			<div class="title">
-				<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
-				<span class="text_title">Hasil Ketersediaan</span>
-			</div>
-
-			<div>
-				<p>
-					<div>
-						<? 
-							if(isset($msg_box1)) { echo $msg_box1; } 
-							if(isset($msg_box2)) { echo $msg_box2; } 
-							if(isset($msg_box3)) { echo $msg_box3; } 
-							if(isset($msg_box4)) { echo $msg_box4; } 
-							if(isset($status_waiting)) { echo $status_waiting; } 
-						?>                        
-                    </div>
-				</p>
-			</div>
-			
-		</div>
-		
-	</div>
-	<!-- END RIGHT SIDE -->
-	
 	<?
 	if($waiting_list != 1)
 	{
 		echo '<h3 align="center" class="clear">
 				"Anda bisa melakukan registrasi online terlebih dahulu, untuk mencatatkan data ke dalam sistem kami. <br/>
-				Silahkan <a href="'.site_url().'/login"><font color="#A01040"><u>LOGIN</u></font></a> jika anda sudah memiliki akun."
+				Atau silahkan <a href="'.site_url().'/login"><font color="#A01040"><u>LOGIN</u></font></a> jika anda sudah memiliki akun."
 			</h3>';
 	}
 	?>
