@@ -22,7 +22,11 @@
 			<td colspan="2">
 				<div class="title">
 					<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
-					<span class="text_title">Terima Kasih, Data Telah <font color='3B619F'>Berhasil Terdaftar</font> dalam Sistem</span>
+					<? if (isset($waiting) && $waiting){?>
+							<span class="text_title">Terima Kasih, Data Telah <font color='3B619F'>Berhasil Masuk Daftar Tunggu</font> dalam Sistem</span>
+					<? }else{ ?>
+							<span class="text_title">Terima Kasih, Data Telah <font color='3B619F'>Berhasil Terdaftar</font> dalam Sistem</span>
+					<? } ?>
 				</div>
 				<div class="repeat_hline"></div>
 			</td>
@@ -85,6 +89,7 @@
 	
 	<br/>
 	
+	<? if (!$waiting){?>
 	<table border="0" width="100%" class="info_shape" cellpadding="10">
 		<tr>
 			<td valign="top">
@@ -106,17 +111,29 @@
 			</td>
 		</tr>
 	</table>
+	<? } ?>	
 	
 	<? if (isset($waiting) && $waiting){?>
-		<div class="left"><img src="<?php echo base_url();?>images/forms/icon_plus.gif" width="21" height="21" alt="" /></div>
-		<div class="right">
-			<h5>Info Waiting List</h5>							
-			<ul class="greyarrow">
-				<li>Dengan masuk ke daftar tunggu untuk sementara anda tidak bisa menggunakan fitur-fitur sistem registrasi online ini.</li>
-				<li>Akun anda akan aktif kembali jika status daftar tunggu anda berubah.</li>
-				<li>Informasi tentang update status akun anda akan dikirim melalui email.</li>
-			</ul>								
-		</div>
+		<table border="0" width="100%" class="info_shape" cellpadding="10">
+			<tr>
+				<td valign="top">
+					<div class="title">
+						<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
+						<span class="text_title">Informasi - Informasi <font color='A01040'>DAFTAR TUNGGU !!</font></span>
+					</div>
+					<div class="repeat_hline"></div>	
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<ul style="font-family: 'Oswald', Arial, sans-serif;">
+						<li>Dengan masuk ke daftar tunggu untuk sementara anda <font color="green">TIDAK BISA </font>menggunakan fitur-fitur sistem dashboard nantinya.</li>
+						<li>Akun anda <font color="green">AKAN AKTIF </font>jika status daftar tunggu anda <font color="green">BERUBAH</font>.</li>
+						<li>Informasi tentang update status akun anda akan dikirim melalui <font color="green">EMAIL</font>.</li>
+					</ul>
+				</td>
+			</tr>
+		</table>
 	<? } ?>	
 </div>
 
