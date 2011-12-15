@@ -194,6 +194,16 @@ class Check_availability extends CI_Controller {
 			$data['kode_group'] = $kode_group;
 			$data['nama_program'] = $nama_program;
 			
+			$room_config = array();
+			
+			for($index = 0;$index<count($jml_kamar);$index++){
+				$room_config[$index]['ID_ROOM_TYPE'] = $id_tipe_kamar[$index];
+				$room_config[$index]['JUMLAH'] = $jml_kamar[$index];
+			}
+			
+			$data['room_choice2'] = $room_config;
+			
+			
 			$data[] = null;
 			$data['content'] = $this->load->view('result_page',$data,true);
 			$this->load->view('front',$data);

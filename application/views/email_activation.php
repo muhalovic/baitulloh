@@ -423,7 +423,7 @@
                                                               </ul>
                                                               <p><strong>Catatan: </strong></p>
                                                                 <ul>
-                                                                  <li> Sebelum Memenuhi Kesepakatan Pendaftaran, komitmen booking seat keberangkatan <strong style="color:green;">belum terjadi</strong>.</li>
+                                                                  <li> Sebelum Memenuhi Kesepakatan Pendaftaran <strong style="color:green;">( uang muka dan data paspor )</strong>, komitmen booking seat keberangkatan <strong style="color:green;">belum terjadi</strong>.</li>
                                                                   <li>Silakan <strong style="color:green;">disegerakan</strong> untuk Memenuhi Kesepakatan Pendaftaran dan melakukan konfirmasi pembayaran, sehingga Data anda bisa segera di proses. Dan Status Pendaftaran akan kami Booked.</li>
                                                                   <li>Peserta <strong style="color:green;">belum terdaftar</strong> jika dana belum efektif masuk ke dalam rekening kamilah.</li>
                                                                 </ul>

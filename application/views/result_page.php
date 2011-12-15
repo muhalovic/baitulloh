@@ -243,7 +243,11 @@
 			</h3>';
 
 		echo form_open('/registration',array('name' => 'form_registrasi', 'style' => 'width:100%'));
-		
+		$added = '';
+		$no=0; foreach($room_choice2 as $row) {
+						$added .= '<input name="kamar[]" id="kamar'.$no.'" value="'.$row['ID_ROOM_TYPE'].'" />
+						<input name="jml_kamar[]" id="jml_kamar'.$no.'" value="'.$row['JUMLAH'].'" />';
+					$no++; }
         echo '<div style="display: none;" >
 					<input type="text" name="group" value="'.$group.'" />
 					<input type="text" name="program" value="'.$program.'" />
@@ -252,6 +256,9 @@
 					<input type="text" name="no_bed" value="'.$no_bed.'" />
 					<input type="text" name="infant" value="'.$infant.'" />
 					<input type="text" name="waiting_list" value="'.$waiting_list.'" />
+					'.$added
+					.'
+					
 				</div>
 				<h3 align="center" class="clear">
 				<input name="waiting" id="waiting" type="checkbox" value="1" onchange="enableSubmit(this);" />&nbsp;
