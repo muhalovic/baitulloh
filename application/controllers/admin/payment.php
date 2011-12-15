@@ -6,8 +6,8 @@ class Payment extends CI_Controller {
 	{
 		parent::__construct();
 		
-		if($this->session->userdata('id_akun') == NULL){}
-		//	redirect(site_url()."/admin/login");
+		if($this->session->userdata('id_user') == NULL)
+			redirect(site_url()."/admin/login");
 
 
 	}
@@ -49,7 +49,8 @@ class Payment extends CI_Controller {
 		$data_total_jamaah = $this->jamaah_candidate_model->get_total_jamaah($id_akun, $kode_registrasi);
 		
 
-
+		$data['id_akun']= $id_akun;
+		$data['kode_registrasi']= $kode_registrasi;
 		
 		
 		// CARI TOTAL PENGGUNA JASA MANINGTIS
@@ -260,7 +261,7 @@ class Payment extends CI_Controller {
 		$log = "Melakukan Konfirmasi pembayaran";
 		
 		if ($this->cek_validasi() == FALSE){
-			$this->pay();
+			$this->pay($this->input->post('id_akun'),$this->input->post('kode_registrasi'));
 		}
 		else{
 			
@@ -300,23 +301,22 @@ class Payment extends CI_Controller {
 			}
 
 			// update table
-			// $id_akun = $this->session->userdata("id_account");
-			// $kode_registrasi = $this->session->userdata("kode_registrasiistrasi");
-			$email_ses = $this->session->userdata("email");
+			 $id_akun = $this->input->post("id_akun");
+			 $kode_registrasi = $this->input->post("kode_registrasi");
+			// $email_ses = $this->session->userdata("email");
 			
-			$nama_rekening = $this->input->post('nama_rekening');
-			$tgl_transfer = $this->input->post('tgl_transfer');
-			$bank_pengirim = $this->input->post('bank');
+			$nama_rekening = null;
+			$tgl_transfer = null;
+			$bank_pengirim = null;
+			$tgl_transfer_fix = null;
+			
 			$jumlah = $this->input->post('nominal');
 			$metode = $this->input->post('metode');
 			$catatan = $this->input->post('catatan');
 			
-			// filter tanggal transfer
-			$pecah_tanggal = explode("/", $tgl_transfer);
-			$tgl_transfer_fix = $pecah_tanggal[2]."-".$pecah_tanggal[1]."-".$pecah_tanggal[0];
-			
 			// get id packet
 			$data_packet = $this->packet_model->get_packet_status($id_akun, $kode_registrasi);
+		
 			if($data_packet->result() != NULL)
 			{
 				foreach($data_packet->result() as $row)
@@ -324,6 +324,22 @@ class Payment extends CI_Controller {
 					$id_packet = $row->ID_PACKET;
 				}
 			}
+			
+			if($this->input->post('tipe_pembayaran')=='0'){
+				$status = 1;
+				$melalui = 0;
+			}
+			else{
+				$nama_rekening = $this->input->post('nama_rekening');
+				$tgl_transfer = $this->input->post('tgl_transfer');
+				$bank_pengirim = $this->input->post('bank');
+				$status = 0;
+				// filter tanggal transfer
+				$pecah_tanggal = explode("/", $tgl_transfer);
+				$tgl_transfer_fix = $pecah_tanggal[2]."-".$pecah_tanggal[1]."-".$pecah_tanggal[0];
+				$melalui = $this->input->post('transfer');
+			}
+			
 			
 			$data = array(
 				'ID_ACCOUNT' => $id_akun,
@@ -336,34 +352,49 @@ class Payment extends CI_Controller {
 				'JUMLAH_KAMAR' => $jumlah,
 				'BUKTI_TRANSFER' => $bukti,
 				'CATATAN' => $catatan,
-				'STATUS' => 0,
+				'STATUS' => $status,
+				'BAYAR_MELALUI' => $melalui,
 				'TANGGAL_ENTRI' => date("Y-m-d H:i:s"),
 				'TANGGAL_UPDATE' => date("Y-m-d H:i:s")
 				);
 			
-			$konfirmasi = array(
-				'NAMA_REKENING' => $nama_rekening,
-				'TGL_TRANSFER' => $tgl_transfer_fix,
-				'NAMA_BANK' => $bank_pengirim,
-				'JUMLAH' => $jumlah,
-				'JENIS' => $metode,
-				'CATATAN' => $catatan,
-				'BUKTI_FILE' => $bukti,
-				'EMAIL_SES' => $email_ses
-				);
 			
-			if($valid_file)
+			
+			// $konfirmasi = array(
+				// 'NAMA_REKENING' => $nama_rekening,
+				// 'TGL_TRANSFER' => $tgl_transfer_fix,
+				// 'NAMA_BANK' => $bank_pengirim,
+				// 'JUMLAH' => $jumlah,
+				// 'JENIS' => $metode,
+				// 'CATATAN' => $catatan,
+				// 'BUKTI_FILE' => $bukti,
+				// 'EMAIL_SES' => $email_ses
+				// );
+			
+			
+			
+			if($valid_file && $this->input->post('tipe_pembayaran')=='1')
 			{
 				//jika upload file scan berhasil
 				$this->session->set_userdata('sukses','true');
-				$this->log_model->log($id_akun, $kode_registrasi, NULL, $log);
+				$this->log_model->log(null,null, $this->session->userdata('id_user'), $log);
 				$this->payment_model->insert_payment($data);
-				$this->send_email($konfirmasi);
+				// $this->send_email($konfirmasi);
 				
-				redirect(site_url().'/payment/');
+				redirect(site_url().'/admin/data_akun/');
 				
-			}else{
-				$this->pay();
+			}
+			else if($this->input->post('tipe_pembayaran')=='0'){
+				
+				$this->log_model->log(null,null, $this->session->userdata('id_user'), $log);
+				$this->payment_model->insert_payment($data);
+				// $this->send_email($konfirmasi);
+				
+				redirect(site_url().'/admin/data_akun/');
+			
+			}
+			else{
+				$this->pay($id_akun,$kode_registrasi);
 			}
 		}
 	}
@@ -373,17 +404,24 @@ class Payment extends CI_Controller {
 		$this->load->library('form_validation');
 		
 		//setting rules
-		$config = array(
-				array('field'=>'nama_rekening','label'=>'Atas Nama', 'rules'=>'required'),
-				array('field'=>'tgl_transfer','label'=>'Tgl. Transfer', 'rules'=>'required'),
-				array('field'=>'bank','label'=>'Nama Bank', 'rules'=>'required'),
-				array('field'=>'nominal','label'=>'Jumlah', 'rules'=>'required|numeric'),
-				array('field'=>'metode','label'=>'Jenis Pembayaran', 'rules'=>'callback_cek_dropdown'),
-				array('field'=>'catatan','label'=>'Catatan', 'rules'=>'min_length[3]'),
-			);
 		
 		
-		$this->form_validation->set_rules($config);
+		
+		
+		
+		$this->form_validation->set_rules('tipe_pembayaran','Tipe Pembayaran','required|xss_clean|prep_for_form');
+		if($this->input->post('tipe_pembayaran')=='1'){
+		$this->form_validation->set_rules('nama_rekening','Atas Nama','required|xss_clean|prep_for_form');
+		$this->form_validation->set_rules('tgl_transfer','Tgl. Transfer','required|xss_clean|prep_for_form');
+		$this->form_validation->set_rules('bank','Nama Bank','required|xss_clean|prep_for_form');
+		$this->form_validation->set_rules('transfer','Tujuan Transfer','required|xss_clean|prep_for_form');
+		}
+		
+		$this->form_validation->set_rules('nominal','Jumlah','required|numeric|xss_clean|prep_for_form');
+		$this->form_validation->set_rules('metode','Jenis Pembayaran','required|xss_clean|prep_for_form');
+		$this->form_validation->set_rules('catatan','Catatan','xss_clean|prep_for_form');
+		
+		
 		$this->form_validation->set_message('required', 'Kolom <strong>%s</strong> harus diisi !');
 		$this->form_validation->set_message('min_length', 'Kolom <strong>%s</strong> minimal 3 karakter!');
 		$this->form_validation->set_message('numeric', 'Kolom <strong>%s</strong> harus berupa angka !');

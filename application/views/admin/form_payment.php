@@ -113,6 +113,27 @@ echo $error_file;
 					</td>
 				</tr>
 				<tr>
+					<? form_error('transfer') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
+					<th valign="top">Transfer Ke</th>
+					<td>
+					<? $transfer = ''; if(set_value('transfer')!='') $transfer = set_value('transfer');
+							$transfer_options = array(
+							  ''  => '-- Tipe Pembayaran --',
+							  '1'  => 'Bank Mandiri',
+							  '2'  => 'Bank Muamalat',
+							  
+							);
+							
+							echo form_dropdown('transfer', $transfer_options, $transfer,'id="transfer" '); ?>
+					</td>
+					<td>
+						<? if(form_error('transfer') != '') {?>
+						<div class="error-left"></div>
+						<div class="error-inner"><?php echo form_error('transfer'); ?></div>
+						<? }?>
+					</td>
+				</tr>
+				<tr>
 					<? form_error('nama_rekening') == '' ? $class = 'inp-form-disable':$class = 'inp-form-error'; ?>
 					<th valign="top">Rek. Atas Nama (*)</th>
 					<td><input type="text" disabled="disabled" id="nama_rekening" name="nama_rekening" value="<?php echo set_value('nama_rekening');?>" class="<? echo $class;?>" /></td>
@@ -223,6 +244,8 @@ echo $error_file;
 				<tr height="80">
 					<th></th>
 					<td valign="bottom">
+						<input type="hidden" name="id_akun" value="<?php echo $id_akun; ?>">
+						<input type="hidden" name="kode_registrasi" value="<?php echo $kode_registrasi; ?>">
 						<input type="submit" value="" class="form-submit" />
 						<input type="reset" value="" class="form-reset"  />
 					</td>
@@ -241,16 +264,21 @@ echo $error_file;
 			if($('#tipe_pembayaran').val() == 1){
 				$('#nama_rekening').removeAttr('disabled');
 				$('#bank').removeAttr('disabled');
+				$('#transfer').removeAttr('disabled');
 				$('#nama_rekening').removeAttr('class');
 				$('#bank').removeAttr('class');
+				$('#transfer').removeAttr('class');
 				$('#nama_rekening').attr('class', 'inp-form');
 				$('#bank').attr('class', 'inp-form');
+				$('#transfer').attr('class', 'inp-form');
 			}
 			else{
 				$('#nama_rekening').attr('disabled', 'disabled');
 				$('#bank').attr('disabled', 'disabled');
+				$('#transfer').attr('disabled', 'disabled');
 				$('#nama_rekening').attr('class', 'inp-form-disable');
 				$('#bank').attr('class', 'inp-form-disable');
+				$('#transfer').attr('class', 'inp-form-disable');
 				}
 		}
 	)

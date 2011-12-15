@@ -15,7 +15,7 @@ class data_akun extends CI_Controller{
     public function  __construct() {
         parent::__construct();
 		if($this->session->userdata('id_user') == NULL)
-			redirect(site_url()."/login");
+			redirect(site_url()."/admin/login");
     }
 
 
