@@ -180,6 +180,22 @@
 				</div>
 			</td>
 		</tr>
+		<? if (isset($waiting)) {?>
+			<input type="hidden" name="waiting" value="<? echo $waiting; ?>" />
+			<div style="display: none;" >
+				<input type="text" name="group" value="<?php echo $group; ?>" />
+				<input type="text" name="program" value="<?php echo $program; ?>" />
+				<input type="text" name="jml_adult" value="<?php echo $jml_adult; ?>" />
+				<input type="text" name="with_bed" value="<?php echo $with_bed; ?>" />
+				<input type="text" name="no_bed" value="<?php echo $no_bed; ?>" />
+				<input type="text" name="infant" value="<?php echo $infant; ?>" />
+						
+				<? $no=0; foreach($room_choice2 as $row) {?>
+						<input name="kamar[]" id="kamar<? echo $no;?>" value="<? echo $row['ID_ROOM_TYPE']; ?>" />
+						<input name="jml_kamar[]" id="jml_kamar<? echo $no;?>" value="<? echo $row['JUMLAH'];?>" />
+				<? $no++; }?>
+			</div>
+		<? }?>
 	</table>
 	<? echo form_close(); ?>
 </div>
