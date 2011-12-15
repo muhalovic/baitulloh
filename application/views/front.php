@@ -54,6 +54,13 @@
 					opacity: 0.8
 				
 				});
+				$("#myform :select").tooltip({
+					position: "center right",
+					offset: [-2, 10],
+					effect: "fade",
+					opacity: 0.8
+				
+				});
 			});
         </script>
 	</head>
