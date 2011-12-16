@@ -254,7 +254,7 @@ class Paspor extends CI_Controller {
 				array('field'=>'k_thn_lahir','label'=>'Tgl. Dikeluarkan', 'rules'=>'callback_cek_dropdown'),
 				array('field'=>'b_tgl_lahir','label'=>'Tgl. Berakhir', 'rules'=>'callback_cek_dropdown'),
 				array('field'=>'b_bln_lahir','label'=>'Tgl. Berakhir', 'rules'=>'callback_cek_dropdown'),
-				array('field'=>'b_thn_lahir','label'=>'Tgl. Berakhir', 'rules'=>'callback_cek_dropdown|callback_cek_masa_berlaku[$tgl_berakhir]'),
+				array('field'=>'b_thn_lahir','label'=>'Tgl. Berakhir', 'rules'=>'callback_cek_dropdown|callback_cek_masa_berlaku['.$tgl_berakhir.']'),
 				array('field'=>'kantor','label'=>'Kantor', 'rules'=>'required'),
 		//		array('field'=>'foto','label'=>'Scan Paspor', 'rules'=>'required'),
 			);
@@ -278,7 +278,7 @@ class Paspor extends CI_Controller {
 				return TRUE;
     }
 	
-	function cek_masa_berlaku($value)
+	function cek_masa_berlaku($value, $tgl_berakhir)
 	{
 		$this->load->model('packet_model');
 		
@@ -292,11 +292,11 @@ class Paspor extends CI_Controller {
 		$pengurangan_bulan = date("Y-m-d", mktime(0,0,0,$pecah_tgl[1]-6,$pecah_tgl[2],$pecah_tgl[0]));
 		
 		$total_tgl_berangkat = strtotime($pengurangan_bulan);
-		$total_tgl_berakhir_paspor = strtotime($value);
+		$total_tgl_berakhir_paspor = strtotime($tgl_berakhir);
 		
-		if($total_tgl_berakhir_paspor > $total_tgl_berangkat)
+		if($total_tgl_berakhir_paspor < $total_tgl_berangkat)
 		{
-			$this->form_validation->set_message('cek_masa_berlaku', ''.$total_tgl_berakhir_paspor.' - '.$total_tgl_berangkat.' !');
+			$this->form_validation->set_message('cek_masa_berlaku', 'Masa berlaku paspor kurang dari 6 bulan !');
 				return FALSE;
 		}else{
 			return TRUE;

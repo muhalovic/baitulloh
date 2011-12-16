@@ -59,7 +59,7 @@ echo $error_file;
 							$k_thn_lahirs = 0; if(set_value('k_thn_lahir')!='') $k_thn_lahirs = set_value('k_thn_lahir');
 							
 							$k_list_thn['0'] = "Thn";
-							for($i=2009;$i<=2017;$i++)
+							for($i=2006;$i<=date("Y");$i++)
 							{
 								$k_list_thn[$i] = $i;
 							}
@@ -106,7 +106,7 @@ echo $error_file;
 							$b_thn_lahirs = 0; if(set_value('b_thn_lahir')!='') $b_thn_lahirs = set_value('b_thn_lahir');
 							
 							$b_list_thn['0'] = "Thn";
-							for($i=2009;$i<=2017;$i++)
+							for($i=(date("Y")-1);$i<=(date("Y")+5);$i++)
 							{
 								$b_list_thn[$i] = $i;
 							}
@@ -204,7 +204,7 @@ echo $error_file;
 							$k_thn_lahirs = $e_k_thn; if(set_value('k_thn_lahir')!='') $k_thn_lahirs = set_value('k_thn_lahir');
 							
 							$k_list_thn['0'] = "Thn";
-							for($i=2006;$i<=2013;$i++)
+							for($i=2006;$i<=date("Y");$i++)
 							{
 								$k_list_thn[$i] = $i;
 							}
@@ -251,7 +251,7 @@ echo $error_file;
 							$b_thn_lahirs = $e_b_thn; if(set_value('b_thn_lahir')!='') $b_thn_lahirs = set_value('b_thn_lahir');
 							
 							$b_list_thn['0'] = "Thn";
-							for($i=2009;$i<=2017;$i++)
+							for($i=(date("Y")-1);$i<=(date("Y")+5);$i++)
 							{
 								$b_list_thn[$i] = $i;
 							}

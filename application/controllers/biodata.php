@@ -273,6 +273,7 @@ class Biodata extends CI_Controller {
 		$this->load->model('room_packet_model');
 		$this->load->model('packet_model');
 		$this->load->model('jamaah_candidate_model');
+		$this->load->model('kota_model');
 		
 		$id_account = $this->session->userdata('id_account');
 		$kode_reg = $this->session->userdata('kode_registrasi');
@@ -527,7 +528,7 @@ class Biodata extends CI_Controller {
 				array('field'=>'relasi','label'=>'Hubungan', 'rules'=>'callback_cek_dropdown'),
 				array('field'=>'baju','label'=>'Baju', 'rules'=>'callback_cek_dropdown'),
 				array('field'=>'kamar','label'=>'Kamar', 'rules'=>'callback_cek_dropdown'),
-				array('field'=>'tipe_jamaah','label'=>'Tipe Jamaah', 'rules'=>'callback_cek_dropdown'),
+				array('field'=>'tipe_jamaah','label'=>'Tipe Jamaah', 'rules'=>'required'),
 			//	array('field'=>'foto','label'=>'Foto', 'rules'=>'required'),
 			);
 		

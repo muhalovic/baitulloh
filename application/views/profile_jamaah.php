@@ -154,6 +154,6 @@ if(is_file($file_gambar))
   </tr>
   <tr>
     <td class="collage">Paspor</td>
-    <td><a style="cursor:pointer" onClick="window.open('<?php echo site_url().'/admin/data_jamaah/paspor_view/'.$id_candidate.'/'.$kode_reg; ?>','paspor','width=600,height=210,left=350,top=100,screenX=350,screenY=100')">Lihat Paspor</a></td>
+    <td><a style="cursor:pointer" onClick="window.open('<?php echo site_url().'/biodata/paspor_view/'.$id_candidate.'/'.$kode_reg; ?>','paspor','width=600,height=210,left=350,top=100,screenX=350,screenY=100')">Lihat Paspor</a></td>
   </tr>
 </table>

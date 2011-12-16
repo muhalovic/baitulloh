@@ -68,10 +68,6 @@
 							<li><a href="<? echo site_url() ?>/biodata"><b>Data Jamaah</b></a></li>
 						</ul>
 						<div class="nav-divider">&nbsp;</div>
-					
-						<ul class="<?=($this->uri->segment(1)==='paspor')?'current':'select'?>"><li><a href="<? echo site_url() ?>/paspor"><b>Dokumen</b><!--[if IE 7]><!--></a><!--<![endif]--></li></ul>
-						<div class="nav-divider">&nbsp;</div>
-					
 						<ul class="<?=($this->uri->segment(1)==='payment')?'current':'select'?>"><li><a href="<? echo site_url() ?>/payment"><b>Pembayaran</b><!--[if IE 7]><!--></a><!--<![endif]--></li></ul>
 						<div class="nav-divider">&nbsp;</div>
 					

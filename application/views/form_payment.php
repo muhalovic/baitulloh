@@ -13,9 +13,9 @@ echo $error_file;
 		<td width="150" align="center" class="bg_kolom"><h3>TOTAL</h3></td>
     </tr>	
 	<? 
-	if(isset($row_price))
+	if(isset($list_jamaah))
 	{
-		echo $row_price;
+		echo $list_jamaah;
 	}
 	?>	
 	<tr height="30">
@@ -34,7 +34,7 @@ echo $error_file;
 		<td class="bg_kolom"></td>
 		<td class="bg_kolom"></td>
 		<td class="bg_kolom"><strong>T O T A L &nbsp; B I A Y A</strong></td>
-		<td class="bg_kolom"><h4><? if(isset($total_biaya2)) { echo $total_biaya2; } ?> $</h4></td>
+		<td class="bg_kolom"><h4><? if(isset($total_jam)) { echo $total_jam; } ?> $</h4></td>
     </tr>
 </table>
 <br /><br /><br /><br />

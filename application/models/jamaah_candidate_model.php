@@ -262,6 +262,17 @@ class jamaah_candidate_model extends CI_Model {
 		return $this->db->get();
     
 	}
+	
+	function get_jamaah_ByIdAcc($id_account, $kode_reg)
+	{
+		$this->db->select("*");
+		$this->db->from("jamaah_candidate");
+		$this->db->where('ID_ACCOUNT', $id_account);
+		$this->db->where('KODE_REGISTRASI', $kode_reg);
+        $this->db->where_in('STATUS_KANDIDAT', 1);
+		
+		return $this->db->get();
+	}
 }
 
 ?>
