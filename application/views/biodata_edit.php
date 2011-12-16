@@ -123,7 +123,7 @@ echo $error_file;
 					<th valign="top">Propinsi (*)</th>
 					<td>	
 						<? $province = $e_id_propinsi; if(set_value('province')!='') $province = set_value('province');
-							echo form_dropdown('province', $province_options, $province,'id="province" class="styledselect_form_1"'); ?>
+							echo form_dropdown('province', $province_options, $province,'id="province" class="styledselect-biodata"'); ?>
 					</td>
 					<td>
 						<? if(form_error('province') != '') {?>
@@ -135,7 +135,8 @@ echo $error_file;
 				<tr>
 					<? form_error('kota') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
 					<th valign="top">Kota (*)</th>
-					<td><input type="text" name="kota" value="<?php echo $e_kota;?>" class="<? echo $class;?>" /></td>
+					<td><? $kota = $e_kota; if(set_value('kota')!='') $kota = set_value('kota');
+							echo form_dropdown('kota', $kota_options, $kota,'id="kota" class="styledselect-biodata chzn-select" data-allows-new-values="true" title="Pilih kota tempat tinggal anda"'); ?></td>
 					<td>
 						<? if(form_error('kota') != '') {?>
 						<div class="error-left"></div>
@@ -186,7 +187,21 @@ echo $error_file;
 						<div class="error-inner"><?php echo form_error('hp'); ?></div>
 						<? }?>
 					</td>
-				</tr><tr>
+				</tr>
+				<tr>
+					<? form_error('tipe_jamaah') == '' ? $class = 'inp-form2':$class = 'inp-form-error2'; ?>
+					<th valign="top">Tipe Jamaah (*)</th>
+					<td><? $tipe_jamaah = $e_tipe_jamaah; if(set_value('tipe_jamaah')!='') $tipe_jamaah = set_value('tipe_jamaah');
+							echo form_dropdown('tipe_jamaah', $tipe_jamaah_options, $tipe_jamaah,'id="tipe_jamaah" class="styledselect_form_1"'); ?>
+                        </td>
+					<td>
+						<? if(form_error('tipe_jamaah') != '') {?>
+						<div class="error-left"></div>
+						<div class="error-inner"><?php echo form_error('tipe_jamaah'); ?></div>
+						<? }?>
+					</td>
+				</tr>
+                <tr>
 					<? form_error('kamar') == '' ? $class = 'inp-form2':$class = 'inp-form-error2'; ?>
 					<th valign="top">Pilihan Kamar (*)</th>
 					<td><? $kamar = $e_kamar; if(set_value('kamar')!='') $kamar = set_value('kamar');
@@ -345,35 +360,7 @@ echo $error_file;
 				<tr>
 					<? form_error('jasa_paspor') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
 					<th valign="top">Jasa Tambahan</th>
-					<td>
-                    <? if($e_request_nama == "") { $e_jasa_paspor = 0; }
-					   else { $e_jasa_paspor = 1;}
-					?>
-                    <input type="checkbox" name="jasa_paspor" id="jasa_paspor" value="1" <?=($e_jasa_paspor==1)?'checked="checked"':''?>  onchange="jasaPaspor(this)"/> &nbsp;&nbsp;Tambah Nama (3 suku kata) Paspor</td>
-					<td>
-						<? if(form_error('jasa_paspor') != '') {?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('jasa_paspor'); ?></div>
-						<? }?>
-					</td>
-				</tr>
-				<tr>
-					<? form_error('jasa_paspor_nama') == '' ? $class = 'inp-form-text':$class = 'inp-form-error'; ?>
-					<th valign="top"></th>
-					<td>
-                    <input type="hidden" name="jasa_paspor_nama_edit" value="<?php echo $e_request_nama;?>" />
-                    <input type="text" name="jasa_paspor_nama" id="jasa_paspor_nama" value="<?php echo $e_request_nama;?>" class="<? echo $class;?>" disabled="disabled" /></td>
-					<td>
-						<? if(form_error('jasa_paspor_nama') != '') {?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('jasa_paspor_nama'); ?></div>
-						<? }?>
-					</td>
-				</tr>
-				<tr height="50">
-					<? form_error('jasa_maningtis') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
-					<th valign="top"></th>
-					<td valign="top"><input type="checkbox" name="jasa_maningtis" value="1" <?=($e_jasa_tambahan==1)?'checked="checked"':''?> /> &nbsp;&nbsp;Jasa Maningtis</td>
+					<td><input type="checkbox" name="jasa_maningtis" value="1" <?=($e_jasa_tambahan==1)?'checked="checked"':''?> /> &nbsp;&nbsp;Jasa Maningtis</td>
 					<td>
 						<? if(form_error('jasa_maningtis') != '') {?>
 						<div class="error-left"></div>
@@ -381,9 +368,9 @@ echo $error_file;
 						<? }?>
 					</td>
 				</tr>
-				<tr>
+				<tr height="70">
 					<th></th>
-					<td valign="top">
+					<td valign="bottom">
                     	<input type="hidden" value="<? echo $e_id_candidate ?>" name="id_candidate" />
                     	<input type="hidden" value="<? echo $e_id_account ?>" name="id_account" />
 						<input type="submit" value="" class="form-submit" />
@@ -402,17 +389,6 @@ echo $error_file;
 
 <script type="text/javascript">
 
-function jasaPaspor(input)
-{
-	if(input.checked)
-	{
-		document.getElementById('jasa_paspor_nama').value='<?php echo $e_request_nama ?>';
-		document.getElementById('jasa_paspor_nama').disabled=false;
-	} else {
-		document.getElementById('jasa_paspor_nama').value='<?php echo $e_request_nama ?>';
-		document.getElementById('jasa_paspor_nama').disabled=true;
-	}
-}
 
 function SetMahram(input)
 {
@@ -432,5 +408,29 @@ function SetMahram(input)
 		document.getElementById('cek_rifqah').style.display="none"
 	}
 }
+
+$("#province").bind('change',function get_group() 
+{	
+var prp = $("#province").val();
+
+	$.ajax({
+			url: "<?=base_url();?>index.php/province/get_ajax_kota/",
+			global: false,
+			type: "POST",
+			async: false,
+			dataType: "html",
+			data: "id_province="+ prp, //the name of the $_POST variable and its value
+			success: function (response) {
+				 var bahan = response;
+				 
+				 //document.getElementById('info_jd').innerHTML = pecah[0];
+				 document.getElementById('kota').innerHTML = response;
+				 }
+	});
+	$("#kota").trigger("liszt:updated");
+	
+	return false;
+}
+);
 
 </script>

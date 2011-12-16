@@ -26,6 +26,7 @@ class Kota_model extends CI_Model {
 		$this->db->select('*');
 		$this->db->from('kota');
 		$this->db->where('ID_PROPINSI', $id);
+		$this->db->where('STATUS', 1);
 		
 		return $this->db->get();
 	}

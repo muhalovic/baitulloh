@@ -1,12 +1,12 @@
 <!--  start step-holder -->
 <div class="step-holder">
-	<div class="step-no">1</div>
+	<div class="step-no-off">1</div>
 	<div class="step-light-left">Periksa Ketersediaan</a></div>
 	<div class="step-light-right">&nbsp;</div>
 	<div class="step-no-off">2</div>
 	<div class="step-light-left">Hasil Ketersediaan</div>
 	<div class="step-light-right">&nbsp;</div>
-	<div class="step-no-off">3</div>
+	<div class="step-no">3</div>
 	<div class="step-dark-left">Pendaftaran</div>
 	<div class="step-dark-right">&nbsp;</div>
 	<div class="step-no-off">4</div>

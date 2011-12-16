@@ -119,7 +119,7 @@ echo $error_file;?>
 					<th valign="top">Propinsi (*)</th>
 					<td>	
 						<? $province = 0; if(set_value('province')!='') $province = set_value('province');
-							echo form_dropdown('province', $province_options, $province,'id="province" class="styledselect_form_1"'); ?>
+							echo form_dropdown('province', $province_options, $province,'id="province" class="styledselect-biodata"'); ?>
 					</td>
 					<td>
 						<? if(form_error('province') != '') {?>
@@ -131,7 +131,8 @@ echo $error_file;?>
 				<tr>
 					<? form_error('kota') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
 					<th valign="top">Kota (*)</th>
-					<td><input type="text" name="kota" value="<?php echo set_value('kota');?>" class="<? echo $class;?>" /></td>
+					<td><? $kota = 0; if(set_value('kota')!='') $kota = set_value('kota');
+							echo form_dropdown('kota', $kota_options, $kota,'id="kota" class="styledselect-biodata chzn-select" data-allows-new-values="true" title="Pilih kota tempat tinggal anda"'); ?></td>
 					<td>
 						<? if(form_error('kota') != '') {?>
 						<div class="error-left"></div>
@@ -398,4 +399,31 @@ function SetMahram(input)
 	}
 }
 
+
+$("#province").bind('change',function get_group() 
+{	
+var prp = $("#province").val();
+
+	$.ajax({
+			url: "<?=base_url();?>index.php/province/get_ajax_kota/",
+			global: false,
+			type: "POST",
+			async: false,
+			dataType: "html",
+			data: "id_province="+ prp, //the name of the $_POST variable and its value
+			success: function (response) {
+				 var bahan = response;
+				 
+				 //document.getElementById('info_jd').innerHTML = pecah[0];
+				 document.getElementById('kota').innerHTML = response;
+				 }
+	});
+	$("#kota").trigger("liszt:updated");
+	
+	return false;
+}
+);
+	
+	
+	
 </script>
