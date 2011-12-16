@@ -15,7 +15,7 @@ class data_akun extends CI_Controller{
     public function  __construct() {
         parent::__construct();
 		if($this->session->userdata('id_user') == NULL)
-			redirect(site_url()."/login");
+			redirect(site_url()."/admin/login");
     }
 
 
@@ -96,8 +96,8 @@ class data_akun extends CI_Controller{
 		$colModel['edit'] = array('Edit',50,FALSE,'center',0);
 		$colModel['delete'] = array('Delete',50,FALSE,'center',0);
 		$colModel['paket'] = array('Paket',50,FALSE,'center',0);
-		$colModel['paket'] = array('Paket',50,FALSE,'center',0);
 		$colModel['jamaah'] = array('Lihat Jamaah',100,FALSE,'center',0);
+		$colModel['bayar'] = array('Lakukan Pembayaran',100,FALSE,'center',0);
 		
 		$colModel['NAMA_USER'] = array('Nama User',100,TRUE,'center',2);
 		$colModel['EMAIL'] = array('Email',150,TRUE,'center',2);
@@ -142,6 +142,10 @@ class data_akun extends CI_Controller{
 			
 			function add_jamaah(hash,hash1){
 					location.href='".site_url()."/admin/data_jamaah/daftar_jamaah_akun/'+hash+'/'+hash1;
+			}
+			
+			function add_payment(hash,hash1){
+					location.href='".site_url()."/admin/payment/pay/'+hash+'/'+hash1;
 			}
 			
 			function paket(hash,hash1){
@@ -197,6 +201,7 @@ class data_akun extends CI_Controller{
 			$edit = '<img alt="Edit"  style="cursor:pointer" src="'.base_url().'images/flexigrid/edit.jpg" onclick="edit(\''.$row->ID_ACCOUNT.'\',\''.$row->KODE_REGISTRASI.'\')">';
 			$delete = '<img alt="Delete"  style="cursor:pointer" src="'.base_url().'images/flexigrid/delete.jpg" onclick="hapus(\''.$row->ID_ACCOUNT.'\',\''.$row->KODE_REGISTRASI.'\')">';
 			$add_jamaah = '<img alt="Tambah Jamaah"  style="cursor:pointer" src="'.base_url().'images/flexigrid/add.png" onclick="add_jamaah(\''.$row->ID_ACCOUNT.'\',\''.$row->KODE_REGISTRASI.'\')">';
+			$bayar = '<img alt="Tambah Pembayaran"  style="cursor:pointer" src="'.base_url().'images/flexigrid/add.png" onclick="add_payment(\''.$row->ID_ACCOUNT.'\',\''.$row->KODE_REGISTRASI.'\')">';
 			$paket = '<img alt="Paket"  style="cursor:pointer" src="'.base_url().'images/flexigrid/book.png" onclick="paket(\''.$row->ID_ACCOUNT.'\',\''.$row->KODE_REGISTRASI.'\')">';
                  
 			
@@ -207,6 +212,7 @@ class data_akun extends CI_Controller{
 									$delete,
 									$paket,
 									$add_jamaah,
+									$bayar,
 									$row->NAMA_USER,
 									$row->EMAIL,
 									$row->TELP,

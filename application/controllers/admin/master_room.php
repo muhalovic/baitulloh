@@ -7,7 +7,7 @@ class Master_room extends CI_Controller {
 		parent::__construct();
 		
 		if($this->session->userdata('id_user') == NULL)
-			redirect(site_url()."/login");
+			redirect(site_url()."/admin/login");
 	}
 
 	function index()

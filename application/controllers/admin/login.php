@@ -10,7 +10,12 @@ class Login extends CI_Controller {
 
 	function index()
 	{
+		if($this->session->userdata('id_user') == NULL){
 		$this->form();
+		}
+		else{
+		redirect('admin/beranda');
+		}
 	}
 	
 	function form($data=null)

@@ -151,6 +151,22 @@ class Packet_model extends CI_Model {
 		
 		return $this->db->get();
 	}
+	
+	function get_total_biaya_per_paket_by_id_account($id_account,$kode_registrasi)
+	{
+		$status = array(1,3);
+		
+		$this->db->select('JUMLAH_ADULT+CHILD_WITH_BED+CHILD_NO_BED+INFANT as JUMLAH_ORANG',false);
+		$this->db->select('TOTAL_HARGA_PAKET');
+		$this->db->from('TOTAL_BIAYA_PER_PAKET_VIEW');
+		$this->db->where('ID_ACCOUNT', $id_account);
+		$this->db->where('KODE_REGISTRASI', $kode_registrasi);
+		$this->db->where_in($status);
+		
+		return $this->db->get();
+	
+	}
+	
 }
 
 ?>
