@@ -330,8 +330,11 @@ h3{
 }
 
 .content_center{
-	width:350px;
+	width:372px;
 	margin:5px auto;
+	border: thin dashed #AEAEAE;
+	padding:10px;
+	box-shadow: 0px 0px 10px #ccc;
 }
 
 .info_shape{

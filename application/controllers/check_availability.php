@@ -152,7 +152,7 @@ class Check_availability extends CI_Controller {
 			
 			if($total_candidate > $hitung_pagu)
 			{
-				$data['msg_box2'] = "<img src='".base_url()."images/front/warning.png'/>&nbsp;Jumlah Calon Jamaah <font color='A01040' class='bold_red'>Lebih Besar</font> dari Pagu Pesawat.<br>";
+				$data['msg_box2'] = "<img src='".base_url()."images/front/warning.png'/>&nbsp;Jumlah Calon Jamaah <font color='A01040' class='bold_red'>LEBIH BESAR</font> dari Pagu Pesawat.<br>";
 				$value_waiting_list = 1;
 			}
 			
@@ -193,6 +193,16 @@ class Check_availability extends CI_Controller {
                         $data['program'] = $kelas_program;
 			$data['kode_group'] = $kode_group;
 			$data['nama_program'] = $nama_program;
+			
+			$room_config = array();
+			
+			for($index = 0;$index<count($jml_kamar);$index++){
+				$room_config[$index]['ID_ROOM_TYPE'] = $id_tipe_kamar[$index];
+				$room_config[$index]['JUMLAH'] = $jml_kamar[$index];
+			}
+			
+			$data['room_choice2'] = $room_config;
+			
 			
 			$data[] = null;
 			$data['content'] = $this->load->view('result_page',$data,true);
@@ -388,7 +398,7 @@ class Check_availability extends CI_Controller {
 			  
 			  if($jml_kamar[$i] > $tot)
 			  {
-				 $error .= "<img src='".base_url()."images/front/warning.png'/>&nbsp;Jumlah Konfigurasi Kamar <strong>".$room_type->row()->JENIS_KAMAR."</strong> <font color='A01040' class='bold_red'>Lebih Besar</font> dari Sisa Kamar.<br>";
+				 $error .= "<img src='".base_url()."images/front/warning.png'/>&nbsp;Jumlah Konfigurasi Kamar <strong>".$room_type->row()->JENIS_KAMAR."</strong> <font color='A01040' class='bold_red'>LEBIH BESAR</font> dari Sisa Kamar.<br>";
 				 $valid = FALSE;
 			  }else{
 				 $valid = TRUE;

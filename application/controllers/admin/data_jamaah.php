@@ -7,7 +7,7 @@ class Data_jamaah extends CI_Controller {
 		parent::__construct();
 		
 		if($this->session->userdata('id_user') == NULL)
-			redirect(site_url()."/login");
+			redirect(site_url()."admin/login");
 	}
 
 	function index()
@@ -1182,17 +1182,14 @@ class Data_jamaah extends CI_Controller {
 				if($data['e_tgl_keluar'] != NULL)
 				{
 					$k_pecah_tgl = explode("-", $data['e_tgl_keluar']);
-					$data['e_k_thn'] = $k_pecah_tgl[0];
-					$data['e_k_bln'] = $k_pecah_tgl[1];
-					$data['e_k_tgl'] = $k_pecah_tgl[2];
+					$data['e_tgl_keluar'] = $k_pecah_tgl[2].'-'.$k_pecah_tgl[1].'-'.$k_pecah_tgl[0];
 				}
 				
 				if($data['e_tgl_habis'] != NULL)
 				{
 					$b_pecah_tgl = explode("-", $data['e_tgl_habis']);
-					$data['e_b_thn'] = $b_pecah_tgl[0];
-					$data['e_b_bln'] = $b_pecah_tgl[1];
-					$data['e_b_tgl'] = $b_pecah_tgl[2];
+
+					$data['e_tgl_berakhir'] = $b_pecah_tgl[2].'-'.$b_pecah_tgl[1].'-'.$b_pecah_tgl[0];
 				}
 						
 				$data['tipe'] = $tipe;
@@ -1224,7 +1221,7 @@ class Data_jamaah extends CI_Controller {
 					$this->session->unset_userdata('upload_file');
 				}
 				
-				$data['content'] = $this->load->view('admin/paspor_edit', $data, true);
+				$data['content'] = $this->load->view('admin/paspor_edit', $data,true);
 				$this->load->view('admin/front', $data);
 			
 			}
@@ -1236,17 +1233,13 @@ class Data_jamaah extends CI_Controller {
 		
 	}
 	
-	function cek_validasi_paspor() {
+	function cek_validasi_paspor($id_account) {
 		$this->load->library('form_validation');
 		//setting rules
 		$config = array(
 				array('field'=>'no_paspor','label'=>'Nomor Paspor', 'rules'=>'required'),
-				array('field'=>'k_tgl_lahir','label'=>'Tgl. Dikeluarkan', 'rules'=>'callback_cek_dropdown'),
-				array('field'=>'k_bln_lahir','label'=>'Tgl. Dikeluarkan', 'rules'=>'callback_cek_dropdown'),
-				array('field'=>'k_thn_lahir','label'=>'Tgl. Dikeluarkan', 'rules'=>'callback_cek_dropdown'),
-				array('field'=>'b_tgl_lahir','label'=>'Tgl. Berakhir', 'rules'=>'callback_cek_dropdown'),
-				array('field'=>'b_bln_lahir','label'=>'Tgl. Berakhir', 'rules'=>'callback_cek_dropdown'),
-				array('field'=>'b_thn_lahir','label'=>'Tgl. Berakhir', 'rules'=>'callback_cek_dropdown'),
+				array('field'=>'tgl_berakhir','label'=>'Tgl. Berakhir', 'rules'=>'callback_is_paspor_on_group_range['.$id_account.']'),
+				array('field'=>'tgl_keluar','label'=>'Tgl. Dikeluarkan', 'rules'=>'required|callback_is_paspor_valid['.$this->input->post('tgl_berakhir').']'),
 				array('field'=>'kantor','label'=>'Kantor', 'rules'=>'required'),
 				array('field'=>'nama_paspor','label'=>'Nama pada Paspor', 'rules'=>'required'),
 		//		array('field'=>'foto','label'=>'Scan Paspor', 'rules'=>'required'),
@@ -1255,6 +1248,8 @@ class Data_jamaah extends CI_Controller {
 		
 		$this->form_validation->set_rules($config);
 		$this->form_validation->set_message('required', 'Kolom <strong>%s</strong> harus diisi !');
+		$this->form_validation->set_message('is_paspor_valid', 'Tanggal berlaku <strong>paspor</strong> tidak valid  !');
+		$this->form_validation->set_message('is_paspor_on_group_range', 'Tanggal berlaku <strong>paspor</strong> kurang dari 6 bulan tanggal keberangkatan  !');
 		$this->form_validation->set_message('valid_email', 'Penulisan kolom <strong>%s</strong> tidak benar!');
 		$this->form_validation->set_message('numeric', '<strong>Kolom %s</strong> harus berupa angka !');
 		//$this->form_validation->set_error_delimiters('<li class="error">', '</li>');
@@ -1277,22 +1272,18 @@ class Data_jamaah extends CI_Controller {
 		$id_account = $this->input->post('id_account');
 		$tipe = $this->input->post('id_tipe');
 		
-		if ($this->cek_validasi_paspor() == FALSE){
+		if ($this->cek_validasi_paspor($id_account) == FALSE){
 			$this->paspor_edit($id_candidate, $id_account, $tipe);
 		}
 		else{
 
 			// tanggal dikerluarkan 
-			$k_tgl = $this->input->post('k_tgl_lahir');
-			$k_bln = $this->input->post('k_bln_lahir');
-			$k_thn = $this->input->post('k_thn_lahir');
-			$k_dates = $k_thn."-".$k_bln."-".$k_tgl;
+			$k_tgl = explode('-',$this->input->post('tgl_keluar'));
+			$k_dates = $k_tgl[2]."-".$k_tgl[1]."-".$k_tgl[0];
 			
 			// tanggal berakhir
-			$b_tgl = $this->input->post('b_tgl_lahir');
-			$b_bln = $this->input->post('b_bln_lahir');
-			$b_thn = $this->input->post('b_thn_lahir');
-			$b_dates = $b_thn."-".$b_bln."-".$b_tgl;
+			$b_tgl = explode('-',$this->input->post('tgl_berakhir'));
+			$b_dates = $b_tgl[2]."-".$b_tgl[1]."-".$b_tgl[0];
 			
 			// cek foto
 			$cek_foto = $_FILES['foto']['name'];
@@ -1509,6 +1500,90 @@ function _is_add_jamaah_available($id_akun,$kode_registrasi){
 }
 
 
+function is_paspor_valid($createddate,$enddate){
+
+	$createddate = explode('-',$createddate);
+	$enddate = explode('-',$enddate);
+		
+	$createddate = $createddate[2].'-'.$createddate[1].'-'.$createddate[0];
+	$enddate = $enddate[2].'-'.$enddate[1].'-'.$enddate[0];
+
+	
+	$createddate = strtotime($createddate);
+	$enddate = strtotime($enddate);
+	
+	if(date('Y',$enddate) - date('Y',$createddate) < 5){
+		return false;
+	}
+	else{
+		return true;
+	}
+}
+
+function is_paspor_on_group_range($pasporenddate,$id_akun){
+	
+	$this->load->model('accounts_model');
+	$this->load->model('packet_model');
+	
+	$akun = $this->accounts_model->get_data_account($id_akun)->row();
+	
+	$groupdeparturedate = $this->packet_model->get_packet_byAcc($id_akun, $akun->KODE_REGISTRASI)->row()->TANGGAL_KEBERANGKATAN_MK;
+	
+	$pasporenddate = explode('-',$pasporenddate);
+		
+	$pasporenddate = $pasporenddate[2].'-'.$pasporenddate[1].'-'.$pasporenddate[0];
+	
+	
+	$diff = $this->dateDifference($pasporenddate,$groupdeparturedate);
+	
+	if( $diff[0] > 0 )
+	{
+		return false;
+	}
+	
+	if($diff [1] > 6 || ($diff[1] == 6 && $diff[2] >0) ){
+		return false;
+	}
+
+		return true;
+	
+	
+}
+
+function dateDifference($startDate, $endDate)
+        {
+            $startDate = strtotime($startDate);
+            $endDate = strtotime($endDate);
+            if ($startDate === false || $startDate < 0 || $endDate === false || $endDate < 0 || $startDate > $endDate)
+                return false;
+               
+            $years = date('Y', $endDate) - date('Y', $startDate);
+           
+            $endMonth = date('m', $endDate);
+            $startMonth = date('m', $startDate);
+           
+            // Calculate months
+            $months = $endMonth - $startMonth;
+            if ($months <= 0)  {
+                $months += 12;
+                $years--;
+            }
+            if ($years < 0)
+                return false;
+           
+            // Calculate the days
+                        $offsets = array();
+                        if ($years > 0)
+                            $offsets[] = $years . (($years == 1) ? ' year' : ' years');
+                        if ($months > 0)
+                            $offsets[] = $months . (($months == 1) ? ' month' : ' months');
+                        $offsets = count($offsets) > 0 ? '+' . implode(' ', $offsets) : 'now';
+
+                        $days = $endDate - strtotime($offsets, $startDate);
+                        $days = date('z', $days);   
+                       
+            return array($years, $months, $days);
+        } 
 /**
 ------------------------------ end of Data Jamaah Per Akun -----------------------------------------------------------
 */

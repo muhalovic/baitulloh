@@ -1,3 +1,5 @@
+
+
 <? 
 echo form_open_multipart('/admin/data_jamaah/paspor_edit_db');
 echo $notifikasi;
@@ -88,96 +90,26 @@ echo $error_file;
 				</tr>
 				<tr>
 					<th valign="top">Tgl. Dikeluarkan (*)</th>
-					<td><? 
-							// list tgl
-							$k_tgl_lahirs = 0; if(set_value('k_tgl_lahir')!='') $k_tgl_lahirs = set_value('k_tgl_lahir');
-							
-							$k_list_tgl['0'] = "Tgl";
-							for($i=1;$i<=31;$i++)
-							{
-								$k_list_tgl[$i] = $i;
-							}
-							echo form_dropdown('k_tgl_lahir', $k_list_tgl, $k_tgl_lahirs,'id="k_tgl_lahir" class="styledselect-day"'); 
-							
-							// list bln
-							$k_bln_lahirs = 0; if(set_value('k_bln_lahir')!='') $k_bln_lahirs = set_value('k_bln_lahir');
-							
-							$k_list_bln['0'] = "Bln";
-							for($i=01;$i<=12;$i++)
-							{
-								$k_list_bln[$i] = $i;
-							}
-							echo form_dropdown('k_bln_lahir', $k_list_bln, $k_bln_lahirs,'id="k_bln_lahir" class="styledselect-day"');
-							
-							//list tahun
-							$k_thn_lahirs = 0; if(set_value('k_thn_lahir')!='') $k_thn_lahirs = set_value('k_thn_lahir');
-							
-							$k_list_thn['0'] = "Thn";
-							for($i=2009;$i<=2017;$i++)
-							{
-								$k_list_thn[$i] = $i;
-							}
-							echo form_dropdown('k_thn_lahir', $k_list_thn, $k_thn_lahirs,'id="k_thn_lahir" class="styledselect-day"');?>
-                     
+					<td>
+						<input type="text" class="datepicker" name="tgl_keluar" value="<?php echo $this->input->post('tgl_keluar') ; ?>">
                     </td>
 					<td>
-						<? if(form_error('k_tgl_lahir') != '') {?>
+						<? if(form_error('tgl_keluar') != '') {?>
 						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('k_tgl_lahir'); ?></div>
-						<? } elseif(form_error('k_bln_lahir') != '') { ?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('k_bln_lahir'); ?></div>
-						<? }elseif(form_error('k_thn_lahir') != '') {?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('k_thn_lahir'); ?></div>
-						<? }?>
+						<div class="error-inner"><?php echo form_error('tgl_keluar'); ?></div>
+						<? } ?> 
 					</td>
 				</tr>
 				<tr>
 					<th valign="top">Tgl. Berakhir (*)</th>
-					<td><? 
-							// list tgl
-							$b_tgl_lahirs = 0; if(set_value('b_tgl_lahir')!='') $b_tgl_lahirs = set_value('b_tgl_lahir');
-							
-							$b_list_tgl['0'] = "Tgl";
-							for($i=1;$i<=31;$i++)
-							{
-								$b_list_tgl[$i] = $i;
-							}
-							echo form_dropdown('b_tgl_lahir', $b_list_tgl, $b_tgl_lahirs,'id="b_tgl_lahir" class="styledselect-day"'); 
-							
-							// list bln
-							$b_bln_lahirs = 0; if(set_value('b_bln_lahir')!='') $b_bln_lahirs = set_value('b_bln_lahir');
-							
-							$b_list_bln['0'] = "Bln";
-							for($i=01;$i<=12;$i++)
-							{
-								$b_list_bln[$i] = $i;
-							}
-							echo form_dropdown('b_bln_lahir', $b_list_bln, $b_bln_lahirs,'id="b_bln_lahir" class="styledselect-day"');
-							
-							//list tahun
-							$b_thn_lahirs = 0; if(set_value('b_thn_lahir')!='') $b_thn_lahirs = set_value('b_thn_lahir');
-							
-							$b_list_thn['0'] = "Thn";
-							for($i=2009;$i<=2017;$i++)
-							{
-								$b_list_thn[$i] = $i;
-							}
-							echo form_dropdown('b_thn_lahir', $b_list_thn, $b_thn_lahirs,'id="b_thn_lahir" class="styledselect-day"');?>
-                     
+					<td>
+						<input type="text" class="datepicker" name="tgl_berakhir" value="<?php echo $this->input->post('tgl_berakhir') ; ?>">
                     </td>
 					<td>
-						<? if(form_error('b_tgl_lahir') != '') {?>
+						<? if(form_error('tgl_berakhir') != '') {?>
 						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('b_tgl_lahir'); ?></div>
-						<? } elseif(form_error('b_bln_lahir') != '') { ?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('b_bln_lahir'); ?></div>
-						<? }elseif(form_error('b_thn_lahir') != '') {?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('b_thn_lahir'); ?></div>
-						<? }?>
+						<div class="error-inner"><?php echo form_error('tgl_berakhir'); ?></div>
+						<? } ?> 
 					</td>
 				</tr>
 				<tr>
@@ -232,96 +164,26 @@ echo $error_file;
 				</tr>
 				<tr>
 					<th valign="top">Tgl. Dikeluarkan (*)</th>
-					<td><? 
-							// list tgl
-							$k_tgl_lahirs = $e_k_tgl; if(set_value('k_tgl_lahir')!='') $k_tgl_lahirs = set_value('k_tgl_lahir');
-							
-							$k_list_tgl['0'] = "Tgl";
-							for($i=1;$i<=31;$i++)
-							{
-								$k_list_tgl[$i] = $i;
-							}
-							echo form_dropdown('k_tgl_lahir', $k_list_tgl, $k_tgl_lahirs,'id="k_tgl_lahir" class="styledselect-day"'); 
-							
-							// list bln
-							$k_bln_lahirs = $e_k_bln; if(set_value('k_bln_lahir')!='') $k_bln_lahirs = set_value('k_bln_lahir');
-							
-							$k_list_bln['0'] = "Bln";
-							for($i=01;$i<=12;$i++)
-							{
-								$k_list_bln[$i] = $i;
-							}
-							echo form_dropdown('k_bln_lahir', $k_list_bln, $k_bln_lahirs,'id="k_bln_lahir" class="styledselect-day"');
-							
-							//list tahun
-							$k_thn_lahirs = $e_k_thn; if(set_value('k_thn_lahir')!='') $k_thn_lahirs = set_value('k_thn_lahir');
-							
-							$k_list_thn['0'] = "Thn";
-							for($i=2009;$i<=2017;$i++)
-							{
-								$k_list_thn[$i] = $i;
-							}
-							echo form_dropdown('k_thn_lahir', $k_list_thn, $k_thn_lahirs,'id="k_thn_lahir" class="styledselect-day"');?>
-                     
+					<td>
+						<input type="text" class="datepicker" name="tgl_keluar" value="<?php if(isset($_POST['tgl_keluar'])){echo set_value('tgl_keluar');}else{ echo $e_tgl_keluar;} ; ?>">
                     </td>
 					<td>
-						<? if(form_error('k_tgl_lahir') != '') {?>
+						<? if(form_error('tgl_keluar') != '') {?>
 						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('k_tgl_lahir'); ?></div>
-						<? } elseif(form_error('k_bln_lahir') != '') { ?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('k_bln_lahir'); ?></div>
-						<? }elseif(form_error('k_thn_lahir') != '') {?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('k_thn_lahir'); ?></div>
-						<? }?>
+						<div class="error-inner"><?php echo form_error('tgl_keluar'); ?></div>
+						<? } ?> 
 					</td>
 				</tr>
 				<tr>
 					<th valign="top">Tgl. Berakhir (*)</th>
-					<td><? 
-							// list tgl
-							$b_tgl_lahirs = $e_b_tgl; if(set_value('b_tgl_lahir')!='') $b_tgl_lahirs = set_value('b_tgl_lahir');
-							
-							$b_list_tgl['0'] = "Tgl";
-							for($i=1;$i<=31;$i++)
-							{
-								$b_list_tgl[$i] = $i;
-							}
-							echo form_dropdown('b_tgl_lahir', $b_list_tgl, $b_tgl_lahirs,'id="b_tgl_lahir" class="styledselect-day"'); 
-							
-							// list bln
-							$b_bln_lahirs = $e_b_bln; if(set_value('b_bln_lahir')!='') $b_bln_lahirs = set_value('b_bln_lahir');
-							
-							$b_list_bln['0'] = "Bln";
-							for($i=01;$i<=12;$i++)
-							{
-								$b_list_bln[$i] = $i;
-							}
-							echo form_dropdown('b_bln_lahir', $b_list_bln, $b_bln_lahirs,'id="b_bln_lahir" class="styledselect-day"');
-							
-							//list tahun
-							$b_thn_lahirs = $e_b_thn; if(set_value('b_thn_lahir')!='') $b_thn_lahirs = set_value('b_thn_lahir');
-							
-							$b_list_thn['0'] = "Thn";
-							for($i=2009;$i<=2017;$i++)
-							{
-								$b_list_thn[$i] = $i;
-							}
-							echo form_dropdown('b_thn_lahir', $b_list_thn, $b_thn_lahirs,'id="b_thn_lahir" class="styledselect-day"');?>
-                     
+					<td>
+						<input type="text" class="datepicker" name="tgl_berakhir" value="<?php if(isset($_POST['tgl_berakhir'])){echo set_value('tgl_berakhir');}else{ echo $e_tgl_berakhir;} ; ?>">
                     </td>
 					<td>
-						<? if(form_error('b_tgl_lahir') != '') {?>
+						<? if(form_error('tgl_berakhir') != '') {?>
 						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('b_tgl_lahir'); ?></div>
-						<? } elseif(form_error('b_bln_lahir') != '') { ?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('b_bln_lahir'); ?></div>
-						<? }elseif(form_error('b_thn_lahir') != '') {?>
-						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('b_thn_lahir'); ?></div>
-						<? }?>
+						<div class="error-inner"><?php echo form_error('tgl_berakhir'); ?></div>
+						<? } ?> 
 					</td>
 				</tr>
 				<tr>
@@ -401,19 +263,15 @@ echo $error_file;
 <? echo form_close(); ?>
 <div class="clear"></div>
 
-
 <script type="text/javascript">
-
-function jasaPaspor(input)
-{
-	if(input.checked)
-	{
-		document.getElementById('jasa_paspor_nama').value='';
-		document.getElementById('jasa_paspor_nama').disabled=false;
-	} else {
-		document.getElementById('jasa_paspor_nama').value='';
-		document.getElementById('jasa_paspor_nama').disabled=true;
-	}
-}
-
+	$(function() {
+		$( ".datepicker" ).datepicker({
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: "d-m-yy",
+			showOn: "button",
+			buttonImage: "<?php echo base_url()?>/images/front/calendar.png",
+			buttonImageOnly: true
+		});
+	});
 </script>
