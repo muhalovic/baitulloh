@@ -43,11 +43,11 @@ class Payment extends CI_Controller {
 		
 		$data_jamaah_maningtis = $this->jamaah_candidate_model->get_total_jamaah($id_akun, $kode_registrasi, array('JASA_TAMBAHAN !='=>0));
 		
-		 $data_pay_uangmuka = $this->payment_model->query_payment("select * from payment_view where ID_ACCOUNT = '".$id_akun."' AND KODE_REGISTRASI = '".$kode_registrasi."' AND ID_PACKET = '".$id_packets."' AND JENIS_PEMBAYARAN = '1'");
+		$data_pay_uangmuka = $this->payment_model->query_payment("select * from payment_view where ID_ACCOUNT = '".$id_akun."' AND KODE_REGISTRASI = '".$kode_registrasi."' AND ID_PACKET = '".$id_packets."' AND JENIS_PEMBAYARAN = '1'");
 		$data_pay_lunas = $this->payment_model->query_payment("select * from payment_view where ID_ACCOUNT = '".$id_akun."' AND KODE_REGISTRASI = '".$kode_registrasi."' AND ID_PACKET = '".$id_packets."' AND JENIS_PEMBAYARAN = '2'");
 		$data_pay_tax = $this->payment_model->query_payment("select * from payment_view where ID_ACCOUNT = '".$id_akun."' AND KODE_REGISTRASI = '".$kode_registrasi."' AND ID_PACKET = '".$id_packets."' AND JENIS_PEMBAYARAN = '3'");
 		$data_total_jamaah = $this->jamaah_candidate_model->get_total_jamaah($id_akun, $kode_registrasi);
-		
+		$data_tagihan_paket = $this->packet_model->get_total_biaya_per_paket_by_id_account($id_akun, $kode_registrasi)->row();
 
 		$data['id_akun']= $id_akun;
 		$data['kode_registrasi']= $kode_registrasi;
@@ -129,9 +129,15 @@ class Payment extends CI_Controller {
 			$data['css_lunas'] = "belum";
 		}
 			
+		$paket_result = $data_packet->result();
 		
 		// LOOPING PILIHAN PAKET 
-		$data['row_price'] = '';
+		$data['row_price'] = '<tr height="30">
+												<td align="center" ><h4> Total Harga Paket '.$paket_result[0]->KODE_GROUP.' - '.$paket_result[0]->NAMA_PROGRAM.' untuk '.$data_tagihan_paket->JUMLAH_ORANG.' Jamaah</h4></td>
+												<td align="center" ></td>
+												<td align="center"><h4>'.$this->cek_ribuan($data_tagihan_paket->TOTAL_HARGA_PAKET).' $</h4></td>
+												<td align="center"><h4>'.$this->cek_ribuan($data_tagihan_paket->TOTAL_HARGA_PAKET).' $</h4></td>
+											</tr>';
 		$biaya_harga_kamar = 0;
 		
 		if($data_total_jamaah->result() != NULL)
@@ -188,7 +194,7 @@ class Payment extends CI_Controller {
 					$biaya_harga_kamar += $total_harga_kamar;
 					
 					$data['row_price'] .= '	<tr height="30">
-												<td align="center"><h4>'.$nama_group.' - '.$nama_program.' / '.$jenis_kamar.'</h4></td>
+												<td align="center"><h4>|_ '.$nama_group.' - '.$nama_program.' / '.$jenis_kamar.'</h4></td>
 												<td align="center"><h4>'.$nama_calon.'</h4></td>
 												<td align="center"><h4>'.$this->cek_ribuan($total_harga_kamar).' $</h4></td>
 												<td align="center"><h4>'.$this->cek_ribuan($total_harga_kamar).' $</h4></td>
@@ -201,10 +207,10 @@ class Payment extends CI_Controller {
 		
 		$data['hitung_total_maningtis'] = $hitung_total_maningtis;
 		
-		$data['jumlah_calon_jamaah'] = $data_total_jamaah->num_rows();
-		$hitung_dp_calon_jamaah_1 = $data['jumlah_calon_jamaah'] * 1100;
+		$data['jumlah_calon_jamaah'] = $data_tagihan_paket->JUMLAH_ORANG;
+		$hitung_dp_calon_jamaah_1 = $data_tagihan_paket->JUMLAH_ORANG * 1100;
 		$data['hitung_dp_calon_jamaah'] = $this->cek_ribuan($hitung_dp_calon_jamaah_1);
-		$data['total_biaya'] =  $hitung_total_maningtis + $biaya_harga_kamar;
+		$data['total_biaya'] =  $hitung_total_maningtis + $data_tagihan_paket->TOTAL_HARGA_PAKET;
 		$data['total_pelunasan'] = $this->cek_ribuan($data['total_biaya'] - $hitung_dp_calon_jamaah_1);
 		$data['total_biaya2'] = $this->cek_ribuan($data['total_biaya']);
 		$data['total_pay'] = $data['jumlah_dp2'] + $data['jumlah_lunas2'];
