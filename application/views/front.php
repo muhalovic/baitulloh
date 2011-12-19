@@ -87,9 +87,9 @@
                 <!-- edit menu atas disini -->
                 <? if($this->session->userdata('email') == NULL){ ?>
 					<span class="top_separator">|</span>
-					<a href="<?php echo site_url();?>">Registrasi</a>
+					<a href="<?php echo base_url();?>periksa">Registrasi</a>
 					<span class="top_separator">|</span>
-					<a href="<?php echo base_url().'index.php/login/';?>">Login</a>
+					<a href="<?php echo base_url().'login';?>">Login</a>
 					<span class="top_separator">|</span>
 					<a href="http://umrahkamilah.com">Informasi</a>
 					<span class="top_separator">|</span>

@@ -39,7 +39,7 @@
 						</div>
 
 						<div align="center">
-							<p><a href="<?=site_url() ?>/forgot" title="Lupa Password Anda?">Lupa Password?</a></p>
+							<p><a href="<?=base_url() ?>lupapassword" title="Lupa Password Anda?">Lupa Password?</a></p>
 						</div>
 						
 						<div style="margin:5px;text-align:center;">

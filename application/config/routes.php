@@ -38,8 +38,17 @@
 |
 */
 
-$route['default_controller'] = "Check_availability";
-$route['404_override'] = '';
+$route['default_controller'] 	= "Check_availability";
+$route['404_override'] 			= '';
+
+/* ROUTING UNTUK FRONT -----------------------------------------------------*/
+$route['periksa'] 				= 'check_availability';
+$route['login'] 				= 'login';
+$route['lupapassword'] 			= 'forgot';
+$route['hasil'] 				= 'check_availability/do_check';
+$route['daftar'] 				= 'registration';
+$route['pasca_daftar/(:any)'] 	= 'notification/show/$1';
+/* END ROUTING UNTUK FRONT -------------------------------------------------*/
 
 
 /* End of file routes.php */

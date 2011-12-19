@@ -19,7 +19,7 @@
 <div class="center">
 	<!-- LEFT SIDE -->
 	<div class="content_left">
-		<?php $attr = array('name' => 'check', 'id' => 'myform'); echo form_open('check_availability/do_check', $attr); ?>
+		<?php $attr = array('name' => 'check', 'id' => 'myform'); echo form_open('hasil', $attr); ?>
 			<div class="row">
 				<? if(form_error('group') != '') {?>
 					<label class="col1"> &nbsp; </label>
