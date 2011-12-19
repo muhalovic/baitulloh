@@ -341,7 +341,7 @@ echo $error_file;?>
 				<tr height="50">
 					<? form_error('jasa_maningtis') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
 					<th valign="top">Jasa Tambahan</th>
-					<td valign="top"><input type="checkbox" name="jasa_maningtis" value="1" <? echo set_checkbox('jasa_maningtis', '1')?> /> &nbsp;&nbsp;Jasa Maningtis</td>
+					<td valign="top"><input type="checkbox" name="jasa_maningtis" value="1" <? echo set_checkbox('jasa_maningtis', '1')?> /> &nbsp;&nbsp;Jasa Meningitis</td>
 					<td>
 						<? if(form_error('jasa_maningtis') != '') {?>
 						<div class="error-left"></div>

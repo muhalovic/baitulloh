@@ -1797,32 +1797,36 @@ div.thumb {
 table.front_payment {
 	border-width: 1px;
 	border-spacing: 1px;
-	border-style: dashed;
-	border-color: gray;
+	border-style: solid;
+	border-color: #dddddd;
 	border-collapse: collapse;
 }
 table.front_payment th {
 	border-width: 1px;
 	padding: 5px;
-	border-style: dashed;
-	border-color: gray;
+	border-style: solid;
+	border-color: #dddddd;
 	-moz-border-radius: ;
 }
 table.front_payment td {
 	border-width: 1px;
 	padding: 5px;
-	border-style: dashed;
-	border-color: #CCC;
+	border-style: solid;
+	border-color: #dddddd;
 	-moz-border-radius: ;
 }
 
 
 table.front_price {
+	border-width: 1px;
+	border-spacing: 1px;
+	border-style: solid;
+	border-color: #dddddd;
 	border-collapse: collapse;
 }
 
 table.front_price td {
-	border-bottom:1px dashed #CCC;
+	border-bottom:1px solid #eeeeee;
 	padding: 5px;
 	-moz-border-radius: ;
 }
@@ -1845,6 +1849,15 @@ table.front_price td {
 .bg_kolom {
 	background-color:#EEEEEE;
 	text-align:center;
+	border: 1px #dddddd solid !important;
+}
+
+.price_list_packet {
+	padding-left:30px;
+}
+
+.price_list_jamaah {
+	padding-left:50px;
 }
 
 .bg_kolom_right {

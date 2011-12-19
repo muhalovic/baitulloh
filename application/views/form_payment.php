@@ -1,16 +1,17 @@
 <?php 
-echo $notifikasi;
-echo $error_file;
+if(isset($notifikasi)) { echo $notifikasi; }
+if(isset($error_file)) { echo $error_file; }
 ?>
 
 <div class="garis_pisah"> RINCIAN BIAYA</div>
 <center>
 <table width="100%" class="front_price" align="center">
 	<tr height="30">
-		<td width="150" align="center" class="bg_kolom"><h3>PAKET / TIPE KAMAR</h3></td>
-		<td width="150" align="center" class="bg_kolom"><h3>NAMA CALON JAMAAH</h3></td>
-		<td width="150" align="center" class="bg_kolom"><h3>HARGA</h3></td>
-		<td width="150" align="center" class="bg_kolom"><h3>TOTAL</h3></td>
+		<td width="300" align="center" class="bg_kolom"><h3>KONFIGURASI KAMAR</h3></td>
+		<td width="100" align="center" class="bg_kolom"><h3>HARGA PER KAMAR</h3></td>
+		<td width="100" align="center" class="bg_kolom"><h3>RINCIAN</h3></td>
+		<td width="100" align="center" class="bg_kolom"><h3>JUMLAH</h3></td>
+		<td width="100" align="center" class="bg_kolom"><h3>TOTAL</h3></td>
     </tr>	
 	<? 
 	if(isset($list_jamaah))
@@ -19,22 +20,18 @@ echo $error_file;
 	}
 	?>	
 	<tr height="30">
-		<td align="center"><h4>Jasa Pengurusan Buku Maningtis</h4></td>
-		<td align="center"></td>
-		<td align="center"><h4><? if(isset($hitung_jasa_maningtis)) { echo $hitung_jasa_maningtis; } ?> x 20.00 $</h4></td>
-		<td align="center"><h4><? if(isset($hitung_total_maningtis)) { echo $hitung_total_maningtis; } ?> $</h4></td>
+		<td align="left"><h4><span class="price_list_packet">Jasa Pengurusan Buku Maningtis</span></h4></td>
+		<td align="center"><h4></h4></td>
+		<td align="center"><h4>$ 20.00</h4></td>
+		<td align="center"><h4><? if(isset($total_maningtis)) { echo $total_maningtis; }else{ echo 0; } ?> x</h4></td>
+		<td align="left"><h4 class="price_list_packet">$ <? if(isset($total_maningtis)) { echo (20 * $total_maningtis); }else{ echo 0; } ?></h4></td>
     </tr>		
-	<tr height="30">
-		<td align="center"><h4>Jasa Tambah Nama</h4></td>
-		<td align="center"</td>
-		<td align="center"><h4><? if(isset($hitung_jasa_nama)) { echo $hitung_jasa_nama; } ?> x 20.00 $</h4></td>
-		<td align="center"><h4><? if(isset($hitung_total)) { echo $hitung_total; } ?> $</h4></td>
-    </tr>
 	<tr height="30" valign="bottom">
 		<td class="bg_kolom"></td>
 		<td class="bg_kolom"></td>
+		<td class="bg_kolom"></td>
 		<td class="bg_kolom"><strong>T O T A L &nbsp; B I A Y A</strong></td>
-		<td class="bg_kolom"><h4><? if(isset($total_jam)) { echo $total_jam; } ?> $</h4></td>
+		<td class="bg_kolom" align="left"><h4>$ <? if(isset($total_harga_keseluruhan)) { echo $total_harga_keseluruhan; } ?></h4></td>
     </tr>
 </table>
 <br /><br /><br /><br />
@@ -43,6 +40,61 @@ echo $error_file;
 
 <!-- ------- Rincian Pembayaran --------->
 
+<table width="100%" class="front_payment" align="center">
+	<tr height="30">
+		<td width="150" class="bg_kolom"></td>
+		<td width="100" class="bg_kolom"><h3>BIAYA</h3></td>
+		<td width="100" class="bg_kolom"><h3>NOMINAL<br />DIBAYARKAN</h3></td>
+		<td width="100" class="bg_kolom"><h3>STATUS YANG DIBAYARKAN</h3></td>
+		<td width="100" class="bg_kolom"><h3>TOTAL YANG DIBAYARKAN</h3></td>
+		<td width="100" class="bg_kolom"><h3>STATUS LUNAS</h3></td>
+		<td width="100" class="bg_kolom"><h3>KEKURANGAN</h3></td>
+		<td width="100" class="bg_kolom"><h3>JATUH TEMPO</h3></td>
+    </tr>	
+	<tr height="30">
+		<td class="bg_kolom_right front_payment_top"><h4>Uang Muka (<font color="#707070"><i><? if(isset($total_jamaah_per_kamar)) { echo $total_jamaah_per_kamar; } ?> x 1.100</i></font>)</h4></td>
+		<td align="center">$ <? if(isset($biaya_uang_muka)) { echo $biaya_uang_muka; } ?></td>
+		<td align="center"><h4><? if(isset($jumlah_dp)) { echo $jumlah_dp; } ?> $</h4></td>
+		<td align="center"></td>
+		<td align="center"></td>
+		<td align="center"></td>
+		<td align="center"></td>
+		<td align="center"><? if(isset($tgl_uang_muka)) { echo $tgl_uang_muka; } ?></td>
+    </tr>	
+	<tr height="30">
+		<td class="bg_kolom_right"><h4>Sisa Pelunasan</h4></td>
+		<td align="center">$ <? if(isset($biaya_pelunasan)) { echo $biaya_pelunasan; } ?> </td>
+		<td align="center"><h4><? if(isset($jumlah_lunas)) { echo $jumlah_lunas; } ?> $</h4></td>
+		<td align="center"></td>
+		<td align="center"></td>
+		<td align="center"></td>
+		<td align="center"></td>
+		<td align="center"><? if(isset($tgl_pelunasan)) { echo $tgl_pelunasan; } ?></td>
+    </tr>	
+	<tr height="30">
+		<td class="bg_kolom_right"><h4>Airport Tax & Manasik</h4></td>
+		<td align="center">Rp. 700.000</td>
+		<td align="center"><h4>Rp. <? if(isset($jumlah_tax)) { echo $jumlah_tax; } ?></h4></td>
+		<td align="center"></td>
+		<td align="center"></td>
+		<td align="center"></td>
+		<td align="center"></td>
+		<td align="center"><? if(isset($tgl_pelunasan)) { echo $tgl_pelunasan; } ?></td>
+    </tr>	
+	<tr height="30" valign="bottom">
+		<td class="bg_kolom_right"><h4>T O T A L</h4></td>
+		<td align="center"><h4>$ <? if(isset($total_harga_keseluruhan)) { echo $total_harga_keseluruhan; } ?> + Rp. 700.000</h4></td>
+		<td align="center"><h4><? if(isset($total_pay_cek)) { echo $total_pay_cek; } ?> $ + Rp. <? if(isset($jumlah_tax)) { echo $jumlah_tax; } ?></h4></td>
+		<td align="center"></td>
+		<td align="center"></td>
+		<td align="center"></td>
+		<td align="center"></td>
+		<td></td>
+    </tr>
+</table>
+</center>
+
+<!--
 <br />
 <table width="100%" class="front_payment" align="center">
 	<tr height="30">
@@ -71,7 +123,7 @@ echo $error_file;
 		<td align="center"><h4><i>Rp. 700.000</i></h4></td>
 		<td align="center"><h4>Rp. <? if(isset($jumlah_tax)) { echo $jumlah_tax; } ?></h4></td>
 		<td align="center"><span class="box_status_<?=$css_tax?>"><? if(isset($status_tax)) { echo $status_tax; } ?></span></td>
-		<td align="center"><!--<h4><? if(isset($tgl_lunas)) { echo $tgl_lunas; } ?></h4>--></td>
+		<td align="center"><h4><? if(isset($tgl_lunas)) { echo $tgl_lunas; } ?></td>
     </tr>	
 	<tr height="30" valign="bottom">
 		<td class="bg_kolom_right"><h4>T O T A L</h4></td>
@@ -88,7 +140,7 @@ echo $error_file;
 
 <!-- ------- form konfirmasi --------->
 
-
+<!--
 <? echo form_open_multipart('/payment/do_send'); ?>
 
 <br />
@@ -154,7 +206,7 @@ echo $error_file;
                      </td>
 				</tr>
 			</table>
-			<!-- end id-form  -->
+			<!-- end id-form  --><!--
 		</td>
         <td>
         <table border="0" cellpadding="0" cellspacing="0"  id="id-form">
@@ -218,3 +270,4 @@ echo $error_file;
 </table>
 <? echo form_close(); ?>		 
 <div class="clear"></div>
+-->

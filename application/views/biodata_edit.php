@@ -360,7 +360,7 @@ echo $error_file;
 				<tr>
 					<? form_error('jasa_paspor') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
 					<th valign="top">Jasa Tambahan</th>
-					<td><input type="checkbox" name="jasa_maningtis" value="1" <?=($e_jasa_tambahan==1)?'checked="checked"':''?> /> &nbsp;&nbsp;Jasa Maningtis</td>
+					<td><input type="checkbox" name="jasa_maningtis" value="1" <?=($e_jasa_tambahan==1)?'checked="checked"':''?> /> &nbsp;&nbsp;Jasa Meningitis</td>
 					<td>
 						<? if(form_error('jasa_maningtis') != '') {?>
 						<div class="error-left"></div>
