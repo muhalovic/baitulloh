@@ -89,7 +89,7 @@
 	
 	<br/>
 	
-	<? if (!$waiting){?>
+	<? //if (!isset($waiting) && !$waiting){?><!--
 	<table border="0" width="100%" class="info_shape" cellpadding="10">
 		<tr>
 			<td valign="top">
@@ -110,8 +110,8 @@
 				</ul>
 			</td>
 		</tr>
-	</table>
-	<? } ?>	
+	</table>-->
+	<? //} ?>	
 	
 	<? if (isset($waiting) && $waiting){?>
 		<table border="0" width="100%" class="info_shape" cellpadding="10">
@@ -134,7 +134,29 @@
 				</td>
 			</tr>
 		</table>
-	<? } ?>	
+	<? }else{ ?>
+			<table border="0" width="100%" class="info_shape" cellpadding="10">
+				<tr>
+					<td valign="top">
+						<div class="title">
+							<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
+							<span class="text_title">Informasi - Informasi <font color='A01040'>PENTING !!</font></span>
+						</div>
+						<div class="repeat_hline"></div>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top">
+						<ul style="font-family: 'Oswald', Arial, sans-serif;">
+							<li>Sebelum Memenuhi Kesepakatan Pendaftaran (Uang Muka & Data Paspor), komitmen booking seat keberangkatan <font color="green">BELUM TERJADI</font>.</li>
+							<li>Silakan <font color="green">DISEGERAKAN</font> untuk Memenuhi Kesepakatan Pendaftaran dan melakukan konfirmasi pembayaran, sehingga Data anda bisa segera di proses. Dan Status Pendaftaran akan kami Booked.</li>
+							<li>Peserta <font color="green">BELUM TERDAFTAR</font> jika dana belum efektif masuk ke dalam rekening kamilah.</li>
+							<li>Informasi Selengkapnya, Silakan <font color="green">CEK EMAIL </font>anda untuk melakukan Aktivasi akun dan prosedur selanjutnya.</li>
+						</ul>
+					</td>
+				</tr>
+			</table>
+	<? } ?>
 </div>
 
 

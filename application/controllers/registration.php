@@ -146,7 +146,7 @@ class Registration extends CI_Controller {
 				$keycode = $this->secure($this->data_field['KODE_REGISTRASI']);
 				$this->send_email($keycode, $waiting); 
 				
-				redirect('notification/show/'.$this->data_field['KODE_REGISTRASI']);
+				redirect('pasca_daftar/'.$this->data_field['KODE_REGISTRASI']);
 			}
 		}
     }

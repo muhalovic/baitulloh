@@ -44,8 +44,8 @@ h3{
 }
 
 .center_header{
-	background: url(../images/front/center_header.png);
-	width:466px;
+	background: url(../images/front/center_header.png) top center no-repeat;
+	width:1000px;
 	height:92px;
 	margin:auto;
 	text-align: center;

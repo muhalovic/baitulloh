@@ -226,7 +226,7 @@
 	{
 		echo '<h3 align="center" class="clear">
 				"Anda bisa melakukan registrasi online terlebih dahulu, untuk mencatatkan data ke dalam sistem kami. <br/>
-				Atau silahkan <a href="'.site_url().'/login"><font color="#A01040"><u>LOGIN</u></font></a> jika anda sudah memiliki akun."
+				Atau silahkan <a href="'.base_url().'login"><font color="#A01040"><u>LOGIN</u></font></a> jika anda sudah memiliki akun."
 			</h3>';
 	}
 	?>
@@ -242,7 +242,7 @@
 				"Anda dapat mencentang poin di bawah ini, jika bersedia dimasukkan ke dalam daftar tunggu untuk pilihan paket di atas."
 			</h3>';
 
-		echo form_open('/registration',array('name' => 'form_registrasi', 'style' => 'width:100%'));
+		echo form_open('/daftar',array('name' => 'form_registrasi', 'style' => 'width:100%'));
 		$added = '';
 		$no=0; foreach($room_choice2 as $row) {
 						$added .= '<input name="kamar[]" id="kamar'.$no.'" value="'.$row['ID_ROOM_TYPE'].'" />
@@ -275,8 +275,8 @@
     
 		echo '
 			<center style="margin:20px 0 20px 0">
-				<a href="'.site_url().'" class="link_step_kembali"><< Kembali</a>
-				<a href="'.site_url().'/registration" class="link_step_lanjut">Lanjut >></a>
+				<a href="'.base_url().'periksa" class="link_step_kembali"><< Kembali</a>
+				<a href="'.base_url().'daftar" class="link_step_lanjut">Lanjut >></a>
 			</center>
 			';
 	}
