@@ -97,6 +97,33 @@ class Payment_model extends CI_Model {
 		return $this->db->get();
 	}
 	
+	function get_payment_byJenis_Bayar($id_acc, $kode_reg, $jenis_bayar, $limit)
+	{
+        if($limit == '1')
+		{
+			$limit_f = 1;
+			$limit_s = 0;
+		}
+		elseif($limit == '2')
+		{
+			$limit_f = 30;
+			$limit_s = 1;
+		}
+		else{
+			$limit_f = 30;
+			$limit_s = 0;
+		}
+		
+		$this->db->select("*");
+		$this->db->from("payment_view");
+		$this->db->where("ID_ACCOUNT", $id_acc);
+		$this->db->where("KODE_REGISTRASI", $kode_reg);
+		$this->db->where("JENIS_PEMBAYARAN", $jenis_bayar);
+		$this->db->limit( $limit_f,$limit_s);
+
+		return $this->db->get();
+	}
+	
 }
 
 ?>

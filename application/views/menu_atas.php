@@ -64,7 +64,7 @@
                           </li>
                         </ul>                                                
 						<div class="nav-divider">&nbsp;</div>	
-						<ul class="<?=($this->uri->segment(1)==='biodata')?'current':'select'?>">
+						<ul class="<?=($this->uri->segment(1)==='biodata' || $this->uri->segment(1)==='paspor')?'current':'select'?>">
 							<li><a href="<? echo site_url() ?>/biodata"><b>Data Jamaah</b></a></li>
 						</ul>
 						<div class="nav-divider">&nbsp;</div>

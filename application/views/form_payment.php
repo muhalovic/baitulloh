@@ -52,15 +52,20 @@ if(isset($error_file)) { echo $error_file; }
 		<td width="100" class="bg_kolom"><h3>JATUH TEMPO</h3></td>
     </tr>	
 	<tr height="30">
-		<td class="bg_kolom_right front_payment_top"><h4>Uang Muka (<font color="#707070"><i><? if(isset($total_jamaah_per_kamar)) { echo $total_jamaah_per_kamar; } ?> x 1.100</i></font>)</h4></td>
-		<td align="center">$ <? if(isset($biaya_uang_muka)) { echo $biaya_uang_muka; } ?></td>
-		<td align="center"><h4><? if(isset($jumlah_dp)) { echo $jumlah_dp; } ?> $</h4></td>
-		<td align="center"></td>
-		<td align="center"></td>
-		<td align="center"></td>
-		<td align="center"></td>
-		<td align="center"><? if(isset($tgl_uang_muka)) { echo $tgl_uang_muka; } ?></td>
-    </tr>	
+		<td class="bg_kolom_right front_payment_top" rowspan="<? if(isset($rowspan_uangmuka)) { echo $rowspan_uangmuka; } ?>">
+        	<h4>Uang Muka (<font color="#707070"><i>
+			<? if(isset($total_jamaah_per_kamar)) { echo $total_jamaah_per_kamar; } ?> x 1.100</i></font>)
+            </h4>
+        </td>
+		<td align="center" rowspan="<? if(isset($rowspan_uangmuka)) { echo $rowspan_uangmuka; } ?>">
+        	$ <? if(isset($biaya_uang_muka)) { echo $biaya_uang_muka; } ?>
+        </td>
+		<? if(isset($looping_uangmuka)) { echo $looping_uangmuka; } ?> 
+		<td align="center" rowspan="<? if(isset($rowspan_uangmuka)) { echo $rowspan_uangmuka; } ?>">
+			<? if(isset($tgl_uang_muka)) { echo $tgl_uang_muka; } ?>
+        </td>
+    </tr>
+    <? if(isset($looping_uangmuka2)) { echo $looping_uangmuka2; } ?> 
 	<tr height="30">
 		<td class="bg_kolom_right"><h4>Sisa Pelunasan</h4></td>
 		<td align="center">$ <? if(isset($biaya_pelunasan)) { echo $biaya_pelunasan; } ?> </td>

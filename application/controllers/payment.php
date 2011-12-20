@@ -159,6 +159,7 @@ class Payment extends CI_Controller {
 			}
 			
 		}
+
 		
 		// CARI TANGGAL JATUH TEMPO UANG MUKA DAN PELUNASAN
 		$data_group = $this->group_departure_model->get_group($id_group);
@@ -168,12 +169,27 @@ class Payment extends CI_Controller {
 			$data['tgl_pelunasan'] = date('d F Y', strtotime($brs->JATUH_TEMPO_PELUNASAN));
 		}
 		
+		
 		// VAR MASTER
 		$total_harga_keseluruhan = $total_harga_kamar + ($meningitis * $data['total_maningtis']);
 		$biaya_uang_muka = ($total_jamaah_per_kamar * $uang_muka);
+		$rowspan_uangmuka = $this->payment_model->get_payment_byJenis_Bayar($id_user, $kode_reg, '1', '3')->num_rows();
 		
+		if($rowspan_uangmuka < 2)
+		{
+			$rowspan_uangmuka = '';
+			$looping_uangmuka = $this->get_payment(1, '', '1');
+			$looping_uangmuka2 = '';
+		}else{
+			$rowspan_uangmuka = $rowspan_uangmuka;
+			$looping_uangmuka = $this->get_payment(1, '', '1');
+			$looping_uangmuka2 = $this->get_payment(1, '', '2');
+		}
 		
 		// SET OUTPUT
+		$data['looping_uangmuka'] = $looping_uangmuka;
+		$data['looping_uangmuka2'] = $looping_uangmuka2;
+		$data['rowspan_uangmuka'] = $rowspan_uangmuka;
 		$data['biaya_pelunasan'] = $this->cek_ribuan($total_harga_keseluruhan - $biaya_uang_muka);
 		$data['biaya_uang_muka'] = $this->cek_ribuan($biaya_uang_muka);
 		$data['total_harga_keseluruhan'] =  $this->cek_ribuan($total_harga_keseluruhan);
@@ -182,6 +198,50 @@ class Payment extends CI_Controller {
 		
 		$data['content'] = $this->load->view('form_payment',$data,true);
 		$this->load->view('front_backup',$data);
+	}
+	
+	function get_payment($jenis_bayar, $total_nominal = NULL, $limit)
+	{
+		$this->load->model('payment_model');
+		
+		$id_user = $this->session->userdata("id_account");
+		$kode_reg = $this->session->userdata("kode_registrasi");
+		
+		$list_payment = '';
+		
+		$data_payment = $this->payment_model->get_payment_byJenis_Bayar($id_user, $kode_reg, $jenis_bayar, $limit);
+		
+		if($limit == '2')
+		{
+			$tr_open = '<tr>';
+			$tr_close = '</tr>';
+		}else{
+			$tr_open = '';
+			$tr_close = '';
+		}
+		
+		
+		if($data_payment->result() != NULL)
+		{
+			foreach($data_payment->result() as $row)
+			{
+				$list_payment .= $tr_open.'
+				<td align="center">$ '.$this->cek_ribuan($row->JUMLAH_KAMAR).'</td>
+				<td align="center">'.$row->TIPE_STATUS.'</td>
+				<td align="center"></td>
+				<td align="center"></td>
+				<td align="center"></td>'.$tr_close;
+			}
+		}else{
+			$list_payment .= '
+				<td align="center"></td>
+				<td align="center"></td>
+				<td align="center"></td>
+				<td align="center"></td>
+				<td align="center"></td>';
+		}
+		
+		return $list_payment;
 	}
 	
 	
