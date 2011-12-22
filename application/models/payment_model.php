@@ -124,6 +124,17 @@ class Payment_model extends CI_Model {
 		return $this->db->get();
 	}
 	
+	function get_sum_payment_byJenis_Bayar($id_acc, $kode_reg, $jenis_bayar)
+	{
+		$this->db->select_sum("JUMLAH_KAMAR");
+		$this->db->from("payment_view");
+		$this->db->where("ID_ACCOUNT", $id_acc);
+		$this->db->where("KODE_REGISTRASI", $kode_reg);
+		$this->db->where("JENIS_PEMBAYARAN", $jenis_bayar);
+
+		return $this->db->get();
+	}
+	
 }
 
 ?>
