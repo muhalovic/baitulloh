@@ -124,7 +124,7 @@ class Packet_model extends CI_Model {
 	
 	function sum_jumlah_orang($id_program)
 	{
-		$status = array(1,3);
+		$status = array(3);
 		
 		$this->db->select_sum('JUMLAH_ADULT');
 		$this->db->select_sum('CHILD_WITH_BED');
@@ -133,7 +133,7 @@ class Packet_model extends CI_Model {
 		$this->db->from('packet');
 	//	$this->db->where('ID_GROUP', $id_group);
 		$this->db->where('ID_PROGRAM', $id_program);
-		$this->db->where_in($status);
+		$this->db->where_in('STATUS_PESANAN',$status);
 		
 		return $this->db->get();
 	}

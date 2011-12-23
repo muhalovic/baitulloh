@@ -204,6 +204,26 @@
 	<br/>
 	
 	<table border="0" width="100%" class="info_shape" cellpadding="10">
+		<? if (isset($waiting) && $waiting) {?>
+		<tr>
+			<td valign="top">
+				<div class="title">
+					<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
+					<span class="text_title">Informasi - Informasi <font color='A01040'>DAFTAR TUNGGU !!</font></span>
+				</div>
+				<div class="repeat_hline"></div>
+			</td>
+		</tr>
+		<tr>
+			<td valign="top">
+				<ul style="font-family: 'Oswald', Arial, sans-serif;">
+					<li>Dengan masuk ke daftar tunggu untuk sementara anda <font color="green">TIDAK BISA</font> menggunakan fitur-fitur sistem dashboard nantinya.</li>
+					<li>Akun anda <font color="green">AKAN AKTIF</font> jika status daftar tunggu anda <font color="green">BERUBAH</font>.</li>
+					<li>Informasi tentang update status akun anda akan dikirim melalui <font color="green">EMAIL</font>.</li>
+				</ul>
+			</td>
+		</tr>
+		<? }else{?>
 		<tr>
 			<td valign="top">
 				<div class="title">
@@ -216,18 +236,26 @@
 		<tr>
 			<td valign="top">
 				<ul style="font-family: 'Oswald', Arial, sans-serif;">
-					<li>Sebelum Memenuhi Kesepakatan Pendaftaran (Uang Muka & Data Paspor), komitmen booking seat keberangkatan <font color="green">BELUM TERJADI</font>.</li>
-					<li>Silakan <font color="green">DISEGERAKAN</font> untuk Memenuhi Kesepakatan Pendaftaran dan melakukan konfirmasi pembayaran, sehingga Data anda bisa segera di proses. Dan Status Pendaftaran akan kami Booked.</li>
-					<li>Peserta <font color="green">BELUM TERDAFTAR</font> jika dana belum efektif masuk ke dalam rekening kamilah.</li>
+					<li>Pendaftaran diatas <font color="green">HANYA</font> merupakan proses pembuatan akun di Kamilah Wisata dan penyimpanan data akun anda sebelum anda melakukan prosedur selanjutnya.</li>
+					<li>Sebelum Memenuhi Kesepakatan Pendaftaran (Pembayaan Uang Muka & Upload Data Paspor), komitmen booking seat keberangkatan <font color="green">BELUM TERJADI</font> (Tidak terjadi pengurangan Quota Seat & Kamar).</li>
+					<li>Paket yang diminta masih bisa di <font color="green">BOOKED</font> oleh calon lain jika calon lain tersebut lebih cepat memenuhi Kesepakatan Pendaftaran.</li>
+					<li>Silakan <font color="green">DISEGERAKAN</font> untuk Memenuhi Kesepakatan Pendaftaran dan melakukan konfirmasi pembayaran ke sistem, sehingga Data anda bisa segera di proses</li>
+					<li>Status peserta menjadi <font color="green">BOOKED</font> jika dana sudah efektif masuk ke dalam rekening kamilah.</li>
 					<li>Informasi Selengkapnya, Silakan <font color="green">CEK EMAIL </font>anda untuk melakukan Aktivasi akun dan prosedur selanjutnya.</li>
+					
 				</ul>
 			</td>
 		</tr>
+		<? } ?>
 		<tr>
 			<td>
 				<div class="row">
+					<h3 align="center" class="clear">
+						<input name="setuju" id="setuju" type="checkbox" value="1" onchange="enableSubmit(this);" />&nbsp;
+						<label for="setuju">Saya memahami dan menyetujui informasi di atas</label>
+					</h3>
 					<center>
-						<input type="submit" value="Daftar" class="submit_button" />
+						<input type="submit" value="Daftar" id="submit_button" class="submit_button" disabled="disabled"/>
 						<input type="reset" value="Reset" class="reset_button" onclick="reload()"/>
 					</center>
 				</div>
@@ -263,6 +291,13 @@
 	}
 	);
 	
-	
+	function enableSubmit(val){
+		
+		if (val.checked){
+			document.getElementById('submit_button').disabled = false;
+		}else{
+			document.getElementById('submit_button').disabled = true;
+		}
+	}
 	
 </script>
