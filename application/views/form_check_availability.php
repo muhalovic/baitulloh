@@ -43,7 +43,7 @@
 				<span class="col2">
 					<?php 
 						$program = 0; if(set_value('program')!='') $program = set_value('program');
-						echo form_dropdown('program', $program_options, $program,'id="program" class="dropdown_medium"  onChange="get_program();" title="Nama Kelas Program"'); 
+						echo form_dropdown('program', $program_options, $program,'id="program" class="chzn-select"  onChange="get_program();" title="Nama Kelas Program"'); 
 					?>
 				</span>
 			</div>
