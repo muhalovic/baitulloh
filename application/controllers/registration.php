@@ -52,24 +52,21 @@ class Registration extends CI_Controller {
 		$captcha = create_captcha($vals);
 		$this->session->set_userdata('captcha',$captcha['word']);
 			
-	
-		if ($waiting != '' & $waiting != NULL){
-			$data['waiting'] = $waiting;
-            $data['jml_adult'] = $this->input->post('jml_adult');
-			$data['with_bed'] = $this->input->post('with_bed');
-			$data['no_bed'] = $this->input->post('no_bed');
-			$data['infant'] = $this->input->post('infant');
-                        $data['group'] = $this->input->post('group');
-                        $data['program'] = $this->input->post('program');
+		$data['waiting'] = $waiting;
+        $data['jml_adult'] = $this->input->post('jml_adult');
+		$data['with_bed'] = $this->input->post('with_bed');
+		$data['no_bed'] = $this->input->post('no_bed');
+		$data['infant'] = $this->input->post('infant');
+        $data['group'] = $this->input->post('group');
+        $data['program'] = $this->input->post('program');
 
-                        $kamar = $this->input->post('kamar');
-                        $jml_kamar = $this->input->post('jml_kamar');
+        $kamar = $this->input->post('kamar');
+        $jml_kamar = $this->input->post('jml_kamar');
 
-                        for($i=0; $i<count($kamar); $i++){
-                            $room_choice2[$i] = array('ID_ROOM_TYPE'=>$kamar[$i], 'JUMLAH'=>$jml_kamar[$i]);
-                        }
-                        $data['room_choice2'] = $room_choice2;
-         }
+        for($i=0; $i<count($kamar); $i++){
+			$room_choice2[$i] = array('ID_ROOM_TYPE'=>$kamar[$i], 'JUMLAH'=>$jml_kamar[$i]);
+        }
+        $data['room_choice2'] = $room_choice2;
 				
 		$data['captcha'] = $captcha['image'];
 		$data['province_options'] = $province_options;
@@ -141,7 +138,9 @@ class Registration extends CI_Controller {
 
                                             $this->log_model->log($id_acc, $this->data_field['KODE_REGISTRASI'], null, 'INSERT data ROOM_PACKET untuk packet dengan ID_PACKET = '.$id_pack->row()->ID_PACKET);
                                         }
-				}
+				}else{
+					
+				}	
 				
 				$keycode = $this->secure($this->data_field['KODE_REGISTRASI']);
 				$this->send_email($keycode, $waiting); 

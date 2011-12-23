@@ -169,17 +169,6 @@
 				</div>
 			</td>
 		</tr>
-		<tr>
-			<td colspan="2">
-				<div class="row">
-					<label class="col1">&nbsp;</label>
-					<span class="col2">
-						<input type="submit" value="Daftar" class="submit_button" />
-						<input type="reset" value="Reset" class="reset_button" onclick="reload()"/>
-					</span>
-				</div>
-			</td>
-		</tr>
 		<? if (isset($waiting)) {?>
 			<input type="hidden" name="waiting" value="<? echo $waiting; ?>" />
 			<div style="display: none;" >
@@ -195,8 +184,57 @@
 						<input name="jml_kamar[]" id="jml_kamar<? echo $no;?>" value="<? echo $row['JUMLAH'];?>" />
 				<? $no++; }?>
 			</div>
-		<? }?>
+		<? }else{?>
+				<div style="display: none;" >
+					<input type="text" name="group" value="<?php echo $group; ?>" />
+					<input type="text" name="program" value="<?php echo $program; ?>" />
+					<input type="text" name="jml_adult" value="<?php echo $jml_adult; ?>" />
+					<input type="text" name="with_bed" value="<?php echo $with_bed; ?>" />
+					<input type="text" name="no_bed" value="<?php echo $no_bed; ?>" />
+					<input type="text" name="infant" value="<?php echo $infant; ?>" />
+							
+					<? $no=0; foreach($room_choice2 as $row) {?>
+							<input name="kamar[]" id="kamar<? echo $no;?>" value="<? echo $row['ID_ROOM_TYPE']; ?>" />
+							<input name="jml_kamar[]" id="jml_kamar<? echo $no;?>" value="<? echo $row['JUMLAH'];?>" />
+					<? $no++; }?>
+				</div>
+		<? } ?>
 	</table>
+	
+	<br/>
+	
+	<table border="0" width="100%" class="info_shape" cellpadding="10">
+		<tr>
+			<td valign="top">
+				<div class="title">
+					<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
+					<span class="text_title">Informasi - Informasi <font color='A01040'>PENTING !!</font></span>
+				</div>
+				<div class="repeat_hline"></div>
+			</td>
+		</tr>
+		<tr>
+			<td valign="top">
+				<ul style="font-family: 'Oswald', Arial, sans-serif;">
+					<li>Sebelum Memenuhi Kesepakatan Pendaftaran (Uang Muka & Data Paspor), komitmen booking seat keberangkatan <font color="green">BELUM TERJADI</font>.</li>
+					<li>Silakan <font color="green">DISEGERAKAN</font> untuk Memenuhi Kesepakatan Pendaftaran dan melakukan konfirmasi pembayaran, sehingga Data anda bisa segera di proses. Dan Status Pendaftaran akan kami Booked.</li>
+					<li>Peserta <font color="green">BELUM TERDAFTAR</font> jika dana belum efektif masuk ke dalam rekening kamilah.</li>
+					<li>Informasi Selengkapnya, Silakan <font color="green">CEK EMAIL </font>anda untuk melakukan Aktivasi akun dan prosedur selanjutnya.</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div class="row">
+					<center>
+						<input type="submit" value="Daftar" class="submit_button" />
+						<input type="reset" value="Reset" class="reset_button" onclick="reload()"/>
+					</center>
+				</div>
+			</td>
+		</tr>
+	</table>
+	
 	<? echo form_close(); ?>
 </div>
 

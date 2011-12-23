@@ -261,8 +261,8 @@
 					
 				</div>
 				<h3 align="center" class="clear">
-				<input name="waiting" id="waiting" type="checkbox" value="1" onchange="enableSubmit(this);" />&nbsp;
-				<label for="waiting">Menginginkan masuk Daftar Tunggu</label>
+					<input name="waiting" id="waiting" type="checkbox" value="1" onchange="enableSubmit(this);" />&nbsp;
+					<label for="waiting">Menginginkan masuk Daftar Tunggu</label>
 				</h3>
 				<center>
 					<a href="'.site_url().'" class="link_step_kembali"><< Kembali</a>
@@ -272,13 +272,31 @@
         echo form_close(); 
 	
 	} else {
-    
-		echo '
-			<center style="margin:20px 0 20px 0">
-				<a href="'.base_url().'periksa" class="link_step_kembali"><< Kembali</a>
-				<a href="'.base_url().'daftar" class="link_step_lanjut">Lanjut >></a>
-			</center>
+		echo form_open('/daftar',array('name' => 'form_registrasi', 'style' => 'width:100%'));
+		$added = '';
+		$no=0; foreach($room_choice2 as $row) {
+						$added .= '<input name="kamar[]" id="kamar'.$no.'" value="'.$row['ID_ROOM_TYPE'].'" />
+						<input name="jml_kamar[]" id="jml_kamar'.$no.'" value="'.$row['JUMLAH'].'" />';
+					$no++; }
+	
+	
+		echo '<div style="display: none;" >
+					<input type="text" name="group" value="'.$group.'" />
+					<input type="text" name="program" value="'.$program.'" />
+					<input type="text" name="jml_adult" value="'.$jml_adult.'" />
+					<input type="text" name="with_bed" value="'.$with_bed.'" />
+					<input type="text" name="no_bed" value="'.$no_bed.'" />
+					<input type="text" name="infant" value="'.$infant.'" />
+					<input type="text" name="waiting_list" value="'.$waiting_list.'" />
+					'.$added
+					.'
+				</div>
+				<center style="margin:20px 0 20px 0">
+					<a href="'.base_url().'periksa" class="link_step_kembali"><< Kembali</a>
+					<input type="submit" value="Lanjut >>" id="submit_button" class="submit_button"/>
+				</center>
 			';
+		echo form_close(); 
 	}
 	?>
 	
