@@ -66,13 +66,15 @@ class Room_packet_model extends CI_Model {
 	
 	function periksa_kamar_aktif($id_room_type, $id_group, $id_program)
 	{
-		$this->db->select_sum('rp.JUMLAH');
-		$this->db->from('room_packet rp');
-		$this->db->join('packet p', 'rp.ID_PACKET = p.ID_PACKET');
-		$this->db->where('ID_ROOM_TYPE', $id_room_type);
+		$this->db->select("count(ID_CANDIDATE) as JUMLAH");
+		$this->db->from('jamaah_candidate jc');
+		$this->db->join('room_packet rp', 'rp.ID_ROOM_PACKET = jc.ID_ROOM_PACKET');
+		$this->db->join('packet p', 'p.ID_PACKET = rp.ID_PACKET');
+		$this->db->where('rp.ID_ROOM_TYPE', $id_room_type);
 		$this->db->where('p.ID_GROUP', $id_group);
 		$this->db->where('p.ID_PROGRAM', $id_program);
-		
+		$this->db->where('p.STATUS_PESANAN', 3);
+		$this->db->where('jc.STATUS_KANDIDAT', 0);
 		return $this->db->get();
 	}
 }

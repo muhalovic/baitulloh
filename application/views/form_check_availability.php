@@ -29,7 +29,7 @@
 				<span class="col2">
 					<?php 
 						$group = 0; if(set_value('group')!='') $group = set_value('group');
-						echo form_dropdown('group', $group_options, $group,'id="group" class="dropdown_medium" onChange="get_group();" title="Nama Group dan Tanggal Keberangkatan"'); 
+						echo form_dropdown('group', $group_options, $group,'id="group" class="chzn-select" onChange="get_group();" title="Nama Group dan Tanggal Keberangkatan"'); 
 					?>
 				</span>
 			</div>
