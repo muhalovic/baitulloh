@@ -51,5 +51,19 @@ $route['pasca_daftar/(:any)'] 	= 'notification/show/$1';
 /* END ROUTING UNTUK FRONT -------------------------------------------------*/
 
 
+
+/* ROUTING UNTUK DASHBOARD -------------------------------------------------*/
+
+/* END ROUTING UNTUK DASHBOARD ---------------------------------------------*/
+
+
+
+/* ROUTING UNTUK ADMIN -------------------------------------------------*/
+
+/* END ROUTING UNTUK ADMIN ---------------------------------------------*/
+
+
+
+
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

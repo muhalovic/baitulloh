@@ -11,7 +11,7 @@
 		<link rel="stylesheet" href="<?php echo base_url();?>css/front_ui.css" type="text/css" media="screen" title="default" /> <!-- main css -->
 		<link rel="stylesheet" href="<?php echo base_url();?>css/form.css" type="text/css" media="screen" title="default" /> <!-- form css -->
 		<link rel="stylesheet" href="<?php echo base_url();?>css/chosen.css" type="text/css" media="screen" title="default" /> <!-- searchable combobox css -->
-		<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css' /> <!-- import font -->
+		<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css' /> <!-- import font
 	
 		<!-- JAVASCRIPT -->
 		<!--<script src="<?php //echo base_url();?>js/jquery-1.6.2.min.js" type="text/javascript"></script>-->

@@ -52,24 +52,21 @@ class Registration extends CI_Controller {
 		$captcha = create_captcha($vals);
 		$this->session->set_userdata('captcha',$captcha['word']);
 			
-	
-		if ($waiting != '' & $waiting != NULL){
-			$data['waiting'] = $waiting;
-            $data['jml_adult'] = $this->input->post('jml_adult');
-			$data['with_bed'] = $this->input->post('with_bed');
-			$data['no_bed'] = $this->input->post('no_bed');
-			$data['infant'] = $this->input->post('infant');
-                        $data['group'] = $this->input->post('group');
-                        $data['program'] = $this->input->post('program');
+		$data['waiting'] = $waiting;
+        $data['jml_adult'] = $this->input->post('jml_adult');
+		$data['with_bed'] = $this->input->post('with_bed');
+		$data['no_bed'] = $this->input->post('no_bed');
+		$data['infant'] = $this->input->post('infant');
+        $data['group'] = $this->input->post('group');
+        $data['program'] = $this->input->post('program');
 
-                        $kamar = $this->input->post('kamar');
-                        $jml_kamar = $this->input->post('jml_kamar');
+        $kamar = $this->input->post('kamar');
+        $jml_kamar = $this->input->post('jml_kamar');
 
-                        for($i=0; $i<count($kamar); $i++){
-                            $room_choice2[$i] = array('ID_ROOM_TYPE'=>$kamar[$i], 'JUMLAH'=>$jml_kamar[$i]);
-                        }
-                        $data['room_choice2'] = $room_choice2;
-         }
+        for($i=0; $i<count($kamar); $i++){
+			$room_choice2[$i] = array('ID_ROOM_TYPE'=>$kamar[$i], 'JUMLAH'=>$jml_kamar[$i]);
+        }
+        $data['room_choice2'] = $room_choice2;
 				
 		$data['captcha'] = $captcha['image'];
 		$data['province_options'] = $province_options;
@@ -97,51 +94,79 @@ class Registration extends CI_Controller {
 				$this->accounts_model->insert_new_account($this->data_field);						
 				$this->log_model->log(null, $this->data_field['KODE_REGISTRASI'], null, 'REGISTER new account, EMAIL = '.$this->data_field['EMAIL'].', KODE_REGISTRASI = '.$this->data_field['KODE_REGISTRASI']);
 
-                                $waiting = 0;
+                $waiting = 0;
+				$id_acc = $this->accounts_model->get_account_byKode($this->data_field['KODE_REGISTRASI'])->row()->ID_ACCOUNT;
+				
+				// data packet
+                $group = $this->input->post('group');
+                $kelas_program = $this->input->post('program');
+                $jml_adult = $this->input->post('jml_adult');
+                $with_bed = $this->input->post('with_bed')=='' ? 0:$this->input->post('with_bed');
+                $no_bed = $this->input->post('no_bed')=='' ? 0:$this->input->post('no_bed');
+                $infant = $this->input->post('infant')=='' ? 0:$this->input->post('infant');
+										
 				// if waiting list
 				if ($this->input->post('waiting') == 1){
 					$this->load->model('waiting_list_model');
-                                        $waiting = 1;
-					
-					$id_acc = $this->accounts_model->get_account_byKode($this->data_field['KODE_REGISTRASI'])->row()->ID_ACCOUNT;
+                    $waiting = 1;
 					$data_waiting = array('KODE_REGISTRASI'=>$this->data_field['KODE_REGISTRASI'], 'ID_ACCOUNT'=>$id_acc);
 					
 					$this->waiting_list_model->insert_waiting_list($data_waiting);
 					$this->log_model->log($id_acc, $this->data_field['KODE_REGISTRASI'], null, 'INSERT data WAITING_LIST dengan KODE_REGISTRASI = '.$this->data_field['KODE_REGISTRASI']);
+                    
+					// insert into packet
+                    $data = array(
+                        'ID_GROUP'=>$group, 'ID_ACCOUNT'=>$id_acc, 'KODE_REGISTRASI' =>$this->data_field['KODE_REGISTRASI'], 'ID_PROGRAM'=>$kelas_program,
+                        'JUMLAH_ADULT'=>$jml_adult, 'CHILD_WITH_BED'=>$with_bed, 'CHILD_NO_BED'=>$no_bed, 'INFANT'=>$infant,
+                        'TANGGAL_PESAN'=>date("Y-m-d h:i:s"), 'STATUS_PESANAN'=>2
+                    );
+                    $this->packet_model->insert_packet($data);
+                    $this->log_model->log($id_acc, $this->data_field['KODE_REGISTRASI'], null, 'INSERT data PACKET untuk akun dengan KODE_REGISTRASI = '.$this->data_field['KODE_REGISTRASI']);
+                    
+					// insert into room packet
+					$id_pack = $this->packet_model->get_packet_byAcc_waiting($id_acc, $this->data_field['KODE_REGISTRASI']);
+					if ($id_pack->num_rows() > 0){
+						$this->load->model('room_packet_model');
+						$kamar = $this->input->post('kamar');
+						$jml_kamar = $this->input->post('jml_kamar');
 
-                                        // data packet
-                                        $group = $this->input->post('group');
-                                        $kelas_program = $this->input->post('program');
-                                        $jml_adult = $this->input->post('jml_adult');
-                                        $with_bed = $this->input->post('with_bed')=='' ? 0:$this->input->post('with_bed');
-                                        $no_bed = $this->input->post('no_bed')=='' ? 0:$this->input->post('no_bed');
-                                        $infant = $this->input->post('infant')=='' ? 0:$this->input->post('infant');
+						for($i=0; $i<count($kamar); $i++){
+							if($jml_kamar[$i]!="0"){
+								$this->room_packet_model->insert_room_packet(array('ID_ROOM_TYPE'=>$kamar[$i],
+									'ID_PACKET'=>$id_pack->row()->ID_PACKET, 'JUMLAH'=>$jml_kamar[$i]));
+							}	
+						}
 
-                                        $data = array(
-                                            'ID_GROUP'=>$group, 'ID_ACCOUNT'=>$id_acc, 'KODE_REGISTRASI' =>$this->data_field['KODE_REGISTRASI'], 'ID_PROGRAM'=>$kelas_program,
-                                            'JUMLAH_ADULT'=>$jml_adult, 'CHILD_WITH_BED'=>$with_bed, 'CHILD_NO_BED'=>$no_bed, 'INFANT'=>$infant,
-                                            'TANGGAL_PESAN'=>date("Y-m-d h:i:s"), 'STATUS_PESANAN'=>2
-                                        );
+						$this->log_model->log($id_acc, $this->data_field['KODE_REGISTRASI'], null, 'INSERT data ROOM_PACKET untuk packet dengan ID_PACKET = '.$id_pack->row()->ID_PACKET);
+					}                    
+				}else{
+			
+					// insert into packet
+                    $data = array(
+                        'ID_GROUP'=>$group, 'ID_ACCOUNT'=>$id_acc, 'KODE_REGISTRASI' =>$this->data_field['KODE_REGISTRASI'], 'ID_PROGRAM'=>$kelas_program,
+						'JUMLAH_ADULT'=>$jml_adult, 'CHILD_WITH_BED'=>$with_bed, 'CHILD_NO_BED'=>$no_bed, 'INFANT'=>$infant,
+                        'TANGGAL_PESAN'=>date("Y-m-d h:i:s"), 'STATUS_PESANAN'=>1
+                    );
+                    $this->packet_model->insert_packet($data);
+                    $this->log_model->log($id_acc, $this->data_field['KODE_REGISTRASI'], null, 'INSERT data PACKET untuk akun dengan KODE_REGISTRASI = '.$this->data_field['KODE_REGISTRASI']);
+					
+					// insert into room packet
+					$id_pack = $this->packet_model->get_packet_byAcc($id_acc, $this->data_field['KODE_REGISTRASI']);
+					if ($id_pack->num_rows() > 0){
+						$this->load->model('room_packet_model');
+						$kamar = $this->input->post('kamar');
+						$jml_kamar = $this->input->post('jml_kamar');
 
-                                        // insert into packet
-                                        $this->packet_model->insert_packet($data);
-                                        $this->log_model->log($id_acc, $this->data_field['KODE_REGISTRASI'], null, 'INSERT data PACKET untuk akun dengan KODE_REGISTRASI = '.$this->data_field['KODE_REGISTRASI']);
+						for($i=0; $i<count($kamar); $i++){
+							if($jml_kamar[$i]!="0"){
+								$this->room_packet_model->insert_room_packet(array('ID_ROOM_TYPE'=>$kamar[$i],
+									'ID_PACKET'=>$id_pack->row()->ID_PACKET, 'JUMLAH'=>$jml_kamar[$i]));
+							}	
+						}
 
-                                        // insert into room packet
-                                        $id_pack = $this->packet_model->get_packet_byAcc_waiting($id_acc, $this->data_field['KODE_REGISTRASI']);
-                                        if ($id_pack->num_rows() > 0){
-                                            $this->load->model('room_packet_model');
-                                            $kamar = $this->input->post('kamar');
-                                            $jml_kamar = $this->input->post('jml_kamar');
-
-                                            for($i=0; $i<count($kamar); $i++){
-                                                $this->room_packet_model->insert_room_packet(array('ID_ROOM_TYPE'=>$kamar[$i],
-                                                    'ID_PACKET'=>$id_pack->row()->ID_PACKET, 'JUMLAH'=>$jml_kamar[$i]));
-                                            }
-
-                                            $this->log_model->log($id_acc, $this->data_field['KODE_REGISTRASI'], null, 'INSERT data ROOM_PACKET untuk packet dengan ID_PACKET = '.$id_pack->row()->ID_PACKET);
-                                        }
-				}
+						$this->log_model->log($id_acc, $this->data_field['KODE_REGISTRASI'], null, 'INSERT data ROOM_PACKET untuk packet dengan ID_PACKET = '.$id_pack->row()->ID_PACKET);
+					}
+				}	
 				
 				$keycode = $this->secure($this->data_field['KODE_REGISTRASI']);
 				$this->send_email($keycode, $waiting); 

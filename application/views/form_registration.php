@@ -169,17 +169,6 @@
 				</div>
 			</td>
 		</tr>
-		<tr>
-			<td colspan="2">
-				<div class="row">
-					<label class="col1">&nbsp;</label>
-					<span class="col2">
-						<input type="submit" value="Daftar" class="submit_button" />
-						<input type="reset" value="Reset" class="reset_button" onclick="reload()"/>
-					</span>
-				</div>
-			</td>
-		</tr>
 		<? if (isset($waiting)) {?>
 			<input type="hidden" name="waiting" value="<? echo $waiting; ?>" />
 			<div style="display: none;" >
@@ -195,8 +184,85 @@
 						<input name="jml_kamar[]" id="jml_kamar<? echo $no;?>" value="<? echo $row['JUMLAH'];?>" />
 				<? $no++; }?>
 			</div>
-		<? }?>
+		<? }else{?>
+				<div style="display: none;" >
+					<input type="text" name="group" value="<?php echo $group; ?>" />
+					<input type="text" name="program" value="<?php echo $program; ?>" />
+					<input type="text" name="jml_adult" value="<?php echo $jml_adult; ?>" />
+					<input type="text" name="with_bed" value="<?php echo $with_bed; ?>" />
+					<input type="text" name="no_bed" value="<?php echo $no_bed; ?>" />
+					<input type="text" name="infant" value="<?php echo $infant; ?>" />
+							
+					<? $no=0; foreach($room_choice2 as $row) {?>
+							<input name="kamar[]" id="kamar<? echo $no;?>" value="<? echo $row['ID_ROOM_TYPE']; ?>" />
+							<input name="jml_kamar[]" id="jml_kamar<? echo $no;?>" value="<? echo $row['JUMLAH'];?>" />
+					<? $no++; }?>
+				</div>
+		<? } ?>
 	</table>
+	
+	<br/>
+	
+	<table border="0" width="100%" class="info_shape" cellpadding="10">
+		<? if (isset($waiting) && $waiting) {?>
+		<tr>
+			<td valign="top">
+				<div class="title">
+					<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
+					<span class="text_title">Informasi - Informasi <font color='A01040'>DAFTAR TUNGGU !!</font></span>
+				</div>
+				<div class="repeat_hline"></div>
+			</td>
+		</tr>
+		<tr>
+			<td valign="top">
+				<ul style="font-family: 'Oswald', Arial, sans-serif;">
+					<li>Dengan masuk ke daftar tunggu untuk sementara anda <font color="green">TIDAK BISA</font> menggunakan fitur-fitur sistem dashboard nantinya.</li>
+					<li>Akun anda <font color="green">AKAN AKTIF</font> jika status daftar tunggu anda <font color="green">BERUBAH</font>.</li>
+					<li>Informasi tentang update status akun anda akan dikirim melalui <font color="green">EMAIL</font>.</li>
+				</ul>
+			</td>
+		</tr>
+		<? }else{?>
+		<tr>
+			<td valign="top">
+				<div class="title">
+					<img src="<?php echo base_url();?>images/front/title.png" width="16" height="16" alt="" />
+					<span class="text_title">Informasi - Informasi <font color='A01040'>PENTING !!</font></span>
+				</div>
+				<div class="repeat_hline"></div>
+			</td>
+		</tr>
+		<tr>
+			<td valign="top">
+				<ul style="font-family: 'Oswald', Arial, sans-serif;">
+					<li>Pendaftaran diatas <font color="green">HANYA</font> merupakan proses pembuatan akun di Kamilah Wisata dan penyimpanan data akun anda sebelum anda melakukan prosedur selanjutnya.</li>
+					<li>Sebelum Memenuhi Kesepakatan Pendaftaran (Pembayaan Uang Muka & Upload Data Paspor), komitmen booking seat keberangkatan <font color="green">BELUM TERJADI</font> (Tidak terjadi pengurangan Quota Seat & Kamar).</li>
+					<li>Paket yang diminta masih bisa di <font color="green">BOOKED</font> oleh calon lain jika calon lain tersebut lebih cepat memenuhi Kesepakatan Pendaftaran.</li>
+					<li>Silakan <font color="green">DISEGERAKAN</font> untuk Memenuhi Kesepakatan Pendaftaran dan melakukan konfirmasi pembayaran ke sistem, sehingga Data anda bisa segera di proses</li>
+					<li>Status peserta menjadi <font color="green">BOOKED</font> jika dana sudah efektif masuk ke dalam rekening kamilah.</li>
+					<li>Informasi Selengkapnya, Silakan <font color="green">CEK EMAIL </font>anda untuk melakukan Aktivasi akun dan prosedur selanjutnya.</li>
+					
+				</ul>
+			</td>
+		</tr>
+		<? } ?>
+		<tr>
+			<td>
+				<div class="row">
+					<h3 align="center" class="clear">
+						<input name="setuju" id="setuju" type="checkbox" value="1" onchange="enableSubmit(this);" />&nbsp;
+						<label for="setuju">Saya memahami dan menyetujui informasi di atas</label>
+					</h3>
+					<center>
+						<input type="submit" value="Daftar" id="submit_button" class="submit_button" disabled="disabled"/>
+						<input type="reset" value="Reset" class="reset_button" onclick="reload()"/>
+					</center>
+				</div>
+			</td>
+		</tr>
+	</table>
+	
 	<? echo form_close(); ?>
 </div>
 
@@ -225,6 +291,13 @@
 	}
 	);
 	
-	
+	function enableSubmit(val){
+		
+		if (val.checked){
+			document.getElementById('submit_button').disabled = false;
+		}else{
+			document.getElementById('submit_button').disabled = true;
+		}
+	}
 	
 </script>
