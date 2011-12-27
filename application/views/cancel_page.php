@@ -11,7 +11,7 @@ d. Pembatalan 03 hari sebelum keberangkatan 100% dari biaya Umrah";
 
 echo $notifikasi;
 
-echo form_open('cancel/do_send'); ?>
+?>
 
 <table border="0" width="100%" cellpadding="0" cellspacing="0">
 	<tr valign="top">
@@ -25,25 +25,108 @@ echo form_open('cancel/do_send'); ?>
                     </textarea>
                       </td>
 				</tr>
-                <? if($cek_valid) { ?>
-				<tr height="50">
-					<td>
-                    <input type="checkbox" name="cek_setuju" id="cek_setuju" value="1" onchange="goSubmit(this)"/>  
-                    &nbsp;&nbsp; <strong><label style="color:#000;" for="cek_setuju">Yakin dan Setuju</label></strong></td>
-					<td colspan="2"></td>
-				</tr>
-				<tr>
+                <tr>
+                	<td colspan="3">
+                    	<br /><br /><br />
+                        <div class="garis_pisah"> PEMBATALAN JAMAAH</div>
+                    </td>
+                </tr>
+                <? echo form_open('cancel/do_send/1'); ?>
+                <? echo $data_jamaah; ?>
+                
+				<tr height="90">
 					<th></th>
-					<td valign="top">
+					<td>
 						<input type="submit" id="submit" value="" class="form-submit-front" disabled="disabled"/>
 					</td>
 					<td></td>
 				</tr>
-                <? } else { ?>
-				<tr height="50">
-					<td><label><strong>Anda Sudah Melakukan Pembatalan.</strong></label></td>
+                
+                <? echo form_close(); ?>
+                
+                
+                <tr>
+                	<td colspan="3">
+                    	<br /><br /><br />
+                        <div class="garis_pisah"> PEMBATALAN PAKET</div>
+                    </td>
+                </tr>
+                
+                <? echo form_open('cancel/do_send/2'); ?>
+                
+                <tr>
+					<td colspan="3" align="left">
+                    	<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
+                            <tr>
+                                <th valign="top">Paket</th>
+                                <td>	
+                                    <strong><? if (isset($nama_group)) echo $nama_group ?> - 
+									<? if (isset($nama_program)) echo $nama_program ?></strong>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>					
+                                <th valign="top">Jumlah Dewasa (*)</th>
+                                <td>	
+                                    <? if (isset($adult)) echo $adult ?>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th valign="top">Anak Dengan Ranjang</th>
+                                <td>	
+                                    <? if (isset($with_bed)) echo $with_bed ?>
+                                </td>
+                                <td></td>
+                            </tr> 
+                            <tr>
+                                <th valign="top">Anak Tanpa Ranjang</th>
+                                <td>	
+                                    <? if (isset($no_bed)) echo $no_bed ?>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th valign="top">Bayi</th>
+                                <td>	
+                                    <? if (isset($infant)) echo $infant ?>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th valign="top">Kamar</th>
+                                <td class="noheight">
+                                    <div id="dvFile">
+                                        <table border="0" cellpadding="0" cellspacing="0">
+                                            <?php foreach ($room as $row) {?>
+                                            <tr valign="middle">
+                                                <td><strong><? echo $row->JENIS_KAMAR." &nbsp; "; ?></strong></td>
+                                                <td>untuk <? echo $row->JUMLAH; ?> Orang</td>
+                                            </tr>
+                                            <? }?>
+                                        </table>
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <td valign="top"></td>
+                                <td></td>
+                            </tr>
+                        </table>
+					</td>
 				</tr>
-                <? } ?>
+				<tr height="90">
+					<th></th>
+					<td>
+                    	<input type="hidden" name="id_packet" value="<? if (isset($id_packet)) echo $id_packet ?>" />
+						<input type="submit" id="submit" value="" class="form-submit-front"/>
+					</td>
+					<td></td>
+				</tr>
+                
+                <? echo form_close(); ?>
 			</table>
 			<!-- end id-form  -->
 		</td>
@@ -94,8 +177,7 @@ echo form_open('cancel/do_send'); ?>
 	</tr>
 </table>
 		 
-<div class="clear"></div>
-<? echo form_close(); ?>	
+<div class="clear"></div>	
 
 <script type="text/javascript">
 
@@ -106,6 +188,22 @@ function goSubmit(input)
 		document.getElementById('submit').disabled=false;
 	} else {
 		document.getElementById('submit').disabled=true;
+	}
+}
+
+
+
+function CekList(input)
+{
+	if(input.checked)
+	{
+		document.getElementById('keterangan[]').value='';
+		document.getElementById('keterangan[]').disabled=false;
+		document.getElementById('keterangan[]').classList='inp-form';
+	} else {
+		document.getElementById('keterangan[]').value='';
+		document.getElementById('keterangan[]').disabled=true;
+		document.getElementById('keterangan[]').classList='inp-form-disable';
 	}
 }
 

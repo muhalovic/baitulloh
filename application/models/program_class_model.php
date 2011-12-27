@@ -69,6 +69,16 @@ class Program_class_model extends CI_Model {
 		
 		return $this->db->get();
 	}
+	
+	
+	function get_all_program_ByStatus()
+	{
+		$this->db->select("*");
+		$this->db->from("program_class");
+		$this->db->where('STATUS', 1);
+		
+		return $this->db->get();
+	}
 }
 
 ?>

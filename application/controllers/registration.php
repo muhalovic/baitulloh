@@ -22,7 +22,7 @@ class Registration extends CI_Controller {
 		$this->load->model('kota_model');
 		$this->load->helper('captcha');
 		
-		$province = $this->province_model->get_all_province();
+		$province = $this->province_model->get_all_province_ByStatus();
 		
 		$kota_options[''] = '-- Pilih Kota --';
 		if(isset($_POST['province'])){
