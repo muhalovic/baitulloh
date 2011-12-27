@@ -27,7 +27,7 @@ class Check_availability extends CI_Controller {
 		foreach($group->result() as $row){
 				if(strlen($row->KODE_GROUP) < 7)
 				{
-					$kode = $row->KODE_GROUP." - ".$this->konversi_tanggal2($row->TANGGAL_KEBERANGKATAN_JD);
+					$kode = $row->KODE_GROUP." - ".$this->konversi_tanggal2($row->TANGGAL_KEBERANGKATAN_JD)." - ".$row->HARI." hari";
 				}else{
 					$kode = $row->KODE_GROUP;
 				}
