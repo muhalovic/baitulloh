@@ -281,7 +281,7 @@ class Registration extends CI_Controller {
 		
 		$data['KODE_REGISTRASI'] = $this->data_field['KODE_REGISTRASI'];
 		
-		// $this->load->view('email_activation',$data);
+		//$this->load->view('email_activation',$data);
 		$htmlMessage =  $this->parser->parse('email_activation', $data, true);
 		
 		$this->email->from('noreply@umrahkamilah.com', 'Kamilah Wisata Muslim');
