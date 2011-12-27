@@ -451,7 +451,7 @@
 <table width="100%" class="front_price" align="center">
 	<tr height="30">
 		<td width="300" class="bg_head" align="center"><strong>PAKET / NAMA KAMAR</strong></td>
-		<td width="150" class="bg_head" align="center"><strong>CALON JAMAAH</strong></td>
+		<td width="150" class="bg_head" align="center"><strong>JUMLAH<br /><span style="font-weight:normal;"><em>(Jamaah)</em></span></strong></td>
 		<td width="150" class="bg_head" align="center"><strong>HARGA</strong></td>
 		<td width="150" class="bg_head" align="center"><strong>TOTAL</strong></td>
     </tr>	
@@ -462,22 +462,26 @@
 	}
 	?>	
 	<tr height="30">
-		<td align="left" class="front_price_no_border">Jasa Tambah Nama</td>
-		<td align="center"></td>
-		<td align="center"><? if(isset($hitung_jasa_nama)) { echo $hitung_jasa_nama; } ?> X 20.00 $</td>
-		<td align="center"><? if(isset($hitung_total)) { echo $hitung_total; } ?> $</td>
-    </tr>	
-	<tr height="30">
-		<td align="left" class="front_price_no_border">Jasa Pengurusan Buku Maningtis</td>
-		<td align="center"></td>
-		<td align="center"><? if(isset($hitung_jasa_maningtis)) { echo $hitung_jasa_maningtis; } ?> X 20.00 $</td>
-		<td align="center"><? if(isset($hitung_total_maningtis)) { echo $hitung_total_maningtis; } ?> $</td>
-    </tr>	
+		<td align="left" class="front_price_no_border">Jasa Pengurusan Meningitis</td>
+		<td align="center"><? if(isset($total_maningtis)) { echo $total_maningtis; } ?></td>
+		<td align="center">$ 20</td>
+		<td align="center">$ <? if(isset($hitung_meningitis)) { echo $hitung_meningitis; } ?> </td>
+    </tr>
 	<tr height="30" valign="bottom">
 		<td class="bg_head"></td>
 		<td class="bg_head"></td>
-		<td class="bg_head"><strong>TOTAL BIAYA</strong></td>
-		<td class="bg_head" align="center"><strong><? if(isset($total_biaya2)) { echo $total_biaya2; } ?> $</strong></td>
+		<td class="bg_head" align="right"><strong>JUMLAH</strong></td>
+		<td class="bg_head" align="center"><strong>$ <? if(isset($total_biaya2)) { echo $total_biaya2; } ?> </strong></td>
+    </tr>
+	<tr height="30" valign="">
+		<td class=""></td>
+		<td class="" align="right" colspan="2"><strong>DISKON (daftar via online)</strong></td>
+		<td class="" align="center"><strong>- $ 70</strong></td>
+    </tr>
+	<tr height="30" valign="bottom">
+		<td class="bg_head"></td>
+		<td class="bg_head" align="right" colspan="2"><strong>TOTAL BIAYA</strong></td>
+		<td class="bg_head" align="center"><strong>$ <? if(isset($total_biaya_keseluruhan)) { echo $total_biaya_keseluruhan; } ?> </strong></td>
     </tr>
 </table>
 <br />
@@ -489,38 +493,45 @@
 	{
 		$jenis_e = "UANG MUKA";
 		$mata_uang = "$";
-		$mata_dolar = " $";
-		$mata_rupiah = NULL;
+		$mata_rupiah = "$ ";
 	}elseif($JENIS == 2)
 	{
 		$jenis_e = "PELUNASAN";
 		$mata_uang = "$";
-		$mata_dolar = " $";
-		$mata_rupiah = NULL;
+		$mata_rupiah = "$ ";
 	}elseif($JENIS == 3)
 	{
 		$jenis_e = "Airport Tax dan Manasik";
 		$mata_uang = "Rp";
-		$mata_dolar = NULL;
 		$mata_rupiah = "Rp. ";
 	}
 	?>
     
 <table width="100%" class="front_price" align="center">
 	<tr height="30">
-		<td width="200" class="bg_head">Bank pengirim</td>
+		<td width="200" class="bg_head">Jenis Pembayaran</td>
 		<td width="10" class="bg_head"><strong>:</strong></td>
-		<td width="400" class="bg_head"><? echo strtoupper($NAMA_BANK); ?></td>
+		<td width="400" class="bg_head"><? echo $jenis_e;?></td>
     </tr>
 	<tr height="30">
-		<td width="150" class="bg_head2">Rek. Atas Nama</td>
+		<td width="200" class="bg_head2">Bank Pengirim</td>
 		<td width="10" class="bg_head2"><strong>:</strong></td>
-		<td width="500" class="bg_head2"><? echo strtoupper($NAMA_REKENING); ?></td>
+		<td width="400" class="bg_head2"><? echo strtoupper($NAMA_BANK); ?></td>
+    </tr>
+	<tr height="30">
+		<td width="150" class="bg_head">Rek. Atas Nama</td>
+		<td width="10" class="bg_head"><strong>:</strong></td>
+		<td width="500" class="bg_head"><? echo strtoupper($NAMA_REKENING); ?></td>
+    </tr>
+	<tr height="30">
+		<td width="200" class="bg_head2">Bank Tujuan</td>
+		<td width="10" class="bg_head2"><strong>:</strong></td>
+		<td width="400" class="bg_head2"><? echo strtoupper($BANK_TUJUAN); ?></td>
     </tr>
 	<tr height="30">
 		<td width="200" class="bg_head">Jumlah (<? echo $mata_uang; ?>)</td>
 		<td width="10" class="bg_head"><strong>:</strong></td>
-		<td width="400" class="bg_head"><? echo $mata_rupiah.$JUMLAH.$mata_dolar; ?></td>
+		<td width="400" class="bg_head"><? echo $mata_rupiah.$JUMLAH; ?></td>
     </tr>
 	<tr height="30">
 		<td width="150" class="bg_head2">Tgl. Transfer</td>
@@ -528,18 +539,13 @@
 		<td width="500" class="bg_head2"><? echo $TGL_TRANSFER; ?></td>
     </tr>
 	<tr height="30">
-		<td width="200" class="bg_head">Tipe Pembayaran</td>
+		<td width="150" class="bg_head">Catatan</td>
 		<td width="10" class="bg_head"><strong>:</strong></td>
-		<td width="400" class="bg_head"><? echo $jenis_e;?></td>
-    </tr>
-	<tr height="30">
-		<td width="150" class="bg_head2">Catatan</td>
-		<td width="10" class="bg_head2"><strong>:</strong></td>
-		<td width="500" class="bg_head2"><? echo $CATATAN; ?></td>
+		<td width="500" class="bg_head"><? echo $CATATAN; ?></td>
     </tr>
 </table>
 <br /><br />
-															Pesan dan rincian konfirmasi pembayaran ini sudah tersimpan ke dalam sistem dan kami akan segera memproses pembayaran Anda. proses sendiri memerlukan waktu paling lama 3x24 jam dan Anda akan menerima Email Balasan dari kami jika sejumlah uang berdasar rincian di atas yg Anda transfer sudah masuk ke rekening kami.<br />
+															Pesan dan rincian konfirmasi pembayaran ini sudah tersimpan ke dalam sistem dan kami akan segera memproses pembayaran Anda paling lama <strong><font color="#b7902f">2x24 jam</font></strong> dan Anda akan menerima Email Balasan dari kami jika sejumlah uang berdasar rincian di atas yg Anda transfer sudah masuk ke rekening kami.<br />
 																Terima Kasih.
                                                               <p>															  
                                                                   <strong>Wassalamualaikum Wr. Wb<br />

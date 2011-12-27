@@ -57,7 +57,7 @@ class Cancel extends CI_Controller {
 		}
 		
 		$data['content'] = $this->load->view('cancel_page', $data, TRUE);
-		$this->load->view('front', $data);
+		$this->load->view('front_backup', $data);
 	}
 	
 	function do_send()

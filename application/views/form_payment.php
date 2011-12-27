@@ -151,7 +151,7 @@ if(isset($error_file)) { echo $error_file; }
 							  '3'  => 'Airport Tax dan Manasik',
 							);
 							
-							echo form_dropdown('metode', $metode_options, $metode,'id="metode" class="styledselect_form_1"'); ?>
+							echo form_dropdown('metode', $metode_options, $metode,'id="metode" class="styledselect-biodata" onchange="getMataUang(this);"'); ?>
                         </td>
 					<td>
 						<? if(form_error('metode') != '') {?>
@@ -191,6 +191,7 @@ if(isset($error_file)) { echo $error_file; }
                      <div class="div_info_2">- Jenis Pembayaran Uang Muka dan Pelunasan menggunakan US Dollar ($)</div> 
                      <div class="div_info_1">- Jenis Pembayaran Airport Tax & Manasik menggunakan Rupiah (Rp.)</div> 
                      <div class="div_info_2">- Format Penulisan Nominal : 1.100 USD ditulis 1100 atau Rp.700.000 ditulis 700000</div> 
+                     <div class="div_info_1"><p>- Lama Proses setelah Konfirmasi Pembayaran adalah <strong>2x24 Jam</strong> , dan Anda akan </p><br />&nbsp;&nbsp;menerima Email Konfirmasi <strong>Jika</strong> pembayaran telah masuk / diterima di rekening kami</div> 
                      </td>
 				</tr>
 			</table>
@@ -199,11 +200,10 @@ if(isset($error_file)) { echo $error_file; }
         <td>
         <table border="0" cellpadding="0" cellspacing="0"  id="id-form">
 				<tr>
-					<? form_error('tujuan') == '' ? $class = 'inp-form2':$class = 'inp-form-error2'; ?>
 					<th valign="top">Bank Tujuan (*)</th>
-					<td><? $tujuan = 0; if(set_value('tujuan')!='') $tujuan = set_value('tujuan');
+					<td><? $tujuan = ''; if(set_value('tujuan')!='') $tujuan = set_value('tujuan');
 							$tujuan_options = array(
-							  '0'  => '-- Bank Tujuan --',
+							  ''  => '-- Bank Tujuan --',
 							  'Bank Mandiri'  => 'Bank Mandiri',
 							  'Bank Muamalat'  => 'Bank Muamalat',
 							);
@@ -211,15 +211,15 @@ if(isset($error_file)) { echo $error_file; }
 							echo form_dropdown('tujuan', $tujuan_options, $tujuan,'id="tujuan" class="styledselect-biodata"'); ?>
                         </td>
 					<td>
-						<? if(form_error('metode') != '') {?>
+						<? if(form_error('tujuan') != '') {?>
 						<div class="error-left"></div>
-						<div class="error-inner"><?php echo form_error('metode'); ?></div>
+						<div class="error-inner"><?php echo form_error('tujuan'); ?></div>
 						<? }?>
 					</td>
 				</tr>
 				<tr>
 					<? form_error('nominal') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
-					<th valign="top">Jumlah &nbsp;(*)</th>
+					<th valign="top">Jumlah &nbsp;<span id="matauang"></span> &nbsp;(*)</th>
 					<td><input type="text" name="nominal" value="<?php echo set_value('nominal');?>" class="<? echo $class;?>" /></td>
 					<td>
 						<? if(form_error('nominal') != '') {?>
@@ -268,6 +268,25 @@ if(isset($error_file)) { echo $error_file; }
 </table>
 <? echo form_close(); ?>		 
 <div class="clear"></div>
+
+<script type="text/javascript" language="javascript">
+
+function getMataUang(check)
+{
+	var jenis = document.getElementById('metode').value;
+	
+	if(jenis == 3)
+	{
+		document.getElementById('matauang').innerHTML='Rp.';
+	}else if(jenis == 0)
+	{
+		document.getElementById('matauang').innerHTML='';
+	}else{
+		document.getElementById('matauang').innerHTML='$';
+	}
+}
+
+</script>
 
 <!--
 <br />

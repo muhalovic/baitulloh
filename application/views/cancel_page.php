@@ -1,15 +1,13 @@
 <?php
-$msg = "PENDAFTARAN DAN PEMBATALAN
+$msg = "PEMBATALAN
 
-a. Uang muka sebesar 50% (pada saat pendaftaran dan pelunasan dua minggu sebelum keberangkatan)
+a. Pembatalan 30 hari sebelum keberangkatan 25% dari biaya Umrah
 
-b. Pembatalan 30 hari sebelum keberangkatan 25% dari biaya
+b. Pembatalan 14 hari sebelum keberangkatan 50% dari biaya Umrah
 
-c. Pembatalan 14 hari sebelum keberangkatan 50% dari biaya
+c. Pembatalan 07 hari sebelum keberangkatan 75% dari biaya Umrah
 
-d. Pembatalan 07 hari sebelum keberangkatan 75% dari biaya
-
-e. Pembatalan 03 hari sebelum keberangkatan 100% dari biaya";
+d. Pembatalan 03 hari sebelum keberangkatan 100% dari biaya Umrah";
 
 echo $notifikasi;
 
