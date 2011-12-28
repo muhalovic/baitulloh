@@ -113,8 +113,8 @@
 			<div class="row">
 				<label class="col1">&nbsp;</label>
 				<span class="col2">
-					<input type="submit" value="Lanjut >>" class="submit_button" />
 					<input type="reset" value="Reset" class="reset_button" />
+					<input type="submit" value="Lanjut >>" class="submit_button" />
 				</span>
 			</div>
 		<? echo form_close(); ?>
@@ -301,6 +301,7 @@
 				document.getElementById('program').value=0;
 				document.getElementById('front_keterangan').style.display="none";
 				document.getElementById('front_informasi').style.display="none";
+				$("#program").trigger("liszt:updated");
 				/*if(+prp !=  0 && cek_program != 0)
 					{
 						document.getElementById('front_keterangan').style.display="inline";

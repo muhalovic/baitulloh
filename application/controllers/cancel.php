@@ -22,6 +22,8 @@ class Cancel extends CI_Controller {
 		$this->load->library('form_validation');
 		$this->load->model('canceled_candidate_model');
 		$this->load->model('jamaah_candidate_model');
+		$this->load->model('room_packet_model');
+		$this->load->model('packet_model');
 		
 		// LOAD SESSION
 		$id_account = $this->session->userdata('id_account');
@@ -30,6 +32,43 @@ class Cancel extends CI_Controller {
 		// LOAD DATABASE
 		$canceled_jamaah = $this->canceled_candidate_model->get_data_canceled($id_account, $kode_reg);
 		$candidate_jamaah = $this->jamaah_candidate_model->get_total_jamaah($id_account, $kode_reg);
+		
+		// LOOPING DATA JAMAAH
+		$data_jamaah = '';
+		if($candidate_jamaah->result() != NULL)
+		{
+			foreach($candidate_jamaah->result() as $row)
+			{
+				$data_jamaah .= '
+                <tr>
+                	<td valign="bottom"> <input type="checkbox" name="id_jamaah[]" id="id_jamaah[]" onchange="CekList(this);"> 
+						<input type="hidden" name="pid[] id="pid[]" value="'.$row->ID_CANDIDATE.'">
+						&nbsp;&nbsp;<strong>'.$row->NAMA_LENGKAP.'</strong></td>
+					<td> Keterangan &nbsp;&nbsp;
+						<input type="text" name="keterangan[]" id="keterangan[]" class="inp-form">
+					</td>
+                </tr>';
+			}
+		}
+		
+		$data['data_jamaah'] = $data_jamaah;
+		
+		
+		// CARI DATA PAKCET / GROUP / KELAS PROGRAM
+		$data_packet = $this->packet_model->get_packet_byAcc($id_account, $kode_reg);
+		$data['nama_group'] = $data_packet->row()->KODE_GROUP;
+		$data['nama_program'] = $data_packet->row()->NAMA_PROGRAM;
+		$data['adult'] = $data_packet->row()->JUMLAH_ADULT;
+		$data['with_bed'] = $data_packet->row()->CHILD_WITH_BED;
+		$data['no_bed'] = $data_packet->row()->CHILD_NO_BED;
+		$data['infant'] = $data_packet->row()->INFANT;
+		$id_packet = $data_packet->row()->ID_PACKET;
+		
+		
+		// CARI DATA KAMAR
+		$room = $this->room_packet_model->get_room_packet_byIDpack($id_packet);
+		$data['room'] = $room->result();
+		
 		
 		if($canceled_jamaah->result() != NULL)
 		{

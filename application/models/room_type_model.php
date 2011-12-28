@@ -71,6 +71,17 @@ class Room_type_model extends CI_Model {
 		$this->db->where('ID_ROOM_TYPE',$data);
 		$this->db->delete('room_type');
 	}
+	
+	
+	function get_all_roomType_ByStatusTampil($status_tampil)
+	{
+		$this->db->select("*");
+		$this->db->from("room_type");
+		$this->db->where('AREA_TAMPIL', $status_tampil);
+		
+		return $this->db->get();
+	}
+	
 }
 
 ?>

@@ -71,6 +71,16 @@ class Group_departure_model extends CI_Model {
 	
 		
 	}
+	
+	
+	function get_all_group_ByStatus()
+	{
+		$this->db->select("*");
+		$this->db->from("group_departure");
+		$this->db->where('STATUS', 1);
+		
+		return $this->db->get();
+	}
 }
 
 ?>

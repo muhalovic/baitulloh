@@ -123,6 +123,7 @@ class Beranda extends CI_Controller {
 			$this->load->model('packet_model');
 			$this->load->model('room_model');
 			$this->load->model('room_type_model');
+			$this->load->model('log_model');
 			
 			$group = $this->input->post('group');
             $kelas_program = $this->input->post('program');

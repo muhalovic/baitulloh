@@ -19,9 +19,9 @@ class Check_availability extends CI_Controller {
 		$this->load->model('program_class_model');
 		$this->load->model('room_type_model');
 		
-		$group = $this->group_departure_model->get_all_group();
-		$program = $this->program_class_model->get_all_program();
-		$room = $this->room_type_model->get_all_roomType();
+		$group = $this->group_departure_model->get_all_group_ByStatus();
+		$program = $this->program_class_model->get_all_program_ByStatus();
+		$room = $this->room_type_model->get_all_roomType_ByStatusTampil(3);
 
 		$group_options['0'] = '-- Pilih Keberangkatan --';
 		foreach($group->result() as $row){

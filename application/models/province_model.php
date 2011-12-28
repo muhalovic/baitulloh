@@ -82,6 +82,17 @@ class Province_model extends CI_Model {
 		
 		return TRUE;
 	}
+	
+	
+	function get_all_province_ByStatus(){
+		$this->db->select('*');
+		$this->db->from('province');
+		$this->db->where('STATUS', 1);
+		
+		return $this->db->get();
+	}
+
+
 }
 
 ?>
