@@ -6,7 +6,7 @@ form {
 /* COMBO BOX SECTION --------------------------------- */
 .dropdown{
 	font:12px Arial, Helvetica, Verdana, sans-serif;
-	background: #eee;
+	background: #fcfcfc;
 	border:thin solid #ccc;
 	padding:5px;
 	width:200px;
@@ -19,7 +19,7 @@ form {
 
 .dropdown_large{
 	font:12px Arial, Helvetica, Verdana, sans-serif;
-	background: #eee;
+	background: #fcfcfc;
 	border:thin solid #ccc;
 	color:#555;
 	padding:5px;
@@ -33,7 +33,7 @@ form {
 
 .dropdown_medium{
 	font:12px Arial, Helvetica, Verdana, sans-serif;
-	background: #eee;
+	background: #fcfcfc;
 	border:thin solid #ccc;
 	color:#555;
 	padding:5px;
@@ -47,7 +47,7 @@ form {
 
 .dropdown_small{
 	font:12px Arial, Helvetica, Verdana, sans-serif;
-	background: #eee;
+	background: #fcfcfc;
 	border:thin solid #ccc;
 	color:#555;
 	padding:5px;
@@ -68,7 +68,7 @@ form {
 
 /* INPUT SECTION ------------------------------------- */
 .input {
-	background-color: #eee;
+	background-color: #fcfcfc;
 	border:thin solid #ccc;
 	color: #555;
 	padding: 3px;
@@ -82,7 +82,7 @@ form {
 }
 
 .input_small{
-	background-color: #eee;
+	background-color: #fcfcfc;
 	border:thin solid #ccc;
 	color: #555;
 	padding: 3px;
@@ -96,7 +96,7 @@ form {
 }
 
 .input_small_table{
-	background-color: #eee;
+	background-color: #fcfcfc;
 	border:thin solid #ccc;
 	color: #555;
 	padding: 3px;
@@ -110,7 +110,7 @@ form {
 }
 
 .input_medium{
-	background-color: #eee;
+	background-color: #fcfcfc;
 	border:thin solid #ccc;
 	color: #555;
 	padding: 3px;
@@ -215,7 +215,7 @@ div.row {
 
 
 .textarea {
-	background-color: #eee;
+	background-color: #fcfcfc;
 	border:thin solid #ccc;
 	color: #555;
 	padding: 3px;
@@ -348,7 +348,7 @@ div.row {
 	text-align:center;
 	width:80%;
 	height:25px;
-	background-color: #EEE;
+	background-color: #FCFCFC;
 	border:thin solid #ccc;
 	color: #3d3d3d;
 	-moz-border-radius: 5px;
@@ -379,9 +379,9 @@ div.row {
 	border-radius: 5px;
 
 	/* outline radius for mozilla/firefox only */
-	-moz-box-shadow:0 0 10px #000;
+	/* -moz-box-shadow:0 0 10px #000;
 	-webkit-box-shadow:0 0 10px #000;
-	text-shadow:none !important;
+	text-shadow:none !important; */
 }
 
 /* END TOOLTIP SECTION ------------------------------- */

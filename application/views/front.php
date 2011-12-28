@@ -141,7 +141,6 @@
 		</script>
 		
 		<!-- Script for numeric spinner -->
-		<script type="text/javascript" src="<?php echo base_url();?>js/jquery.js"></script>
 		<script type="text/javascript" src="<?php echo base_url();?>js/jquery-ui-1.8.16.custom.min.js"></script>
 		<script type="text/javascript" src="<?php echo base_url();?>js/ui.spinner.js"></script>
 		<script type="text/javascript">

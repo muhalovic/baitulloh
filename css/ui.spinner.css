@@ -2,9 +2,9 @@
 .ui-spinner-buttons {position: absolute}
 .ui-spinner-button {overflow: hidden}
 .spinner {
-    background-color: #EEEEEE;
+    background-color: #fcfcfc;
     border: thin solid #CCCCCC;
-    border-radius: 4px 4px 4px 4px;
+    border-radius: 4px 0 0 4px;
     color: #555555;
     font-size: 11px;
     height: 20px;

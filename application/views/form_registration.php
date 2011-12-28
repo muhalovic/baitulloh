@@ -255,8 +255,8 @@
 						<label for="setuju">Saya memahami dan menyetujui informasi di atas</label>
 					</h3>
 					<center>
-						<input type="submit" value="Daftar" id="submit_button" class="submit_button" disabled="disabled"/>
 						<input type="reset" value="Reset" class="reset_button" onclick="reload()"/>
+						<input type="submit" value="Daftar" id="submit_button" class="submit_button" disabled="disabled"/>
 					</center>
 				</div>
 			</td>

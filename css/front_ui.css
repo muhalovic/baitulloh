@@ -1,5 +1,6 @@
 body{
-	background: #EBEBEB url(../images/front/bg.png);
+	/* background: #EBEBEB url(../images/front/bg.png); */
+	background:#FAFAFA;
 	font:12px Arial, Helvetica, Verdana, sans-serif;
 	padding:0;
 	margin:0;
@@ -332,7 +333,7 @@ h3{
 .content_center{
 	width:372px;
 	margin:5px auto;
-	border: thin dashed #AEAEAE;
+	/* border: thin dashed #AEAEAE; */
 	padding:10px;
 	box-shadow: 0px 0px 10px #ccc;
 }
@@ -340,7 +341,7 @@ h3{
 .info_shape{
 	width:100%;
 	height:100%;
-	border: thin dashed #AEAEAE;
+	/* border: thin solid #AEAEAE; */
 	padding:10px;
 	box-shadow: 0px 0px 10px #ccc;
 }
