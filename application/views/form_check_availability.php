@@ -67,7 +67,7 @@
 				<? }?>
 				<label class="col1">Anak Dengan Ranjang</label>
 				<span class="col2">
-					<input type="text" name="with_bed" value="<?php echo set_value('with_bed');?>" class="input_small" title="Harap diisi dengan angka" />
+					<input type="text" name="with_bed" value="0" class="spinner" title="Harap diisi dengan angka" />
 					<label><img src="<?php echo base_url();?>images/front/anak.png"/>&nbsp;( 23 bulan - 11 tahun )</label>
 				</span>
 			</div>
@@ -79,7 +79,7 @@
 				<? }?>
 				<label class="col1">Anak Tanpa Ranjang</label>
 				<span class="col2">
-					<input type="text" name="no_bed" value="<?php echo set_value('no_bed');?>" class="input_small" title="Harap diisi dengan angka" />
+					<input type="text" name="no_bed" value="0" class="spinner" title="Harap diisi dengan angka" />
 					<label><img src="<?php echo base_url();?>images/front/anak.png"/>&nbsp;( 23 bulan - 11 tahun )</label>
 				</span>
 			</div>
@@ -91,7 +91,7 @@
 				<? }?>
 				<label class="col1">Bayi</label>
 				<span class="col2">
-					<input type="text" name="infant" value="<?php echo set_value('infant');?>" class="input_small" title="Harap diisi dengan angka" />
+					<input type="text" name="infant" value="0" class="spinner" title="Harap diisi dengan angka" />
 					<label><img src="<?php echo base_url();?>images/front/bayi.png"/>&nbsp;( 0 - 23 bulan )</label>
 				</span>
 			</div>
