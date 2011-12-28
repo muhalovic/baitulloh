@@ -403,13 +403,15 @@
                                                                 <h4 class="h4">Pembatalan Calon Jamaah</h4>
 <p><br /><i><strong>Assalamualaikum, <?=$nama_user?></strong></i></p> 
 
-<p>Sesuai dgn permintaan Anda perihal layanan Pembatalan Calon Jamaah. berikut kami lampirkan data profile dari calon jamaah yg dinonaktifkan  : <br /><br />  
+<p>Terkait dengan permintaan Anda pada tanggal <? echo date("m F Y"); ?> , perihal layanan Pembatalan Calon Jamaah. berikut kami lampirkan data profile dari calon jamaah yg dinonaktifkan  : <br /><br />  
 </p>                                                                
 <p>
 <?=$list_calon?>
 </p>
+
+<p><br /> Akun tersebut sudah otomatis di nonaktifkan oleh sistem, dan Anda dikenakan pinalti tarif sesuai dengan ketentuan & syarat pembatalan yang berlaku.</p>
                                                                
-<p><br /> Terima kasih telah menggunakan layananan <strong>Online System Umrah Kamilah</strong>. Semoga kita tetap berlimpah rahmat, berkah, dan maghfirahNya. Amin</p>
+<p><br /> Terima kasih telah menggunakan layananan <strong>Online System Umrah Kamilah</strong>. Semoga kita tetap berlimpah rahmat, berkah, dan maghfirahNya. <em>Amin</em></p>
                                                                 
 <p><strong>Wassalamualaikum Wr. Wb</strong><br />
 <strong>Umrahkamilah.com </strong></p>
