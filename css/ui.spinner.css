@@ -1,0 +1,14 @@
+.ui-spinner {position: relative; border: 0px solid white; }
+.ui-spinner-buttons {position: absolute}
+.ui-spinner-button {overflow: hidden}
+.spinner {
+    background-color: #EEEEEE;
+    border: thin solid #CCCCCC;
+    border-radius: 4px 4px 4px 4px;
+    color: #555555;
+    font-size: 11px;
+    height: 20px;
+    margin: 0 0 8px;
+    padding: 3px;
+    width: 50px;
+}

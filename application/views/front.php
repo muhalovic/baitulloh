@@ -11,8 +11,10 @@
 		<link rel="stylesheet" href="<?php echo base_url();?>css/front_ui.css" type="text/css" media="screen" title="default" /> <!-- main css -->
 		<link rel="stylesheet" href="<?php echo base_url();?>css/form.css" type="text/css" media="screen" title="default" /> <!-- form css -->
 		<link rel="stylesheet" href="<?php echo base_url();?>css/chosen.css" type="text/css" media="screen" title="default" /> <!-- searchable combobox css -->
-		<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css' /> <!-- import font
-	
+		<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css' /> <!-- import font -->
+		<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/jquery-ui-1.8.16.custom.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/ui.spinner.css" />
+		
 		<!-- JAVASCRIPT -->
 		<!--<script src="<?php //echo base_url();?>js/jquery-1.6.2.min.js" type="text/javascript"></script>-->
         <script src="<?php echo base_url();?>js/jquery.js" type="text/javascript"></script>
@@ -136,6 +138,14 @@
 		<script src="<?php echo base_url();?>js/chosen.jquery.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			$(".chzn-select").chosen({no_results_text: "Data yang dicari tidak ditemukan"});
+		</script>
+		
+		<!-- Script for numeric spinner -->
+		<script type="text/javascript" src="<?php echo base_url();?>js/jquery.js"></script>
+		<script type="text/javascript" src="<?php echo base_url();?>js/jquery-ui-1.8.16.custom.min.js"></script>
+		<script type="text/javascript" src="<?php echo base_url();?>js/ui.spinner.js"></script>
+		<script type="text/javascript">
+			$('.spinner').spinner({ min: 0, max: 20 });
 		</script>
 	</body>
 </html> 

@@ -400,11 +400,16 @@
                                                     <tr>
                                                         <td valign="top">
                                                             <div mc:edit="std_content00">
-                                                                <h4 class="h4">Pembatalan Calon Jamaah</h4>
+                                                                <h4 class="h4">Pembatalan Paket Keseluruhan</h4>
 <p><br /><i><strong>Assalamualaikum, <?=$nama_user?></strong></i></p> 
 
-<p>Terkait dengan permintaan Anda pada tanggal <? echo date("m F Y"); ?> , perihal layanan Pembatalan Calon Jamaah. berikut kami lampirkan data profile dari calon jamaah yg dinonaktifkan  : <br /><br />  
+<p>Terkait dengan permintaan Anda pada tanggal <? echo date("m F Y"); ?> , perihal layanan Pembatalan Packet. berikut kami lampirkan data Packet dan  Profile dari Calon Jamaah yg dinonaktifkan  : <br /><br />  
 </p>                                                                
+<p>
+	<strong>Nama Packet &nbsp;&nbsp;&nbsp; : 
+	<? if (isset($nama_group)) echo $nama_group ?>
+    <? if (isset($nama_program)) echo "- ".$nama_program ?>
+    </strong><br /><div class="borderDashed"></div>
 <p>
 <?=$list_calon?>
 </p>

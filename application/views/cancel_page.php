@@ -31,13 +31,13 @@ echo $notifikasi;
                         <div class="garis_pisah"> PEMBATALAN JAMAAH</div>
                     </td>
                 </tr>
-                <? echo form_open('cancel/do_send/1'); ?>
+                <? echo form_open('cancel/do_send_jamaah/'); ?>
                 <? echo $data_jamaah; ?>
                 
 				<tr height="90">
 					<th></th>
 					<td>
-						<input type="submit" id="submit" value="" class="form-submit-front" disabled="disabled"/>
+					  <input type="submit" id="submit" value="" class="form-submit-front" <? if (isset($disabled)) echo $disabled ?>/>
 					</td>
 					<td></td>
 				</tr>
@@ -52,7 +52,7 @@ echo $notifikasi;
                     </td>
                 </tr>
                 
-                <? echo form_open('cancel/do_send/2'); ?>
+                <? echo form_open('cancel/do_send_packet/'); ?>
                 
                 <tr>
 					<td colspan="3" align="left">
@@ -68,28 +68,28 @@ echo $notifikasi;
                             <tr>					
                                 <th valign="top">Jumlah Dewasa (*)</th>
                                 <td>	
-                                    <? if (isset($adult)) echo $adult ?>
+                                    <? if (isset($adult)) echo $adult ?> Orang
                                 </td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <th valign="top">Anak Dengan Ranjang</th>
                                 <td>	
-                                    <? if (isset($with_bed)) echo $with_bed ?>
+                                    <? if (isset($with_bed)) echo $with_bed ?> Orang
                                 </td>
                                 <td></td>
                             </tr> 
                             <tr>
                                 <th valign="top">Anak Tanpa Ranjang</th>
                                 <td>	
-                                    <? if (isset($no_bed)) echo $no_bed ?>
+                                    <? if (isset($no_bed)) echo $no_bed ?> Orang
                                 </td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <th valign="top">Bayi</th>
                                 <td>	
-                                    <? if (isset($infant)) echo $infant ?>
+                                    <? if (isset($infant)) echo $infant ?> Orang
                                 </td>
                                 <td></td>
                             </tr>
@@ -183,6 +183,7 @@ echo $notifikasi;
 
 function goSubmit(input)
 {
+	alert(+input.valu);
 	if(input.checked)
 	{
 		document.getElementById('submit').disabled=false;
@@ -195,15 +196,15 @@ function goSubmit(input)
 
 function CekList(input)
 {
+	var pid = input.value;
+	
 	if(input.checked)
 	{
-		document.getElementById('keterangan[]').value='';
-		document.getElementById('keterangan[]').disabled=false;
-		document.getElementById('keterangan[]').classList='inp-form';
+		document.getElementById('keterangan_'+pid).value='';
+		document.getElementById('keterangan_'+pid).disabled=false;
 	} else {
-		document.getElementById('keterangan[]').value='';
-		document.getElementById('keterangan[]').disabled=true;
-		document.getElementById('keterangan[]').classList='inp-form-disable';
+		document.getElementById('keterangan_'+pid).value='';
+		document.getElementById('keterangan_'+pid).disabled=true;
 	}
 }
 
