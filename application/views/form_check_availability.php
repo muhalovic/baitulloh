@@ -29,7 +29,7 @@
 				<span class="col2">
 					<?php 
 						$group = 0; if(set_value('group')!='') $group = set_value('group');
-						echo form_dropdown('group', $group_options, $group,'id="group" class="dropdown_large" width="250px" onChange="get_group();" title="Nama Group dan Tanggal Keberangkatan"'); 
+						echo form_dropdown('group', $group_options, $group,'id="group" class="chzn-select" width="250px" onChange="get_group();" title="Nama Group dan Tanggal Keberangkatan"'); 
 					?>
 				</span>
 			</div>
@@ -43,7 +43,7 @@
 				<span class="col2">
 					<?php 
 						$program = 0; if(set_value('program')!='') $program = set_value('program');
-						echo form_dropdown('program', $program_options, $program,'id="program" class="dropdown_large"  onChange="get_program();" title="Nama Kelas Program"'); 
+						echo form_dropdown('program', $program_options, $program,'id="program" class="chzn-select"  onChange="get_program();" title="Nama Kelas Program"'); 
 					?>
 				</span>
 			</div>
@@ -301,6 +301,7 @@
 				document.getElementById('program').value=0;
 				document.getElementById('front_keterangan').style.display="none";
 				document.getElementById('front_informasi').style.display="none";
+				$("#program").trigger("liszt:updated");
 				/*if(+prp !=  0 && cek_program != 0)
 					{
 						document.getElementById('front_keterangan').style.display="inline";
