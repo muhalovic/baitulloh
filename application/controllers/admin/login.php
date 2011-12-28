@@ -48,13 +48,14 @@ class Login extends CI_Controller {
 		
 			//kondisi pengecekan apakah username dan password yang dimasukkan telah sesuai dengan benar atau tidak
 			foreach ($data_user->result() as $row){	
-				if($username == $row->NAMA_USER_INTERNAL && md5($password) == $row->PASSWORD){
+				if($username == $row->USERNAME && md5($password) == $row->PASSWORD){
 					$valid = true;
 					
 					//setting session terhadap data user
 					$newdata = array(
 						'id_user'	=> $row->ID_USER,
-						'username' 	=> $row->NAMA_USER_INTERNAL,
+						'username' 	=> $row->USERNAME,
+						'nama_lengkap' 	=> $row->NAMA_USER_INTERNAL
 					);	
 					
 					$this->session->set_userdata($newdata);

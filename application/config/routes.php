@@ -59,7 +59,7 @@ $route['pasca_daftar/(:any)'] 	= 'notification/show/$1';
 
 
 /* ROUTING UNTUK ADMIN -------------------------------------------------*/
-
+$route['admin'] 	= 'admin/login';
 /* END ROUTING UNTUK ADMIN ---------------------------------------------*/
 
 

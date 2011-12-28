@@ -238,7 +238,7 @@
 		<div id="content-outer">
 			<!-- start content -->
 			<div id="content">
-				<div id="page-heading">Assalamualaikum, Pengguna Akun: <strong><? echo ucwords($this->session->userdata('username')); ?></strong></div>
+				<div id="page-heading">Assalamualaikum, Pengguna Akun: <strong><? echo ucwords($this->session->userdata('nama_lengkap')); ?></strong></div>
 				<table border="0" width="100%" cellpadding="0" cellspacing="0" id="content-table">
 					<tr>
 						<th rowspan="3" class="sized"><img src="<?php echo base_url();?>images/shared/side_shadowleft.jpg" width="20" height="300" alt="" /></th>

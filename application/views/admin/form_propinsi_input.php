@@ -22,7 +22,7 @@ echo $notifikasi;
 				</tr>
 				
 				<tr>
-					<? form_error('nama_propinsi') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
+					<? form_error('status') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
 					<th valign="top">Status (*)</th>
 					<td><input type="checkbox" name="status" value="1" <?=($e_status==1)?'checked="checked"':''?> /> &nbsp;&nbsp;<strong>Aktif</strong></td>
 					<td></td>

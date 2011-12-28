@@ -7,7 +7,7 @@ class Data_jamaah extends CI_Controller {
 		parent::__construct();
 		
 		if($this->session->userdata('id_user') == NULL)
-			redirect(site_url()."admin/login");
+			redirect("admin/login");
 	}
 
 	function index()
