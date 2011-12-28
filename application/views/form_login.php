@@ -39,12 +39,12 @@
 						</div>
 
 						<div align="center">
-							<p><a href="<?=base_url() ?>lupapassword" title="Lupa Password Anda?">Lupa Password?</a></p>
+							<p><a href="<?=base_url() ?>lupapassword" title="Lupa Password Anda?" style="color:#3B619F;font-weight:bold;">Lupa Password?</a></p>
 						</div>
 						
 						<div style="margin:5px;text-align:center;">
-							<input type="submit" value="Login" class="submit_button" />
 							<input type="reset" value="Reset" class="reset_button" />
+							<input type="submit" value="Login" class="submit_button" />
 						</div>
 					</p>
 				<?php echo form_close();?>
