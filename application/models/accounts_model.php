@@ -157,6 +157,14 @@ class Accounts_model extends CI_Model {
 		
 	}
 	
+	function get_account_byEmail($email)
+	{
+		$this->db->select("*");
+		$this->db->from("accounts");
+		$this->db->where('EMAIL',$email);
+
+		return $this->db->get();
+	}
 	
 	
 }

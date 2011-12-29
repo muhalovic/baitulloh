@@ -45,10 +45,11 @@
 								maxSelected: response
 							});
 
-                                                        var prp = room[room.selectedIndex].text;
-			document.getElementById("div_room").innerHTML = prp;
-                                                        var sisa = "Kuota Maksimum Kamar "+prp+" =  ";
-							document.getElementById("div_max").innerHTML = sisa+response+" Orang";
+                        var prp = room[room.selectedIndex].text;
+                 //     var sisa = "Kuota Maksimum Kamar "+prp+" =  ";
+						
+						document.getElementById("div_room").innerHTML = "<li>"+prp+"</li>";
+						document.getElementById("div_max").innerHTML = "<li>Tersedia Untuk <font color='green'>"+response+"</font> Orang</li>";
 						}
 				});
                                 getJamaah(room.value);
@@ -133,7 +134,7 @@
 							echo form_dropdown('candidate[]', $list_candidate, $candidate,'id="fourth" multiple="multiple"'); }?>
 						<br />                                                
                                                 <br />
-						<div id="div_max"></div>
+						
                                                 <br>
                                                 <? if(form_error('candidate') != '') {?>
 						<div class="error-left"></div>
@@ -144,6 +145,11 @@
                                             
                                         </td>
 				</tr>
+				<!--<tr>
+					<th valign="top"></th>
+					<td colspan="2"><div id="div_max_x"></div>
+					</td>
+				</tr>-->
 				<tr>
 					<th valign="top">Konfirmasi</th>
 					<td>
@@ -189,7 +195,9 @@
 						<div class="left"><img src="<?php echo base_url();?>images/forms/icon_edit.gif" width="21" height="21" alt="" /></div>
 						<? if ($is_pay) {?>
 						<div class="right">
-							<h5>Data Jamaah Kamar : <div id="div_room"></div></h5>							
+							<h5>Data Jamaah Kamar : <div id="div_room"></div></h5>	
+                            <br />				
+                            <h5>Kuota Maksimum Kamar : <div id="div_max"></div></h5>
 						</div>
 						<? } else {?>
 						<div class="right">
@@ -206,8 +214,10 @@
 						<? }?>
 						<div class="clear"></div>
 						<div class="lines-dotted-short"></div>						
-						
-						<div class="right" id="div_prev"></div>
+						<div class="left"><img src="<?php echo base_url();?>images/forms/icon_plus.gif" width="21" height="21" alt="" /></div>
+						<div class="right">
+                        	<h5>Satu Kamar Dengan : <div id="div_prev"></div></h5>
+                        </div>
 						
 							<div class="clear"></div>						
 					</div>

@@ -2,7 +2,7 @@
 
 <?php echo $notifikasi;?>
 
-<? echo form_open('useraccount/do_editpassword'); ?>
+<? echo form_open('useraccount/do_editpassword', array('id' => 'myform', 'class' => 'myform')); ?>
 <table border="0" width="100%" cellpadding="0" cellspacing="0">
 	<tr valign="top">
 		<td>
@@ -11,7 +11,7 @@
 				<tr>
 					<? form_error('password_sekarang') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
 					<th valign="top">Password Sekarang</th>
-					<td><input type="password" name="password_sekarang" value="<?if(set_value('password_sekarang')!='') echo set_value('password_sekarang');?>" class="<? echo $class;?>" /></td>
+					<td><input type="password" name="password_sekarang" value="<? if(set_value('password_sekarang')!='') echo set_value('password_sekarang'); ?>" class="<? echo $class;?>" /></td>
 					<td>
 						<? if(form_error('password_sekarang') != '') {?>
 						<div class="error-left"></div>
@@ -23,7 +23,7 @@
 				<tr>
 					<? form_error('password_baru') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
 					<th valign="top">Password Baru</th>
-					<td><input type="password" name="password_baru" value="<?if(set_value('password_baru')!='') echo set_value('password_baru');?>" class="<? echo $class;?>" /></td>
+					<td><input type="password" name="password_baru" value="<?if(set_value('password_baru')!='') echo set_value('password_baru');?>" class="<? echo $class;?> password" id="password" /></td>
 					<td>
 						<? if(form_error('password_baru') != '') {?>
 						<div class="error-left"></div>
@@ -35,7 +35,7 @@
 				<tr>
 					<? form_error('konfirmasi') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
 					<th valign="top">Konfirmasi</th>
-					<td><input type="password" name="konfirmasi" value="<?if(set_value('konfirmasi')!='') echo set_value('konfirmasi');?>" class="<? echo $class;?>" /></td>
+					<td><input type="password" name="konfirmasi" value="<? if(set_value('konfirmasi')!='') echo set_value('konfirmasi');?>" class="<? echo $class;?>" /><label id="password_verification"></label></td>
 					<td>
 						<? if(form_error('konfirmasi') != '') {?>
 						<div class="error-left"></div>

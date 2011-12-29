@@ -2,7 +2,7 @@
 
 <?php echo $notifikasi;?>
 
-<? echo form_open('useraccount/do_edit'); ?>
+<? echo form_open('useraccount/do_edit', array('id' => 'myform', 'class' => 'myform')); ?>
 <table border="0" width="100%" cellpadding="0" cellspacing="0">
 	<tr valign="top">
 		<td>
@@ -60,7 +60,7 @@
 					<th valign="top">Propinsi</th>
 					<td>	
 						<? $province = $propinsi; if(set_value('province')!='') $province = set_value('province');
-							echo form_dropdown('province', $province_options, $province,'id="province" class="styledselect_form_1"'); ?>
+							echo form_dropdown('province', $province_options, $province,'id="province" class="styledselect-biodata chzn-select"'); ?>
 					</td>
 					<td>
 						<? if(form_error('province') != '') {?>
@@ -73,7 +73,7 @@
 				<tr>
 					<? form_error('kota') == '' ? $class = 'inp-form':$class = 'inp-form-error'; ?>
 					<th valign="top">Kota</th>
-					<td><input type="text" name="kota" value="<?if(set_value('kota')!='') echo set_value('kota'); else echo $kota;?>" class="<? echo $class;?>" /></td>
+					<td><input type="text" name="kota" value="<? if(set_value('kota')!='') echo set_value('kota'); else echo $kota;?>" class="styledselect-biodata chzn-select" data-allows-new-values="true"  /></td>
 					<td>
 						<? if(form_error('kota') != '') {?>
 						<div class="error-left"></div>
@@ -110,3 +110,31 @@
 </table>
 <? echo form_close(); ?>
 <div class="clear"></div>
+
+<script language="javascript" type="text/javascript">
+
+$("#province").bind('change',function get_group() 
+{	
+var prp = $("#province").val();
+
+	$.ajax({
+			url: "<?=base_url();?>index.php/province/get_ajax_kota/",
+			global: false,
+			type: "POST",
+			async: false,
+			dataType: "html",
+			data: "id_province="+ prp, //the name of the $_POST variable and its value
+			success: function (response) {
+				 var bahan = response;
+				 
+				 //document.getElementById('info_jd').innerHTML = pecah[0];
+				 document.getElementById('kota').innerHTML = response;
+				 }
+	});
+	$("#kota").trigger("liszt:updated");
+	
+	return false;
+}
+);
+
+</script>

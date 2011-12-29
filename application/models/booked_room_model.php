@@ -65,6 +65,16 @@ class Booked_room_model extends CI_Model {
 		return $this->db->get();
 	}
 	
+	function get_booked_candidate_byRoom($id_room){
+		$this->db->select("br.*, j.*, r.KODE_KAMAR");
+		$this->db->from("booked_room br");
+		$this->db->join("jamaah_candidate j", "j.ID_CANDIDATE = br.ID_CANDIDATE");
+		$this->db->join("room r", "r.ID_ROOM = br.ID_ROOM");
+         $this->db->where("br.ID_ROOM", $id_room);
+		
+		return $this->db->get();
+	}
+	
 	function insert_booked_room($data){
 		$this->db->trans_begin();
 		$this->db->insert('booked_room', $data);

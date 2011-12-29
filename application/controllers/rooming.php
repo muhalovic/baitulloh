@@ -109,7 +109,7 @@ class Rooming extends CI_Controller {
 		
 		$data['content'] = $this->load->view('form_rooming',$data,true);
 		//$this->load->view('form_rooming',null,false);
-		$this->load->view('front',$data);
+		$this->load->view('front_backup',$data);
 	}
 
         function show_profile($id_candidate){
@@ -147,6 +147,7 @@ class Rooming extends CI_Controller {
             }else{
                 $this->load->model('room_model');
                 $this->load->model('booked_room_model');
+                $this->load->model('jamaah_candidate_model');
                 $this->load->model('log_model');
                 
 		$room = $this->input->post('room');
@@ -161,24 +162,28 @@ class Rooming extends CI_Controller {
 
                     $this->booked_room_model->insert_booked_room($data);
                     $this->log_model->log($id_user, $kode_reg, NULL, $log);
-
+					
+					$data_candidate = $this->jamaah_candidate_model->get_data_berdasarkan_id_candidate_byStatus($cadidate[$i])->row();
                     $data_room = $this->room_model->get_room($room);
+					
                     if ($data_room->num_rows() > 0){
                         if ($data_room->row()->AVAILABILITY == 1){
-                            $bed = $data_room->row()->BEDS;
-
-                            if ($bed-1 > 0){
-                                $this->room_model->update_room($room, array('BEDS' => $bed-1));
-                                
-                                $log = "UPDATE data ROOM dengan ID_ROOM = $room set BEDS = ".($bed-1);
-                                $this->log_model->log($id_user, $kode_reg, NULL, $log);
-                            }
-                            else{
-                                $this->room_model->update_room($room, array('BEDS' => $bed-1, 'AVAILABILITY' => 0));
-                                
-                                $log = "UPDATE data ROOM dengan ID_ROOM = $room set BEDS = ".($bed-1)." dan AVAILABILITY = 0";
-                                $this->log_model->log($id_user, $kode_reg, NULL, $log);
-                            }
+							if($data_candidate->TIPE_JAMAAH != "CNB" && $data_candidate->TIPE_JAMAAH != "I"){
+								$bed = $data_room->row()->BEDS;
+								
+								if ($bed-1 > 0){
+									$this->room_model->update_room($room, array('BEDS' => $bed-1));
+									
+									$log = "UPDATE data ROOM dengan ID_ROOM = $room set BEDS = ".($bed-1);
+									$this->log_model->log($id_user, $kode_reg, NULL, $log);
+								}
+								else{
+									$this->room_model->update_room($room, array('BEDS' => $bed-1, 'AVAILABILITY' => 0));
+									
+									$log = "UPDATE data ROOM dengan ID_ROOM = $room set BEDS = ".($bed-1)." dan AVAILABILITY = 0";
+									$this->log_model->log($id_user, $kode_reg, NULL, $log);
+								}
+							}
                         }
                     }
                     
@@ -241,28 +246,46 @@ class Rooming extends CI_Controller {
 		if ($room->num_rows() > 0){
                     foreach ($room->result() as $rs){
                             $key = $this->secure($rs->ID_CANDIDATE);
-                            $list.= '<li>'.anchor_popup('rooming/show_profile/'.$key, $rs->NAMA_LENGKAP." - ".$rs->KOTA, $atts).'</li>';
+							if($rs->GENDER == 1)
+							{
+								$jenis_kelamin = "Laki-Laki";
+							}else{
+								$jenis_kelamin = "Perempuan";
+							}
+							
+                            $list.= '<li>'.$rs->NAMA_LENGKAP.', '.$this->hitung_usia($rs->TANGGAL_LAHIR).' Thn<br>
+										 '.$jenis_kelamin.'<br>
+										 <em>'.anchor_popup('rooming/show_profile/'.$key, 'lihat profil selengkapnya', $atts).'</em></li><br>';
                     }
                     echo $list.'</ul>';
-                } else echo "";
+                } else echo "-- Kosong --";
             } else echo '';
 	}
 
-        function getMax_room(){
-            if ($_POST['id_room']!=''){
-		$this->load->model('room_model');
+	function getMax_room()
+	{
+		if ($_POST['id_room']!='')
+		{
+			$this->load->model('room_model');
 
-                $id_room = $_POST['id_room'];
+			$id_room = $_POST['id_room'];
 
-		$list = '';
-		$room = $this->room_model->get_room($id_room);
-		if ($room->num_rows() > 0){
-                    foreach ($room->result() as $rs){
-                            $list = $rs->BEDS;
-                    }
-                    echo $list;
-                } else echo 0;
-            } else echo 0;
+			$list = '';
+			$room = $this->room_model->get_room($id_room);
+			
+			// CARI JUMLAH SISA KAMAR
+			if ($room->num_rows() > 0)
+			{
+				foreach ($room->result() as $rs)
+				{
+					$list = $rs->BEDS;
+				}
+				
+				$tampil = $list;
+			} else $tampil = 0;
+		} else $tampil = 0;
+		
+		echo $tampil;
 	}
 
         //cek apakah user sudah login kedalam sistem
@@ -270,7 +293,21 @@ class Rooming extends CI_Controller {
             if($this->session->userdata('id_account') == NULL || $this->session->userdata('id_account') == '')
                     redirect('login');
     }
-
+	
+	
+	function hitung_usia($birthday)
+	{
+		list($year,$month,$day) = explode("-",$birthday);
+		$year_diff = date("Y") - $year;
+		$month_diff = date("m") - $month;
+		$day_diff = date("d") - $day;
+		
+		if ($month_diff < 0) $year_diff--;
+		elseif (($month_diff==0) && ($day_diff < 0)) $year_diff--;
+		
+		return $year_diff;
+	}
+	
         // cek order packet
         function cekOrder(){
             $this->load->model('packet_model');

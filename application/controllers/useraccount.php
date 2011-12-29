@@ -64,7 +64,7 @@ class Useraccount extends CI_Controller {
 		
 		//load view akhir
 		$data['content'] = $this->load->view('useraccount/form_editdata',$data,true);
-		$this->load->view('front',$data);
+		$this->load->view('front_backup',$data);
 		
 	}//end changedata
 	
@@ -151,7 +151,7 @@ class Useraccount extends CI_Controller {
 		//setting rules
 		$config = array(
 				array('field'=>'nama','label'=>'Nama Lengkap', 'rules'=>'required'),
-				array('field'=>'email','label'=>'Email', 'rules'=>'valid_email'),
+				array('field'=>'email','label'=>'Email', 'rules'=>'valid_email|callback_cek_email'),
 				array('field'=>'telepon','label'=>'Telepon', 'rules'=>'required|numeric'),
 				array('field'=>'handphone','label'=>'Mobile', 'rules'=>'numeric'),
 				array('field'=>'province','label'=>'Propinsi', 'rules'=>'callback_cek_dropdown'),
@@ -222,6 +222,21 @@ class Useraccount extends CI_Controller {
 		}else{
 			return TRUE;
 		}
+	}
+	
+	function cek_email($value)
+	{
+		$this->load->model('accounts_model');
+		
+		$data_account = $this->accounts_model->get_account_byEmail($value);
+		if($data_account->result() != NULL)
+		{
+			$this->form_validation->set_message('cek_email', '<strong>%s</strong> sudah terdaftar dalam sistem  !');
+			return FALSE;
+		}else{
+			return TRUE;
+		}
+				
 	}
 	
 }//end class

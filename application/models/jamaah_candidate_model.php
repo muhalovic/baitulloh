@@ -283,6 +283,18 @@ class jamaah_candidate_model extends CI_Model {
 		
 		return $this->db->get();
 	}
+	
+	function get_data_berdasarkan_id_candidate_byStatus($id_candidate)
+	{
+		$status = array(1,2,3);
+		
+		$this->db->select("*");
+		$this->db->from("jamaah_candidate");
+		$this->db->where('ID_CANDIDATE', $id_candidate);	
+		$this->db->where_in('STATUS_KANDIDAT', $status);
+		
+		return $this->db->get();
+	}
 		
 }
 
