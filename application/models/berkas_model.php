@@ -14,7 +14,7 @@ class Berkas_model extends CI_Model {
 		$this->db->from("jamaah_candidate c");
 		$this->db->join('berkas_fisik b', 'c.ID_CANDIDATE = b.ID_CANDIDATE', 'left');
 		$this->db->join('accounts a', 'c.ID_ACCOUNT = a.ID_ACCOUNT AND c.KODE_REGISTRASI = a.KODE_REGISTRASI', 'left');
-		$this->db->where('c.STATUS_KANDIDAT >', 0);
+		$this->db->where('c.STATUS_KANDIDAT >', 0); // Status Jamaah Aktif
 		$this->CI->flexigrid->build_query();
 		
 		$return['records'] = $this->db->get(); 
@@ -54,7 +54,9 @@ class Berkas_model extends CI_Model {
 		$this->db->select('c.*, a.ID_ACCOUNT, a.NAMA_USER');
 		$this->db->from("jamaah_candidate c");
 		$this->db->join('accounts a', 'c.ID_ACCOUNT = a.ID_ACCOUNT AND c.KODE_REGISTRASI = a.KODE_REGISTRASI', 'left');
-		$this->db->where('c.STATUS_KANDIDAT >', 0);
+		$this->db->join('packet p', 'a.ID_ACCOUNT = p.ID_ACCOUNT', 'left');
+		$this->db->where('c.STATUS_KANDIDAT >', 0); // Status Jamaah Aktif
+		$this->db->where('p.STATUS_PESANAN', 4); // Pembayaran Lunas
 		$this->CI->flexigrid->build_query();
 		
 		$return['records'] = $this->db->get(); 
@@ -62,7 +64,9 @@ class Berkas_model extends CI_Model {
 		$this->db->select('c.*, a.ID_ACCOUNT, a.NAMA_USER');
 		$this->db->from("jamaah_candidate c");
 		$this->db->join('accounts a', 'c.ID_ACCOUNT = a.ID_ACCOUNT AND c.KODE_REGISTRASI = a.KODE_REGISTRASI', 'left');
-		$this->db->where('c.STATUS_KANDIDAT >', 0);
+		$this->db->join('packet p', 'a.ID_ACCOUNT = p.ID_ACCOUNT', 'left');
+		$this->db->where('c.STATUS_KANDIDAT >', 0); // Status Jamaah Aktif
+		$this->db->where('p.STATUS_PESANAN', 4); // Pembayaran Lunas
 		
 		$return['record_count'] = $this->db->get()->num_rows; 
 		

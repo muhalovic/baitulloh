@@ -42,7 +42,7 @@ class Check_availability extends CI_Controller {
 		
 		$room_options = '';
 		foreach($room->result() as $row){
-				$input_room = "<input type='text' name='jml_kamar[]' id='jml_kamar' class='spinner'  value='0' title='Harap diisi dengan Angka'><input type='hidden' name='tipe_kamar[]' value='".$row->ID_ROOM_TYPE."'>";
+				$input_room = "<input type='text' name='jml_kamar[]' id='jml_kamar' class='spinner'  value='".set_value('jml_kamar[]',0)."' title='Harap diisi dengan Angka'><input type='hidden' name='tipe_kamar[]' value='".$row->ID_ROOM_TYPE."'>";
 				$room_options .= "<tr><td><strong><img src='".base_url()."images/front/poin.png'/>&nbsp;".$row->JENIS_KAMAR."</strong> untuk</td><td> ".$input_room." &nbsp;Orang</td></tr>";
 		}
 			
@@ -228,6 +228,7 @@ class Check_availability extends CI_Controller {
 				array('field'=>'group','label'=>'Group', 'rules'=>'callback_cek_dropdown|callback_check_departure'),
 				array('field'=>'program','label'=>'Kelas Program', 'rules'=>'callback_cek_dropdown'),
 				array('field'=>'jml_adult','label'=>'Jumlah Dewasa', 'rules'=>"required|integer|callback_check_jml[$total]"),
+				array('field'=>'jml_adult','label'=>'Jumlah Calon Jamaah', 'rules'=>"required|integer|callback_check_jml2[$total]"),
 				array('field'=>'with_bed','label'=>'Anak Dengan Ranjang', 'rules'=>"integer"),
 				array('field'=>'no_bed','label'=>'Anak Tanpa Ranjang', 'rules'=>"integer"),
 				array('field'=>'infant','label'=>'Bayi', 'rules'=>"integer|callback_check_jml[$adult]"),
@@ -287,7 +288,7 @@ class Check_availability extends CI_Controller {
 	
 	//cek jumlah jika kosong
     function check_jml2($value, $max){
-		if ($max < 0) {
+		if ($max < 0 || $max == 0) {
 			$this->form_validation->set_message('check_jml2', "%s wajib diisi !");
 			return FALSE;
 		}else{
