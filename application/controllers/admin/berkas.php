@@ -30,7 +30,7 @@ class Berkas extends CI_Controller{
 		$colModel['no'] = array('No',30,TRUE,'center',0);	
 		$colModel['c.NAMA_LENGKAP'] = array('Nama Lengkap',180,TRUE,'center',2);
 		$colModel['c.KODE_REGISTRASI'] = array('Kode Registrasi',110,TRUE,'center',1);
-		$colModel['a.NAMA_USER'] = array('Nama Registrasi',150,TRUE,'center',1);
+		$colModel['a.NAMA_USER'] = array('Nama Akun',150,TRUE,'center',1);
 		$colModel['b.PASPOR'] = array('Paspor',50,TRUE,'center',0);
 		$colModel['b.NPWP'] = array('NPWP',50,TRUE,'center',0);
 		$colModel['b.BUKU_KUNING'] = array('B. Kuning',50,TRUE,'center',0);
@@ -210,7 +210,7 @@ class Berkas extends CI_Controller{
 		$colModel['no'] = array('No',30,TRUE,'center',0);	
 		$colModel['c.NAMA_LENGKAP'] = array('Nama Lengkap',180,TRUE,'center',2);
 		$colModel['c.KODE_REGISTRASI'] = array('Kode Registrasi',110,TRUE,'center',1);
-		$colModel['a.NAMA_USER'] = array('Nama Registrasi',150,TRUE,'center',1);
+		$colModel['a.NAMA_USER'] = array('Nama Akun',150,TRUE,'center',1);
 		$colModel['c.STATUS_KIRIM_TOOLKIT'] = array('Status Toolkit',80,TRUE,'center',0);
 
 		$gridParams = array(
