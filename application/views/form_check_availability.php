@@ -55,7 +55,7 @@
 				<? }?>
 				<label class="col1">Jumlah Dewasa</label>
 				<span class="col2">
-					<input type="text" name="jml_adult" value="0" class="spinner"  title="Harap diisi dengan angka" />
+					<input type="text" name="jml_adult" value="<? if(set_value('jml_adult')!='') echo set_value('jml_adult'); else echo 0;?>" class="spinner"  title="Harap diisi dengan angka" />
 					<label><img src="<?php echo base_url();?>images/front/dewasa.png"/>&nbsp;( di atas 11 tahun )</label>
 				</span>
 			</div>
@@ -67,7 +67,7 @@
 				<? }?>
 				<label class="col1">Anak Dengan Ranjang</label>
 				<span class="col2">
-					<input type="text" name="with_bed" value="0" class="spinner" title="Harap diisi dengan angka" />
+					<input type="text" name="with_bed" value="<? if(set_value('with_bed')!='') echo set_value('with_bed'); else echo 0;?>" class="spinner" title="Harap diisi dengan angka" />
 					<label><img src="<?php echo base_url();?>images/front/anak.png"/>&nbsp;( 23 bulan - 11 tahun )</label>
 				</span>
 			</div>
@@ -79,7 +79,7 @@
 				<? }?>
 				<label class="col1">Anak Tanpa Ranjang</label>
 				<span class="col2">
-					<input type="text" name="no_bed" value="0" class="spinner" title="Harap diisi dengan angka" />
+					<input type="text" name="no_bed" value="<? if(set_value('no_bed')!='') echo set_value('no_bed'); else echo 0;?>" class="spinner" title="Harap diisi dengan angka" />
 					<label><img src="<?php echo base_url();?>images/front/anak.png"/>&nbsp;( 23 bulan - 11 tahun )</label>
 				</span>
 			</div>
@@ -91,7 +91,7 @@
 				<? }?>
 				<label class="col1">Bayi</label>
 				<span class="col2">
-					<input type="text" name="infant" value="0" class="spinner" title="Harap diisi dengan angka" />
+					<input type="text" name="infant" value="<? if(set_value('infant')!='') echo set_value('infant'); else echo 0;?>" class="spinner" title="Harap diisi dengan angka" />
 					<label><img src="<?php echo base_url();?>images/front/bayi.png"/>&nbsp;( 0 - 23 bulan )</label>
 				</span>
 			</div>
