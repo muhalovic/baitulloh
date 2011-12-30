@@ -8,8 +8,8 @@
 		<link rel="icon" type="image/x-icon" href="<?php echo base_url() ?>images/favicon.ico" />
 		
 		<!-- CSS -->
-		<link rel="stylesheet" href="<?php echo base_url();?>css/front_ui.css" type="text/css" media="screen" title="default" /> <!-- main css -->
-		<link rel="stylesheet" href="<?php echo base_url();?>css/form.css" type="text/css" media="screen" title="default" /> <!-- form css -->
+		<link rel="stylesheet" href="<?php echo base_url();?>css/dashboard_ui.css" type="text/css" media="screen" title="default" /> <!-- main css -->
+		<link rel="stylesheet" href="<?php echo base_url();?>css/form_dashboard.css" type="text/css" media="screen" title="default" /> <!-- form css -->
 		<link rel="stylesheet" href="<?php echo base_url();?>css/chosen.css" type="text/css" media="screen" title="default" /> <!-- searchable combobox css -->
 		<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css' /> <!-- import font -->
 		<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/jquery-ui-1.8.16.custom.css" />
@@ -72,7 +72,9 @@
 		<div class="header">
 			<!-- LOGO -->
 			<div class="center_header">
-				<img src="<?php echo base_url();?>images/front/logo.png" border="0" width="252" height="56" />
+				<a href="<?php echo base_url();?>">
+					<img src="<?php echo base_url();?>images/front/logo.png" border="0" width="252" height="56" />
+				</a>
 			</div>
 			<!-- END LOGO -->
 		</div>
@@ -87,11 +89,11 @@
                 <!-- edit menu atas disini -->
                 <? if($this->session->userdata('email') == NULL){ ?>
 					<span class="top_separator">|</span>
-					<a href="<?php echo base_url();?>periksa">Home</a>
+					<a href="<?php echo base_url();?>periksa">Registrasi</a>
 					<span class="top_separator">|</span>
 					<a href="<?php echo base_url().'login';?>">Login</a>
 					<span class="top_separator">|</span>
-					<a href="http://umrahkamilah.com">Kamilah</a>
+					<a href="http://umrahkamilah.com">Informasi</a>
 					<span class="top_separator">|</span>
                 <? } else { ?>
 					<span class="top_separator">|</span>

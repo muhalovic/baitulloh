@@ -22,6 +22,7 @@
 						<span class="text_title">Form Login Untuk Mengakses Dasboard Calon Jamaah</span>
 					</div>
 					<p>
+						<?php if(isset($msg)) echo $msg;?>
 						<div>
 							<div class="label_login"><img src="<?php echo base_url();?>images/front/mail.png" width="16" height="16" alt="" />&nbsp;Email Anda</div>
 							<? if(form_error('email') != '') {?>

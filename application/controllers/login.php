@@ -75,11 +75,11 @@ class Login extends CI_Controller {
 				$kode_reg = $this->session->userdata("kode_registrasi");
 				
 				$this->log_model->log($id_user, $kode_reg, NULL, $log);
-				redirect('welcome');
+				redirect('dashboard');
 			}
 			//apabila login tidak sesuai dengan email dan password maka user akan masuk halaman login
 			else{
-				$data['msg'] = 'Email</strong> atau <strong>Password</strong> salah';
+				$data['msg'] = '<div class="error_validation">Email atau Password anda salah !!!</div>';
 				$data['cek_error'] = "-error";
 				$data['content'] = $this->load->view('form_login', $data, true);
 				$this->load->view('front', $data);

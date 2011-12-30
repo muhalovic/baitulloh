@@ -53,7 +53,11 @@ $route['pasca_daftar/(:any)'] 	= 'notification/show/$1';
 
 
 /* ROUTING UNTUK DASHBOARD -------------------------------------------------*/
-
+/* for under construction mode */
+$route['dashboard'] 			= 'information_page/under_construction'; 
+/* for publish mode */
+//$route['dashboard'] 			= 'information_page/info'; 
+$route['logout'] 				= 'logout';
 /* END ROUTING UNTUK DASHBOARD ---------------------------------------------*/
 
 

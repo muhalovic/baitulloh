@@ -10,7 +10,7 @@
 				
 				<div align="center">
 					<p>"Masukan alamat email yang valid sesuai saat proses registrasi User."</p>
-					<p>"Sistem otomatis akan <strong class="bold">mereset password</strong> anda dan mengirimkan password baru melalui email yg telah dimasukan."</p>
+					<p>"Sistem otomatis akan melakukan<strong class="bold"> reset password</strong> anda dan mengirimkan password baru melalui email yg telah dimasukan."</p>
 					<div>
 						<img src="<?php echo base_url();?>images/front/book.png" width="337" height="138" alt="" />
 					</div>
