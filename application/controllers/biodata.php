@@ -65,7 +65,7 @@ class Biodata extends CI_Controller {
 		$total_calon_di_jamaah_candidate = $this->jamaah_candidate_model->get_total_data_sortir($id_account, $kode_reg);
 		
 		// - cek validasi
-		if($total_calon_di_jamaah_candidate > $total_calon_di_packet)
+		if($total_calon_di_jamaah_candidate == $total_calon_di_packet || $total_calon_di_jamaah_candidate > $total_calon_di_packet)
 		{
 			$link_tambah = "alert('Maaf, jumlah calon jamaah melebihi kuota yg ditentukan di konfigurasi packet');";
 		}else{
@@ -80,7 +80,6 @@ class Biodata extends CI_Controller {
 			$link_tambah = "alert('Maaf, tidak bisa menambahkan Calon Jamaah. Anda sudah melakukan Pembayaran !');";
 			$link_hapus = "alert('Maaf, tidak bisa menghapus Calon Jamaah. Anda sudah melakukan Pembayaran !');";
 		}else{
-			$link_tambah = "location.href='".site_url()."/biodata/input';";
 			$link_hapus = "if($('.trSelected',grid).length>0){
 				   if(confirm('Anda yakin ingin menghapus ' + $('.trSelected',grid).length + ' buah data?')){
 						var items = $('.trSelected',grid);
