@@ -145,7 +145,7 @@ class Registration extends CI_Controller {
                     $data = array(
                         'ID_GROUP'=>$group, 'ID_ACCOUNT'=>$id_acc, 'KODE_REGISTRASI' =>$this->data_field['KODE_REGISTRASI'], 'ID_PROGRAM'=>$kelas_program,
 						'JUMLAH_ADULT'=>$jml_adult, 'CHILD_WITH_BED'=>$with_bed, 'CHILD_NO_BED'=>$no_bed, 'INFANT'=>$infant,
-                        'TANGGAL_PESAN'=>date("Y-m-d h:i:s"), 'STATUS_PESANAN'=>1
+                        'TANGGAL_PESAN'=>date("Y-m-d h:i:s"), 'STATUS_PESANAN'=>0
                     );
                     $this->packet_model->insert_packet($data);
                     $this->log_model->log($id_acc, $this->data_field['KODE_REGISTRASI'], null, 'INSERT data PACKET untuk akun dengan KODE_REGISTRASI = '.$this->data_field['KODE_REGISTRASI']);

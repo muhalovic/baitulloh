@@ -43,24 +43,15 @@
 						<div class="nav-divider">&nbsp;</div>
                         
 						<? if($this->session->userdata('email') != NULL){ ?>
-                        <?php if($this->session->userdata('order_packet') != 1){ ?>
-						<ul class="<?=($this->uri->segment(1)==='beranda')?'current':'select'?>">
+                        <ul class="<?=($this->uri->segment(1)==='welcome')?'current':'select'?>">
                           <li>
-                        	<a href="<? echo site_url().'/beranda' ?>"><b>Konfirmasi Paket</b><!--[if IE 7]><!--></a><!--<![endif]-->
+                        	<a href="<? echo site_url().'/welcome' ?>"><b>Informasi</b><!--[if IE 7]><!--></a><!--<![endif]-->
                           </li>
-                        </ul>                                                
-						<div class="nav-divider">&nbsp;</div>
-						<? } else { ?>
+                        </ul> 
+                        <div class="nav-divider">&nbsp;</div>
 						<ul class="<?=($this->uri->segment(1)==='beranda')?'current':'select'?>">
                           <li>
                         	<a href="<? echo site_url().'/beranda' ?>"><b>Paket</b><!--[if IE 7]><!--></a><!--<![endif]-->
-                          	<div class="select_sub show">
-                                <ul class="sub">
-                                    <li class="<?=($this->uri->segment(2)==='info')?'sub_current':''?>"><a href="<? echo site_url() ?>/paket/info">Info Paket</a></li>
-                                    <li class="<?=($this->uri->segment(2)==='edit')?'sub_current':''?>"><a href="<? echo site_url() ?>/paket/edit">Edit Paket</a></li>
-                                    <li class="<?=($this->uri->segment(2)==='batal')?'sub_current':''?>"><a href="<? echo site_url() ?>/paket/batal">Pembatalan Paket</a></li>
-                                </ul>
-                            </div>
                           </li>
                         </ul>                                                
 						<div class="nav-divider">&nbsp;</div>	
@@ -75,7 +66,7 @@
 						<div class="nav-divider">&nbsp;</div>
 						<ul class="<?=($this->uri->segment(1)==='rooming')?'current':'select'?>"><li><a href="<? echo site_url() ?>/rooming""><b>Ruang Kamar</b><!--[if IE 7]><!--></a><!--<![endif]--></li></ul>
 						<div class="nav-divider">&nbsp;</div>
-						<? }?>
+
 						<div class="clear"></div>
                                                 <? }?>
 					</div>

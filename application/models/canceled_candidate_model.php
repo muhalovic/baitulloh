@@ -30,6 +30,17 @@ class Canceled_candidate_model extends CI_Model {
 		return $this->db->get();
 	}
 	
+	function get_data_byCandidate($id_account, $kode_reg, $id_candidate)
+	{
+		$this->db->select("*");
+		$this->db->from("canceled_candidate");
+		$this->db->where('ID_CANDIDATE', $id_candidate);
+		$this->db->where('ID_ACCOUNT', $id_account);
+		$this->db->where('KODE_REGISTRASI', $kode_reg);
+		
+		return $this->db->get();
+	}
+	
 }
 
 ?>

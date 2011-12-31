@@ -221,11 +221,13 @@ class jamaah_candidate_model extends CI_Model {
 	
 	function get_jamaah_byRoomPacket($id_account, $kode_reg, $id_room_packet)
 	{
+		$status = array(0,1);
+		
 		$this->db->select('*');
 		$this->db->from('jamaah_candidate');
 		$this->db->where('KODE_REGISTRASI', $kode_reg);
 		$this->db->where('ID_ACCOUNT', $id_account);
-        $this->db->where_in('STATUS_KANDIDAT', 1);
+        $this->db->where_in('STATUS_KANDIDAT', $status);
         $this->db->where_in('ID_ROOM_PACKET', $id_room_packet);
 				
 		return $this->db->get();

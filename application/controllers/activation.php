@@ -22,10 +22,14 @@ class Activation extends CI_Controller {
 			if ($account->row()->STATUS == 0){
 				// update account status
 				$this->accounts_model->update_account(array('STATUS'=>1), $kode_reg);
-                                $this->log_model->log($account->row()->ID_ACCOUNT, $kode_reg, NULL,
-                                        "Aktivasi akun dengan KODE_REGISTRASI = $kode_reg");
+				
+				// update packet
+				$this->packet_model->update_packet_after_activate(array('STATUS_PESANAN'=>1), $account->row()->ID_ACCOUNT, $kode_reg);
+				
+				// insert log
+                $this->log_model->log($account->row()->ID_ACCOUNT, $kode_reg, NULL,"Aktivasi akun dengan KODE_REGISTRASI = $kode_reg");
 
-                                $packet = $this->packet_model->get_packet_byAcc($row->ID_ACCOUNT, $row->KODE_REGISTRASI);
+                $packet = $this->packet_model->get_packet_byAcc($row->ID_ACCOUNT, $row->KODE_REGISTRASI);
 				
 				// redirect to login
 				$newdata = array(

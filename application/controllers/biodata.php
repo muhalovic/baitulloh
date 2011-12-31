@@ -72,6 +72,37 @@ class Biodata extends CI_Controller {
 			$link_tambah = "location.href='".site_url()."/biodata/input';";
 		}
 		
+		
+		// FILETER JIKA SUDAH PAYMENT, LINK INPUT JAMAAH DITUTUP
+		$data_packet_approve = $this->packet_model->get_packet_byPayment($id_account, $kode_reg);
+		if($data_packet_approve->result() != NULL)
+		{
+			$link_tambah = "alert('Maaf, tidak bisa menambahkan Calon Jamaah. Anda sudah melakukan Pembayaran !');";
+			$link_hapus = "alert('Maaf, tidak bisa menghapus Calon Jamaah. Anda sudah melakukan Pembayaran !');";
+		}else{
+			$link_tambah = "location.href='".site_url()."/biodata/input';";
+			$link_hapus = "if($('.trSelected',grid).length>0){
+				   if(confirm('Anda yakin ingin menghapus ' + $('.trSelected',grid).length + ' buah data?')){
+						var items = $('.trSelected',grid);
+						var itemlist ='';
+						for(i=0;i<items.length;i++){
+							itemlist+= items[i].id.substr(3)+',';
+						}
+						$.ajax({
+						   type: 'POST',
+						   url: '".site_url('/biodata/hapus_data_calon_jamaah')."',
+						   data: 'items='+itemlist,
+						   success: function(data){
+							$('#flex1').flexReload();
+							alert(data);
+						   }
+						});
+					}
+				} else {
+					return false;
+				} ";
+		}
+		
 							   
 		$colModel['no'] = array('No',40,TRUE,'center',0);
 		$colModel['edit'] = array('Edit',40,FALSE,'center',0);
@@ -112,26 +143,7 @@ class Biodata extends CI_Controller {
 				".$link_tambah." 
 			}
 			if (com=='Hapus'){
-			   if($('.trSelected',grid).length>0){
-				   if(confirm('Anda yakin ingin menghapus ' + $('.trSelected',grid).length + ' buah data?')){
-						var items = $('.trSelected',grid);
-						var itemlist ='';
-						for(i=0;i<items.length;i++){
-							itemlist+= items[i].id.substr(3)+',';
-						}
-						$.ajax({
-						   type: 'POST',
-						   url: '".site_url('/biodata/hapus_data_calon_jamaah')."',
-						   data: 'items='+itemlist,
-						   success: function(data){
-							$('#flex1').flexReload();
-							alert(data);
-						   }
-						});
-					}
-				} else {
-					return false;
-				} 
+			   ".$link_hapus."
 			}
 		} 
 		</script>

@@ -102,7 +102,7 @@ class Payment_model extends CI_Model {
         if($limit == '1')
 		{
 			$limit_f = 1;
-			$limit_s = 0;
+			$limit_s = 1;
 		}
 		elseif($limit == '2')
 		{

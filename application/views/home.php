@@ -10,7 +10,7 @@
 				<label class="col1">Grup Keberangkatan</label>
 				<span class="col2">
 					<?php 
-						$group = 0; if(set_value('group')!='') $group = set_value('group');
+						$group = $e_id_group; if(set_value('group')!='') $group = set_value('group');
 						echo form_dropdown('group', $group_options, $group,'id="group" class="dropdown_medium" onChange="get_group();" title="Nama Group dan Tanggal Keberangkatan"'); 
 					?>
 				</span>
@@ -24,7 +24,7 @@
 				<label class="col1">Kelas Program</label>
 				<span class="col2">
 					<?php 
-						$program = 0; if(set_value('program')!='') $program = set_value('program');
+						$program = $e_id_program; if(set_value('program')!='') $program = set_value('program');
 						echo form_dropdown('program', $program_options, $program,'id="program" class="dropdown_medium"  onChange="get_program();" title="Nama Kelas Program"'); 
 					?>
 				</span>
@@ -37,7 +37,7 @@
 				<? }?>
 				<label class="col1">Jumlah Dewasa</label>
 				<span class="col2">
-					<input type="text" name="jml_adult" value="<?php echo set_value('jml_adult');?>" class="input_small"  title="Harap diisi dengan angka" />
+					<input type="text" name="jml_adult" value="<?php echo $e_adult; ?>" class="input_small"  title="Harap diisi dengan angka" />
 					<label><img src="<?php echo base_url();?>images/front/dewasa.png"/>&nbsp;( di atas 11 tahun )</label>
 				</span>
 			</div>
@@ -49,7 +49,7 @@
 				<? }?>
 				<label class="col1">Anak Dengan Ranjang</label>
 				<span class="col2">
-					<input type="text" name="with_bed" value="<?php echo set_value('with_bed');?>" class="input_small" title="Harap diisi dengan angka" />
+					<input type="text" name="with_bed" value="<?php echo $e_cwb; ?>" class="input_small" title="Harap diisi dengan angka" />
 					<label><img src="<?php echo base_url();?>images/front/anak.png"/>&nbsp;( 23 bulan - 11 tahun )</label>
 				</span>
 			</div>
@@ -61,7 +61,7 @@
 				<? }?>
 				<label class="col1">Anak Tanpa Ranjang</label>
 				<span class="col2">
-					<input type="text" name="no_bed" value="<?php echo set_value('no_bed');?>" class="input_small" title="Harap diisi dengan angka" />
+					<input type="text" name="no_bed" value="<?php echo $e_cnb; ?>" class="input_small" title="Harap diisi dengan angka" />
 					<label><img src="<?php echo base_url();?>images/front/anak.png"/>&nbsp;( 23 bulan - 11 tahun )</label>
 				</span>
 			</div>
@@ -73,7 +73,7 @@
 				<? }?>
 				<label class="col1">Bayi</label>
 				<span class="col2">
-					<input type="text" name="infant" value="<?php echo set_value('infant');?>" class="input_small" title="Harap diisi dengan angka" />
+					<input type="text" name="infant" value="<?php echo $e_infant; ?>" class="input_small" title="Harap diisi dengan angka" />
 					<label><img src="<?php echo base_url();?>images/front/bayi.png"/>&nbsp;( 0 - 23 bulan )</label>
 				</span>
 			</div>
@@ -95,6 +95,7 @@
 			<div class="row">
 				<label class="col1">&nbsp;</label>
 				<span class="col2">
+                	<input type="hidden" value="<? echo $e_packet; ?>" name="packet" />
 					<input type="submit" value="Lanjut >>" class="submit_button" />
 					<input type="reset" value="Reset" class="reset_button" />
 				</span>

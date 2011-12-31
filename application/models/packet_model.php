@@ -47,6 +47,20 @@ class Packet_model extends CI_Model {
 		
 		return $this->db->get();
 	}
+	
+	
+	function get_packet_byPayment($id_acc, $kode_reg)
+	{
+         $status = array(3);
+		 
+        $this->db->select("*");
+		$this->db->from("packet");
+		$this->db->where("ID_ACCOUNT", $id_acc);
+		$this->db->where("KODE_REGISTRASI", $kode_reg);
+		$this->db->where_in("STATUS_PESANAN", $status);
+		
+		return $this->db->get();
+	}
 
         function get_packet_byAcc_waiting($id_acc, $kode_reg){
             $status = array(2);
@@ -165,6 +179,13 @@ class Packet_model extends CI_Model {
 		
 		return $this->db->get();
 	
+	}
+	
+	
+	function update_packet_after_activate($data, $id_account, $kode_reg){
+		$this->db->where('ID_ACCOUNT', $id_account);
+		$this->db->where('KODE_REGISTRASI', $kode_reg);
+		$this->db->update('packet', $data);
 	}
 	
 }

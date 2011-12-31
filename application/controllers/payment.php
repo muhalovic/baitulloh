@@ -28,6 +28,7 @@ class Payment extends CI_Controller {
 		$this->load->model('jamaah_candidate_model');
 		$this->load->model('payment_model');
 		$this->load->model('group_departure_model');
+		$this->load->model('canceled_candidate_model');
 		
 		$id_user = $this->session->userdata("id_account");
 		$kode_reg = $this->session->userdata("kode_registrasi");
@@ -108,12 +109,41 @@ class Payment extends CI_Controller {
 						$nama_jamaah = $rows->NAMA_LENGKAP;
 						
 						// PERIKSA DATA PEMBATALAN
-						// PENDING DULU ~
+						$btl = $this->canceled_candidate_model->get_data_byCandidate($id_user, $kode_reg, $rows->ID_CANDIDATE);
+						
+						$text_batal = '';
+						if($rows->STATUS_KANDIDAT == 0 && $btl->result() != NULL)
+						{
+							$tgl_batal = date("Y-m-d", strtotime($btl->row()->TANGGAL_PEMBATALAN));
+							$tgl_skrg = date("Y-m-d");
+							
+							$hitung_selisih = (strtotime($tgl_batal) - strtotime($tgl_skrg))/86400;
+							
+							$text_batal = "<font color=\"red\"><em>( Batal )</em></font>";
+							
+							if($hitung_selisih > 14 && $hitung_selisih < 30)
+							{
+								$harga_kamar = $harga_kamar * 25 / 100;
+							}
+							if($hitung_selisih > 7 && $hitung_selisih < 13)
+							{
+								$harga_kamar = $harga_kamar * 50 / 100;
+							}
+							if($hitung_selisih > 3 && $hitung_selisih < 6)
+							{
+								$harga_kamar = $harga_kamar * 75 / 100;
+							}
+							if($hitung_selisih > 0 && $hitung_selisih < 3)
+							{
+								$harga_kamar = $harga_kamar * 100 / 100;
+							}
+						}
+						
 						
 						$list_jamaah .= '
 						<tr height="30">
 							<td align="left" >
-								<span class="price_list_jamaah">- '.$nama_jamaah.'</span>
+								<span class="price_list_jamaah">- '.$nama_jamaah.' '.$text_batal.'</span>
 							</td>
 							<td align="center">-</td>
 							<td align="center">$ '.$this->cek_ribuan($harga_kamar).'</td>
@@ -125,7 +155,20 @@ class Payment extends CI_Controller {
 							</td>
 						</tr>';
 					}
+				}else{
+					$hitung_data_jamaah = 0;
 				}
+				
+				
+				// FILETER JIKA SUDAH PAYMENT, LINK INPUT JAMAAH DITUTUP
+				$data_packet_approve = $this->packet_model->get_packet_byPayment($id_user, $kode_reg);
+				if($data_packet_approve->result() == NULL)
+				{
+					$text_kosong = ', klik <a href="'.site_url().'/biodata/input">disini</a> untuk registrasi';
+				}else{
+					$text_kosong = NULL;
+				}
+				
 						
 				for($i=1;$i<=($jumlah_jamaah_per_kamar - $hitung_data_jamaah);$i++)
 				{
@@ -133,7 +176,7 @@ class Payment extends CI_Controller {
 					<tr height="30">
 						<td align="left" >
 							<span class="price_list_jamaah">
-								- <i>Belum Terdaftar, klik <a href="'.site_url().'/biodata/input">disini</a> untuk registrasi</i>
+								- <i>Belum Terdaftar'.$text_kosong.'</i>
 							</span>
 						</td>
 						<td align="center">-</td>
@@ -300,8 +343,13 @@ class Payment extends CI_Controller {
 		$data_payment = $this->payment_model->get_payment_byJenis_Bayar($id_user, $kode_reg, $jenis_bayar, $limit);
 		
 		// GET DATA PAYMENT LIMIT 1 (BARIS PERTAMA)
-		$data_yg_dibayarkan = $this->payment_model->get_payment_byJenis_Bayar($id_user, $kode_reg, $jenis_bayar, '1');
-		$total_bayar_awal = $data_yg_dibayarkan->row()->JUMLAH_KAMAR;
+		$data_yg_dibayarkan = $this->payment_model->get_payment_byJenis_Bayar($id_user, $kode_reg, $jenis_bayar, 1);
+		if($data_yg_dibayarkan->result() != NULL)
+		{
+			$total_bayar_awal = $data_yg_dibayarkan->row()->JUMLAH_KAMAR;
+		}else{
+			$total_bayar_awal = 0;
+		}
 		
 		// VAR LOOPING
 		$list_payment = '';

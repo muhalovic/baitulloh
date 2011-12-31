@@ -77,6 +77,23 @@ class Room_packet_model extends CI_Model {
 		$this->db->where('jc.STATUS_KANDIDAT', 0);
 		return $this->db->get();
 	}
+	
+	function get_data_byRoomTypePacket($id_room_type, $id_packet){
+            $this->db->select("*");
+			$this->db->from("room_packet");
+			$this->db->where("ID_ROOM_TYPE", $id_room_type);
+			$this->db->where("ID_PACKET", $id_packet);
+		
+		return $this->db->get();
+	}
+	
+	function update_room_packet($data, $id_tipe_kamar, $id_packet){
+		$this->db->where('ID_ROOM_TYPE', $id_tipe_kamar);
+		$this->db->where('ID_PACKET', $id_packet);
+		$this->db->update('room_packet', $data);
+	}
+	
+
 }
 
 ?>
