@@ -12,7 +12,7 @@
                 var C = A(this).attr("id");
                 A(this).after("<!--<div class=\"pstrength-minchar\" id=\"" + C + "_minchar\">Password Minimal " + B.minchar + " Karakter</div>-->");
                 A(this).after("<div class=\"pstrength-info\" id=\"" + C + "_text\"></div>");
-                A(this).after("<font size='1'>indikator password :</font> <div class=\"pstrength-bar\" id=\"" + C + "_bar\" style=\"border: none; font-size: 1px; height: 5px; width: 0px;\"></div>");
+                A(this).after("<div><font size='1'>indikator password :</font><div> <div class=\"pstrength-bar\" id=\"" + C + "_bar\" style=\"border: none; font-size: 1px; height: 5px; width: 0px;\"></div>");
                 A(this).keyup(function () {
                     A.fn.runPassword(A(this).val(), C, B)
                 })
