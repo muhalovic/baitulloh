@@ -60,6 +60,11 @@
 								
 					</li>
 				<div class="nav-divider">&nbsp;</div>
+                <ul class="<?=($this->uri->segment(2)==='rooming')?'current':'select'?>">
+					<li>
+						<a href="<?php echo site_url('admin/rooming')?>"><b>Pengaturan Kamar</b><!--[if IE 7]><!--></a><!--<![endif]-->
+					</li>
+                </ul>
 			</div>
 			<div class="clear"></div>
 		</div>
