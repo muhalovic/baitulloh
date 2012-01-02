@@ -85,25 +85,14 @@
 				<div class="left_shadow"></div>
 				<div class="top_nav">
                 <!-- edit menu atas disini -->
-                <? if($this->session->userdata('email') == NULL){ ?>
-					<span class="top_separator">|</span>
+                	<span class="top_separator">|</span>
 					<a href="<?php echo base_url();?>periksa">Home</a>
 					<span class="top_separator">|</span>
 					<a href="<?php echo base_url().'login';?>">Login</a>
 					<span class="top_separator">|</span>
 					<a href="http://umrahkamilah.com">Kamilah</a>
 					<span class="top_separator">|</span>
-                <? } else { ?>
-					<span class="top_separator">|</span>
-					<a href="<?php echo site_url()."/welcome";?>">Informasi</a>
-					<span class="top_separator">|</span>
-					<a href="<?php echo site_url()."/beranda";?>">Konfirmasi</a>
-					<span class="top_separator">|</span>
-                <?	 	if($this->session->userdata('order_packet') == 1){ ?>
-					<a href="<?php echo site_url()."/biodata";?>">Data</a>
-					<span class="top_separator">|</span>
-                <? } } ?>
-				</div>
+                </div>
 				<div class="right_shadow"></div>
 			</div>
 			<!-- END NAVIGATION -->
