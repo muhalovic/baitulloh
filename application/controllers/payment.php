@@ -113,6 +113,7 @@ class Payment extends CI_Controller {
 						
 						$text_batal = '';
 						$total_harga_perkamar = 0;
+						$harga_kamar_bersih = 0;
 						if($rows->STATUS_KANDIDAT == 0 && $btl->result() != NULL)
 						{
 							
