@@ -79,6 +79,14 @@ class Program_class_model extends CI_Model {
 		
 		return $this->db->get();
 	}
+	
+	function get_program_Group($id_group){
+		$this->db->select("*");
+		$this->db->from("program_class");
+		$this->db->where("ID_GROUP", $id_group);
+		$this->db->where('STATUS', 1);
+		return $this->db->get();
+	}
 }
 
 ?>

@@ -36,9 +36,13 @@ class Check_availability extends CI_Controller {
 		}
 		
 		$program_options['0'] = '-- Pilih Kelas Program --';
+		if(isset($_POST['group'])){
+		$program = $this->program_class_model->get_program_Group($_POST['group']);
 		foreach($program->result() as $row){
-				$program_options[$row->ID_PROGRAM] = $row->NAMA_PROGRAM;
+			$program_options[$row->ID_PROGRAM] = $row->NAMA_PROGRAM." - ".$row->MASKAPAI ;
 		}
+		}
+		
 		
 		$room_options = '';
 		foreach($room->result() as $row){
@@ -460,6 +464,18 @@ class Check_availability extends CI_Controller {
 			echo " # # # # # # ";
 		}
 
+	}
+	
+	function getOptionProgram(){
+		$this->load->model('program_class_model');
+		
+		$program = $this->program_class_model->get_program_Group($_POST['id_group']);
+		$options = '<option value="0" >-- Pilih Kelas Program --</option>';
+			foreach($program->result() as $row){
+				$options .= '<option value="'.$row->ID_PROGRAM.'" >'.$row->NAMA_PROGRAM.' - '.$row->MASKAPAI.'</option>';
+			}
+		
+		echo $options;
 	}
 	
 	function getProgram()

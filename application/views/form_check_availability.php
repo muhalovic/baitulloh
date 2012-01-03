@@ -297,8 +297,19 @@
 							 document.getElementById('info_kamar').innerHTML = pecah[6];
 							 }
                 });
-					 
-				document.getElementById('program').value=0;
+				
+				$.ajax({
+                        url: "<?=base_url();?>index.php/check_availability/getOptionProgram/",
+                        global: false,
+                        type: "POST",
+                        async: false,
+                        dataType: "html",
+                        data: "id_group="+ prp, //the name of the $_POST variable and its value
+                        success: function (response) {
+							 document.getElementById('program').innerHTML = response;
+							 }
+                });
+				
 				document.getElementById('front_keterangan').style.display="none";
 				document.getElementById('front_informasi').style.display="none";
 				$("#program").trigger("liszt:updated");
